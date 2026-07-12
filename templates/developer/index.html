@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alex Nguyen — Creative Developer & UI Engineer</title>
+    <meta name="description" content="Portfolio of Alex Nguyen, a Creative Developer specializing in generative art, interactive physics canvas simulations, and UI engineering.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Syne:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css?v=1.0">
+</head>
+<body>
+    <!-- Canvas Particle Background -->
+    <canvas id="fluid-canvas" class="fluid-canvas"></canvas>
+
+    <!-- Custom Cursor -->
+    <div id="custom-cursor" class="custom-cursor">
+        <span class="cursor-text"></span>
+    </div>
+
+    <!-- Navigation -->
+    <header class="site-header">
+        <nav class="nav-container">
+            <a href="#" class="logo">Alex.<span>Dev</span></a>
+            <div class="nav-links">
+                <a href="#projects" class="nav-link">Projects</a>
+                <a href="#sandbox" class="nav-link">Sandbox</a>
+                <a href="#experience" class="nav-link">Experience</a>
+                <a href="#contact" class="nav-link">Contact</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <div class="hero-container">
+                <div class="hero-content">
+                    <span class="hero-badge">[STATUS: AVAILABLE FOR COLLABORATIONS]</span>
+                    <h1 class="hero-title decrypt-trigger" data-text="CREATING ORGANIC INTERACTIVE SYSTEMS.">CREATING ORGANIC INTERACTIVE SYSTEMS.</h1>
+                    <p class="hero-desc">I am a creative developer and UI engineer merging fluid math, canvas simulations, and clean code architecture into performant, tactile digital experiences.</p>
+                    <div class="hero-actions">
+                        <a href="#projects" class="primary-btn">Inspect Code</a>
+                        <a href="#sandbox" class="secondary-btn">Tune Physics</a>
+                    </div>
+                </div>
+                <div class="hero-portrait-wrapper reveal-mask">
+                    <img src="assets/portrait.jpg" alt="Alex Nguyen portrait in front of developer screens" class="portrait-img">
+                </div>
+            </div>
+        </section>
+
+        <!-- Project Grid Section -->
+        <section id="projects" class="work-section">
+            <div class="section-header">
+                <span class="section-number">// 01 _</span>
+                <h2 class="section-title decrypt-trigger" data-text="ENGINEERING SHOWCASE">ENGINEERING SHOWCASE</h2>
+            </div>
+            
+            <div class="work-grid">
+                <!-- Project 1 -->
+                <div class="work-item asymmetric-1">
+                    <div class="image-container reveal-mask cursor-view" data-cursor="CODE">
+                        <img src="assets/project_aether.jpg" alt="Database path nodes CMS mapping" class="parallax-img">
+                    </div>
+                    <div class="project-info">
+                        <div class="project-details">
+                            <span class="project-tech">[Node / WebSockets]</span>
+                            <span class="project-year">2026</span>
+                        </div>
+                        <h3 class="project-title">Aether CMS</h3>
+                    </div>
+                </div>
+
+                <!-- Project 2 -->
+                <div class="work-item asymmetric-2">
+                    <div class="image-container reveal-mask cursor-view" data-cursor="WebGL">
+                        <img src="assets/project_lumina.jpg" alt="WebGL wireframe fluid geometry sculpture" class="parallax-img">
+                    </div>
+                    <div class="project-info">
+                        <div class="project-details">
+                            <span class="project-tech">[Three.js / WebGL]</span>
+                            <span class="project-year">2026</span>
+                        </div>
+                        <h3 class="project-title">Lumina WebGL</h3>
+                    </div>
+                </div>
+
+                <!-- Project 3 -->
+                <div class="work-item asymmetric-1">
+                    <div class="image-container reveal-mask cursor-view" data-cursor="AUDIO">
+                        <img src="assets/project_vortex.jpg" alt="Golden audio waveforms vibrating" class="parallax-img">
+                    </div>
+                    <div class="project-info">
+                        <div class="project-details">
+                            <span class="project-tech">[WebAudio API / DSP]</span>
+                            <span class="project-year">2025</span>
+                        </div>
+                        <h3 class="project-title">Vortex Synthesizer</h3>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Interactive Sandbox Section -->
+        <section id="sandbox" class="sandbox-section">
+            <div class="sandbox-container">
+                <div class="sandbox-info-col">
+                    <div class="section-header">
+                        <span class="section-number">// 02 _</span>
+                        <h2 class="section-title decrypt-trigger" data-text="INTERACTIVE LAB">INTERACTIVE LAB</h2>
+                    </div>
+                    <p class="sandbox-desc">You are interacting with a custom Canvas physics simulation running behind this page. Use the control console to modify parameters in real-time and observe the changes in particle behaviors.</p>
+                    
+                    <div class="sandbox-controls">
+                        <div class="control-group">
+                            <div class="control-label">
+                                <span>Particle Count</span>
+                                <span id="count-val">250</span>
+                            </div>
+                            <input type="range" id="particle-count" min="50" max="600" value="250" class="control-slider">
+                        </div>
+                        <div class="control-group">
+                            <div class="control-label">
+                                <span>Particle Speed</span>
+                                <span id="speed-val">1.0</span>
+                            </div>
+                            <input type="range" id="particle-speed" min="0.1" max="4.0" step="0.1" value="1.0" class="control-slider">
+                        </div>
+                        <div class="control-group">
+                            <div class="control-label">
+                                <span>Attraction Strength</span>
+                                <span id="attract-val">0.3</span>
+                            </div>
+                            <input type="range" id="particle-attract" min="0.0" max="1.0" step="0.05" value="0.3" class="control-slider">
+                        </div>
+                        <div class="control-group">
+                            <label class="control-checkbox-container">
+                                <input type="checkbox" id="draw-lines" checked>
+                                <span class="checkmark"></span>
+                                <span>Connect Near Nodes</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sandbox-terminal-col">
+                    <div class="terminal-header">
+                        <span class="dot red"></span>
+                        <span class="dot yellow"></span>
+                        <span class="dot green"></span>
+                        <span class="terminal-title">alex_dev_logs.sh</span>
+                    </div>
+                    <div class="terminal-body" id="terminal-body">
+                        <p class="log-line text-green">&gt; Initializing fluid canvas core...</p>
+                        <p class="log-line">&gt; Spawning 250 organic nodes...</p>
+                        <p class="log-line">&gt; Binding mouse hover tracking physics...</p>
+                        <p class="log-line text-yellow">&gt; System initialized. Ready to compile parameters.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Experience Section -->
+        <section id="experience" class="experience-section">
+            <div class="section-header">
+                <span class="section-number">// 03 _</span>
+                <h2 class="section-title decrypt-trigger" data-text="ENGINEERING PATHWAY">ENGINEERING PATHWAY</h2>
+            </div>
+            
+            <div class="timeline">
+                <!-- Node 1 -->
+                <div class="timeline-item">
+                    <div class="timeline-meta">
+                        <span class="timeline-year">2024 — Present</span>
+                        <span class="timeline-role">Lead Creative Dev</span>
+                    </div>
+                    <div class="timeline-content">
+                        <h3 class="timeline-company">Aura Interactive Agency</h3>
+                        <p>Leading high-performance WebGL animations, managing custom canvas mechanics, and orchestrating client interaction portals. Spearheaded transitions into shader-based micro-interactions.</p>
+                    </div>
+                </div>
+
+                <!-- Node 2 -->
+                <div class="timeline-item">
+                    <div class="timeline-meta">
+                        <span class="timeline-year">2022 — 2024</span>
+                        <span class="timeline-role">UI Engineer</span>
+                    </div>
+                    <div class="timeline-content">
+                        <h3 class="timeline-company">Quantum Tech Labs</h3>
+                        <p>Developed reactive user interfaces, optimized rendering loops for internal dashboards, and designed dynamic component design systems using CSS grids and SVG variables.</p>
+                    </div>
+                </div>
+
+                <!-- Node 3 -->
+                <div class="timeline-item">
+                    <div class="timeline-meta">
+                        <span class="timeline-year">2020 — 2022</span>
+                        <span class="timeline-role">Frontend Architect</span>
+                    </div>
+                    <div class="timeline-content">
+                        <h3 class="timeline-company">Holo Digital Studio</h3>
+                        <p>Created immersive branding websites, developed custom physics simulations, and established clean, modular JS workflows for creative clients.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="contact-section">
+            <div class="contact-grid">
+                <div class="contact-info-col">
+                    <div class="section-header">
+                        <span class="section-number">// 04 _</span>
+                        <h2 class="section-title decrypt-trigger" data-text="ESTABLISH LINK">ESTABLISH LINK</h2>
+                    </div>
+                    <p class="contact-desc">Ready to build bespoke, highly interactive digital experiences? Launch an inquiry into my console or reach out directly.</p>
+                    <div class="contact-details">
+                        <div class="detail-item">
+                            <span>SSH / E-Mail</span>
+                            <a href="mailto:alex@baodi.studio">alex@baodi.studio</a>
+                        </div>
+                        <div class="detail-item">
+                            <span>GitHub / Code</span>
+                            <a href="#" class="github-link">github.com/alex-dev</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="contact-form-col">
+                    <form class="contact-form" id="contact-form">
+                        <div class="form-group">
+                            <label for="name">Console_Name</label>
+                            <input type="text" id="name" required placeholder="User-01">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">User_Email</label>
+                            <input type="email" id="email" required placeholder="user@domain.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Console_Payload</label>
+                            <textarea id="message" rows="4" required placeholder="Enter compilation specifications / project requirements..."></textarea>
+                        </div>
+                        <button type="submit" class="submit-btn">
+                            <span>Execute Compile</span>
+                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M5 12H19M19 12L13 6M19 12L13 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-container">
+            <p>&copy; 2026 Alex Nguyen Dev. Built for high performance.</p>
+            <p>[SYSTEM: SECURED]</p>
+        </div>
+    </footer>
+
+    <!-- Custom JS -->
+    <script src="script.js?v=1.0"></script>
+</body>
+</html>

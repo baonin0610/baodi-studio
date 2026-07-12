@@ -1,0 +1,651 @@
+/* ==========================================================================
+   Sound Designer Portfolio CSS Stylesheet
+   Minh Nguyen — single-page dashboard studio layout
+   ========================================================================== */
+
+/* Design Tokens & Variables */
+:root {
+    --bg-color: #ECE8DD;          /* Soft Clay Cream */
+    --text-color: #2D2522;        /* Dark Cocoa */
+    --text-muted: #7A726A;        /* Muted Warm Grey */
+    --accent-terracotta: #C85C42;  /* Terracotta Red */
+    --accent-mustard: #D7A15C;    /* Mustard Yellow */
+    --accent-teal: #4C7571;       /* Vintage Teal */
+    --border-color: #DDD8CF;      /* Light Clay Dividers */
+    --bg-card: #FFFFFF;           /* Paper White */
+    --bg-deck: #E5E0D5;           /* Vintage Studio Casing */
+    
+    --font-heading: 'Syne', sans-serif;
+    --font-serif: 'Cormorant Garamond', Georgia, serif;
+    --font-body: 'Plus Jakarta Sans', sans-serif;
+    --font-mono: 'Courier New', Courier, monospace;
+    
+    --transition-smooth: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    --transition-fast: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Reset & Base Styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: var(--font-body);
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+}
+
+body {
+    overflow-x: hidden;
+}
+
+/* Custom Cursor */
+.custom-cursor {
+    width: 8px;
+    height: 8px;
+    background-color: var(--text-color);
+    border-radius: 50%;
+    position: fixed;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 9999;
+    transition: width 0.3s ease, height 0.3s ease, border-color 0.3s ease;
+}
+
+.custom-cursor.hovered {
+    width: 70px;
+    height: 70px;
+    background-color: transparent;
+    border: 1px solid var(--accent-terracotta);
+}
+
+.cursor-text {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--accent-terracotta);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.custom-cursor.hovered .cursor-text {
+    opacity: 1;
+}
+
+/* Header & Navigation */
+.site-header {
+    border-bottom: 1px solid var(--border-color);
+    background-color: var(--bg-color);
+}
+
+.nav-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 1.5rem 4%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-family: var(--font-heading);
+    font-size: 1.4rem;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.logo span {
+    color: var(--accent-terracotta);
+    font-weight: 500;
+}
+
+.nav-links {
+    display: flex;
+    gap: 3rem;
+}
+
+.nav-link {
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+}
+
+.nav-link:hover {
+    color: var(--text-color);
+}
+
+/* Console Dashboard Grid Layout */
+.console-layout {
+    max-width: 1400px;
+    margin: 2rem auto;
+    padding: 0 4%;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+}
+
+.studio-console-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 2rem;
+}
+
+.rack-panel {
+    background-color: var(--bg-deck);
+    border: 1px solid #CFCABF;
+    padding: 1.8rem;
+    box-shadow: inset 0 2px 5px rgba(255,255,255,0.4), 0 10px 25px rgba(43, 36, 33, 0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.panel-header-strip {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #8C867B;
+    border-bottom: 1px solid #D1CBBF;
+    padding-bottom: 0.6rem;
+    letter-spacing: 0.05em;
+}
+
+/* Oscilloscope Display screen */
+.crt-oscilloscope {
+    background-color: #0A1C1A; /* Dark forest green screen */
+    border: 4px solid #B0AA9D;
+    padding: 2px;
+    position: relative;
+    overflow: hidden;
+}
+
+.scope-canvas {
+    width: 100%;
+    height: 120px;
+    display: block;
+    background-color: #061211;
+}
+
+.screen-glare {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0) 50%);
+    pointer-events: none;
+}
+
+/* Cassette Deck Hardware styling */
+.cassette-deck-hardware {
+    background-color: #D2CDC1;
+    border: 1px solid #AFA99E;
+    box-shadow: inset 2px 2px 5px rgba(0,0,0,0.15);
+    padding: 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.deck-display-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    border-bottom: 1px solid #C4BEB3;
+    padding-bottom: 0.4rem;
+}
+
+.led {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+}
+
+.led.green {
+    background-color: var(--accent-teal);
+    box-shadow: 0 0 8px var(--accent-teal);
+}
+
+.led.blinking {
+    animation: ledBlink 1.5s infinite;
+}
+
+@keyframes ledBlink {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 1; }
+}
+
+.lcd-text {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.cassette-window {
+    height: 70px;
+    background-color: #2E2825; /* Dark tape reel casing */
+    border-radius: 4px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    position: relative;
+    padding: 0 2rem;
+}
+
+.reel {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #FFF;
+    border: 4px solid #1A1A1A;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Reels Spin */
+.cassette-window.playing .reel {
+    animation: spinReel 5s linear infinite;
+}
+
+@keyframes spinReel {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.reel .spoke {
+    position: absolute;
+    width: 5px;
+    height: 32px;
+    background-color: #1A1A1A;
+}
+
+.reel .spoke:nth-child(2) { transform: rotate(45deg); }
+.reel .spoke:nth-child(3) { transform: rotate(90deg); }
+.reel .spoke:nth-child(4) { transform: rotate(135deg); }
+
+.tape-spool-backing {
+    position: absolute;
+    bottom: 4px;
+    width: 80%;
+    height: 8px;
+    background-color: #5C4033;
+    border-radius: 2px;
+}
+
+.analog-hardware-buttons {
+    display: flex;
+    gap: 1rem;
+    margin-top: 0.4rem;
+}
+
+.hardware-btn {
+    flex-grow: 1;
+    background-color: #CFCABF;
+    border: 1px solid #A29C91;
+    box-shadow: 0 3px 0 #9E988D, 0 4px 5px rgba(0,0,0,0.1);
+    padding: 0.6rem;
+    cursor: pointer;
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: var(--text-color);
+}
+
+.hardware-btn:active {
+    transform: translateY(3px);
+    box-shadow: none;
+}
+
+.hardware-btn.active {
+    background-color: var(--accent-mustard);
+    border-color: #B58443;
+    box-shadow: inset 1px 1px 3px rgba(0,0,0,0.2);
+    transform: translateY(3px);
+}
+
+/* Cassette Shelf (Section B) */
+.tape-shelf-panel {
+    gap: 1rem;
+}
+
+.shelf-instruction {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+}
+
+.cassette-shelf {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    margin-top: 0.5rem;
+}
+
+.cassette-tape {
+    background-color: #2E2825;
+    border: 1px solid #1A1817;
+    border-radius: 4px;
+    padding: 0.8rem 1rem;
+    cursor: pointer;
+    transform: rotate(var(--rotation));
+    transition: var(--transition-smooth);
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    box-shadow: 0 5px 12px rgba(43,36,33,0.15);
+}
+
+.cassette-tape:hover {
+    transform: rotate(0deg) translateY(-4px);
+    box-shadow: 0 10px 20px rgba(43,36,33,0.25);
+}
+
+.cassette-tape.active {
+    background-color: var(--accent-terracotta);
+    border-color: #8C2C16;
+}
+
+.tape-label {
+    background-color: var(--bg-color);
+    border: 1px solid #C4BEB2;
+    padding: 0.4rem 0.8rem;
+    display: flex;
+    gap: 1rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.cassette-tape.active .tape-label {
+    background-color: #FAF8F5;
+    border-color: #FAF8F5;
+}
+
+.track-index {
+    color: var(--accent-terracotta);
+}
+
+.tape-plastic-base {
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    margin-top: 0.2rem;
+}
+
+.wheel-hole {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background-color: var(--bg-deck);
+    border: 2px solid #1A1A1A;
+}
+
+/* Synthesizer Knobs / Dials (Section C) */
+.synth-parameter-dials {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.analog-dial-node {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.analog-dial-node label {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--text-color);
+}
+
+.analog-slider {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 100%;
+    height: 4px;
+    background: #C4BEB3;
+    outline: none;
+}
+
+.analog-slider::-webkit-slider-thumb {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 18px;
+    height: 12px;
+    background-color: var(--accent-teal);
+    border: 1px solid #3B5A57;
+    cursor: pointer;
+}
+
+.dial-val-readout {
+    align-self: flex-end;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--accent-teal);
+}
+
+/* Synthesizer switches drum machine grid */
+.synthesizer-toggles-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.2rem;
+    margin-top: 0.5rem;
+}
+
+.toggle-pad-item {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    padding: 1.8rem 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    cursor: pointer;
+    transition: var(--transition-fast);
+    position: relative;
+}
+
+.toggle-pad-item:hover {
+    border-color: var(--text-muted);
+}
+
+.switch-stick {
+    width: 16px;
+    height: 28px;
+    background-color: #CFCABF;
+    border: 1px solid #AFA99D;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.15);
+    position: relative;
+}
+
+.switch-stick::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 10px;
+    height: 12px;
+    background-color: #ECE7DF;
+    border: 1px solid #B4AD9F;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+/* Trigger Down flipped states */
+.toggle-pad-item.active .switch-stick {
+    background-color: var(--accent-terracotta);
+    border-color: #9A2E16;
+}
+
+.toggle-pad-item.active .switch-stick::after {
+    top: 12px;
+}
+
+.switch-key {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    position: absolute;
+    top: 0.8rem;
+    right: 1rem;
+}
+
+.switch-name {
+    font-family: var(--font-heading);
+    font-size: 1.15rem;
+    font-weight: 700;
+}
+
+/* Bio & Contact Wooden drawer casing section */
+.casing-drawer-section {
+    background-color: #38302B; /* Deep mahogany cabinet drawer */
+    border: 1px solid #2B2421;
+    border-radius: 4px;
+    padding: 3rem;
+    color: #ECE8DD;
+}
+
+.drawer-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 5rem;
+}
+
+.drawer-title {
+    font-family: var(--font-serif);
+    font-size: 1.8rem;
+    font-weight: 400;
+    margin-bottom: 1.5rem;
+    color: var(--accent-mustard);
+}
+
+.drawer-text {
+    line-height: 1.6;
+    color: #D2CDC1;
+    font-weight: 300;
+    margin-bottom: 2rem;
+}
+
+.drawer-sub {
+    font-family: var(--font-heading);
+    font-size: 1.15rem;
+    margin-bottom: 1.2rem;
+    text-transform: uppercase;
+}
+
+.drawer-gear {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.drawer-gear li {
+    font-size: 0.9rem;
+    color: #B5AFA6;
+    position: relative;
+    padding-left: 1.5rem;
+}
+
+.drawer-gear li::before {
+    content: '//';
+    position: absolute;
+    left: 0;
+    color: var(--accent-terracotta);
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+}
+
+/* Form Styles flat input */
+.drawer-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.form-group-flat input,
+.form-group-flat textarea {
+    width: 100%;
+    background-color: rgba(43, 36, 33, 0.6);
+    border: 1px solid #4E443F;
+    padding: 0.9rem 1.2rem;
+    color: #ECE8DD;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    outline: none;
+    transition: var(--transition-fast);
+}
+
+.form-group-flat input:focus,
+.form-group-flat textarea:focus {
+    border-color: var(--accent-mustard);
+}
+
+.flat-submit-btn {
+    align-self: flex-start;
+    background-color: var(--accent-mustard);
+    color: #2D2522;
+    border: none;
+    padding: 1rem 2.2rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: var(--transition-fast);
+}
+
+.flat-submit-btn:hover {
+    background-color: var(--accent-terracotta);
+    color: #FFF;
+}
+
+/* Footer Section */
+.site-footer {
+    border-top: 1px solid var(--border-color);
+    padding: 3rem 4%;
+    background-color: var(--bg-color);
+}
+
+.footer-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.footer-container p {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+/* Responsive grid modifications */
+@media (max-width: 1024px) {
+    .studio-console-grid {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+    }
+    
+    .drawer-grid {
+        grid-template-columns: 1fr;
+        gap: 4rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .nav-links {
+        display: none;
+    }
+}

@@ -1,0 +1,553 @@
+/* ==========================================================================
+   Creative Director Portfolio CSS Stylesheet
+   Khanh Linh — Autopilot Cinematic Shutter Projector Theme
+   ========================================================================== */
+
+/* Design Tokens & Variables */
+:root {
+    --bg-void: #050506;            /* Pitch Black Cinematic Dark */
+    --text-silver: #E2E4E9;        /* Titanium White-Silver */
+    --text-muted: #7E8492;        /* Muted Charcoal Grey */
+    --accent-crimson: #8E1C24;     /* Velvet Crimson */
+    --accent-gold: #C2A580;        /* Muted Film Dust Gold */
+    --border-color: #1F222B;       /* Dark Metal Dividers */
+    
+    --font-heading: 'Syne', sans-serif;
+    --font-serif: 'Cormorant Garamond', Georgia, serif;
+    --font-body: 'Plus Jakarta Sans', sans-serif;
+    --font-mono: 'Courier New', Courier, monospace;
+    
+    --transition-smooth: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    --transition-aperture: all 1.4s cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+/* Reset & Base Styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    height: 100%;
+    overflow: hidden;
+    background-color: var(--bg-void);
+    color: var(--text-silver);
+    font-family: var(--font-body);
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Lens Aperture Cursor */
+.custom-cursor {
+    width: 10px;
+    height: 10px;
+    background-color: var(--text-silver);
+    border-radius: 50%;
+    position: fixed;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 9999;
+    mix-blend-mode: difference;
+    transition: width 0.3s ease, height 0.3s ease, border-color 0.3s ease;
+}
+
+.custom-cursor.hovered {
+    width: 60px;
+    height: 60px;
+    background-color: transparent;
+    border: 1px dashed var(--accent-gold);
+    mix-blend-mode: normal;
+}
+
+.cursor-text {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--accent-gold);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.custom-cursor.hovered .cursor-text {
+    opacity: 1;
+}
+
+/* Projector Viewport Screen */
+.projector-viewport {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+}
+
+/* Stacked Slides */
+.slides-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    background-color: #000;
+}
+
+.projector-slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transform: scale(1.04);
+    transition: opacity 1.2s cubic-bezier(0.76, 0, 0.24, 1), transform 1.2s cubic-bezier(0.76, 0, 0.24, 1);
+    z-index: 1;
+}
+
+.projector-slide.active {
+    opacity: 1;
+    transform: scale(1);
+    z-index: 2;
+}
+
+/* Aperture Shutter Shutter circular reveal mask */
+.slide-image-wrapper {
+    width: 100%;
+    height: 100%;
+    clip-path: circle(0% at 50% 50%);
+    transition: var(--transition-aperture);
+}
+
+.projector-slide.active .slide-image-wrapper {
+    clip-path: circle(72% at 50% 50%);
+}
+
+.slide-image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.65) contrast(1.15) sepia(10%);
+}
+
+/* Glare & Light Leak simulations */
+.shutter-glare {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.015) 0%, rgba(255,255,255,0) 60%),
+                linear-gradient(135deg, rgba(142, 28, 36, 0.03) 0%, rgba(0,0,0,0) 50%);
+    pointer-events: none;
+    z-index: 3;
+}
+
+/* Editorial Header Overlay */
+.editorial-header-overlay {
+    position: absolute;
+    top: 2.5rem;
+    left: 4%;
+    right: 4%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 10;
+}
+
+.logo {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.logo span {
+    color: var(--accent-crimson);
+}
+
+.director-meta {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-weight: 700;
+}
+
+/* HUD Overlay detail containers */
+.projector-hud-overlay {
+    position: absolute;
+    bottom: 6.5rem;
+    left: 4%;
+    right: 4%;
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 6rem;
+    z-index: 10;
+    align-items: flex-end;
+    pointer-events: none;
+}
+
+.left-hud-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.hud-category {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--accent-crimson);
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.hud-title {
+    font-family: var(--font-heading);
+    font-size: clamp(2rem, 3.5vw, 2.8rem);
+    font-weight: 800;
+    text-transform: uppercase;
+    line-height: 1.1;
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                filter 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hud-title.slide-out {
+    opacity: 0;
+    transform: translateY(20px);
+    filter: blur(8px);
+}
+
+.hud-concept {
+    font-size: 0.95rem;
+    color: var(--text-silver);
+    line-height: 1.5;
+    font-weight: 300;
+}
+
+.right-hud-details {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.director-handwritten-note {
+    background-color: rgba(5, 5, 6, 0.75);
+    border: 1px solid var(--border-color);
+    padding: 1.5rem;
+    backdrop-filter: blur(8px);
+    max-width: 320px;
+    border-left: 2px solid var(--accent-gold);
+}
+
+.note-header {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--accent-gold);
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.note-text {
+    font-family: var(--font-serif);
+    font-size: 1.15rem;
+    font-style: italic;
+    color: #FAF6F0;
+    line-height: 1.35;
+}
+
+/* Playback bar (Bottom) */
+.timeline-playback-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 1.8rem 4%;
+    background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0) 100%);
+    display: grid;
+    grid-template-columns: 1fr 0.8fr 1.8fr;
+    align-items: center;
+    gap: 3rem;
+    z-index: 10;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.playback-status-info {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.status-indicator-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: var(--accent-crimson);
+    box-shadow: 0 0 8px var(--accent-crimson);
+}
+
+.status-indicator-dot.blinking {
+    animation: pulseRed 1.8s infinite;
+}
+
+@keyframes pulseRed {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 1; }
+}
+
+.status-label {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--text-silver);
+    font-weight: 700;
+}
+
+.playback-controls {
+    display: flex;
+    justify-content: center;
+    gap: 1.2rem;
+}
+
+.control-btn {
+    background-color: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-silver);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.5rem 1.2rem;
+    cursor: pointer;
+    transition: var(--transition-fast);
+}
+
+.control-btn:hover {
+    border-color: var(--text-silver);
+}
+
+.control-btn.active {
+    background-color: var(--text-silver);
+    color: var(--bg-void);
+    border-color: var(--text-silver);
+}
+
+/* Timeline scrubber track */
+.timeline-scrubber-wrapper {
+    display: flex;
+    align-items: center;
+}
+
+.timeline-track {
+    width: 100%;
+    height: 2px;
+    background-color: rgba(255, 255, 255, 0.1);
+    position: relative;
+    cursor: pointer;
+}
+
+.timeline-playhead {
+    position: absolute;
+    top: -3px;
+    left: 0%;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: var(--accent-gold);
+    box-shadow: 0 0 6px var(--accent-gold);
+    transition: left 0.1s linear;
+}
+
+/* Inquiry Booking Side slider */
+.booking-inquiry-box {
+    position: absolute;
+    top: 0;
+    right: -420px;
+    width: 420px;
+    height: 100%;
+    background-color: #0A0A0C;
+    border-left: 1px solid var(--border-color);
+    padding: 5rem 3.5rem;
+    z-index: 100;
+    transition: right 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: -15px 0 35px rgba(0,0,0,0.5);
+}
+
+.booking-inquiry-box.active {
+    right: 0;
+}
+
+.close-inquiry-btn {
+    position: absolute;
+    top: 2.5rem;
+    right: 3.5rem;
+    background-color: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.close-inquiry-btn:hover {
+    color: var(--text-silver);
+}
+
+.inquiry-title {
+    font-family: var(--font-heading);
+    font-size: 1.8rem;
+    font-weight: 800;
+    margin-bottom: 2.5rem;
+    text-transform: uppercase;
+}
+
+.inquiry-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.8rem;
+}
+
+.form-group-flat input,
+.form-group-flat textarea {
+    width: 100%;
+    background-color: rgba(5,5,6,0.6);
+    border: 1px solid var(--border-color);
+    padding: 0.9rem 1.2rem;
+    color: var(--text-silver);
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    outline: none;
+}
+
+.form-group-flat input:focus,
+.form-group-flat textarea:focus {
+    border-color: var(--accent-gold);
+}
+
+.submit-inquiry-btn {
+    align-self: flex-start;
+    background-color: var(--text-silver);
+    color: var(--bg-void);
+    border: none;
+    padding: 1rem 2.2rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: var(--transition-fast);
+}
+
+.submit-inquiry-btn:hover {
+    background-color: var(--accent-gold);
+    color: #000;
+}
+
+/* Open Contact button floating */
+.open-inquiry-btn-trigger {
+    position: absolute;
+    top: 2.5rem;
+    right: 4%;
+    z-index: 10;
+    background-color: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-silver);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.5rem 1.4rem;
+    cursor: pointer;
+    transition: var(--transition-fast);
+}
+
+.open-inquiry-btn-trigger:hover {
+    border-color: var(--text-silver);
+}
+
+/* Responsive configurations */
+@media (max-width: 1024px) {
+    .projector-hud-overlay {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+        bottom: 7.5rem;
+    }
+    .director-handwritten-note {
+        max-width: 100%;
+    }
+    .timeline-playback-bar {
+        grid-template-columns: 1.2fr 0.8fr 1fr;
+        gap: 1.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .open-inquiry-btn-trigger,
+    .logo,
+    .director-meta {
+        top: 1.5rem;
+    }
+    .booking-inquiry-box {
+        width: 100%;
+        right: -100%;
+    }
+}
+
+/* Left & Right Arrow Navigation buttons */
+.nav-arrow-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 55px;
+    height: 55px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background-color: rgba(5, 5, 6, 0.35);
+    color: var(--text-silver);
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+    backdrop-filter: blur(4px);
+    transition: var(--transition-fast);
+}
+
+.nav-arrow-btn svg {
+    width: 20px;
+    height: 20px;
+    transition: transform 0.3s ease;
+}
+
+.nav-arrow-btn:hover {
+    border-color: var(--accent-gold);
+    color: var(--accent-gold);
+    background-color: rgba(5, 5, 6, 0.75);
+}
+
+.prev-arrow {
+    left: 2.5rem;
+}
+
+.next-arrow {
+    right: 2.5rem;
+}
+
+.prev-arrow:hover svg {
+    transform: translateX(-2px);
+}
+
+.next-arrow:hover svg {
+    transform: translateX(2px);
+}
+
+@media (max-width: 768px) {
+    .nav-arrow-btn {
+        width: 42px;
+        height: 42px;
+    }
+    .prev-arrow {
+        left: 1rem;
+    }
+    .next-arrow {
+        right: 1rem;
+    }
+}

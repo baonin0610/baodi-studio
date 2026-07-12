@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minh Nguyen — Vintage Sound Designer & Tape Recordist</title>
+    <meta name="description" content="Portfolio of Minh Nguyen, a Sound Designer specializing in warm analog tape recordings, vintage synthesis, and cinematic soundscapes.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Plus+Jakarta+Sans:wght@400;500;600&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css?v=1.2">
+</head>
+<body>
+    <!-- Custom Cursor -->
+    <div id="custom-cursor" class="custom-cursor">
+        <span class="cursor-text"></span>
+    </div>
+
+    <!-- Navigation -->
+    <header class="site-header">
+        <nav class="nav-container">
+            <a href="#" class="logo">Minh.<span>Tape</span></a>
+            <div class="nav-links">
+                <a href="#console" class="nav-link">Control Console</a>
+                <a href="#about" class="nav-link">Studio Story</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Studio Console Interface -->
+    <main class="console-layout" id="console">
+        <!-- Main Dashboard Split Grid -->
+        <div class="studio-console-grid">
+            
+            <!-- Left Rack Panel: Cassette Player & Oscilloscope -->
+            <div class="rack-panel active-rack">
+                <div class="panel-header-strip">SECTION A // SIGNAL RECEIVER</div>
+                
+                <!-- CRT Oscilloscope Screen -->
+                <div class="crt-oscilloscope">
+                    <canvas id="scope-canvas" class="scope-canvas"></canvas>
+                    <div class="screen-glare"></div>
+                </div>
+
+                <!-- Cassette Deck Compartment -->
+                <div class="cassette-deck-hardware">
+                    <div class="deck-display-bar">
+                        <span class="led green blinking"></span>
+                        <span class="lcd-text" id="playing-title">SYSTEM STANDBY</span>
+                    </div>
+                    <div class="cassette-window" id="cassette-window">
+                        <div class="reel reel-left">
+                            <div class="spoke"></div><div class="spoke"></div><div class="spoke"></div><div class="spoke"></div>
+                        </div>
+                        <div class="reel reel-right">
+                            <div class="spoke"></div><div class="spoke"></div><div class="spoke"></div><div class="spoke"></div>
+                        </div>
+                        <div class="tape-spool-backing"></div>
+                    </div>
+                    <div class="analog-hardware-buttons">
+                        <button class="hardware-btn" id="btn-stop" aria-label="Stop Tape">STOP</button>
+                        <button class="hardware-btn" id="btn-play-hero" aria-label="Play Tape">PLAY</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Center Rack Panel: Cassette Tape Stack (Works Catalog) -->
+            <div class="rack-panel tape-shelf-panel">
+                <div class="panel-header-strip">SECTION B // TAPE CATALOG</div>
+                <p class="shelf-instruction">Click on a cassette tape from the catalog shelf below to insert it into the reel-to-reel deck and play the analog synthesized track.</p>
+                
+                <div class="cassette-shelf">
+                    <!-- Cassette 1 -->
+                    <div class="cassette-tape" data-track="ambient" data-title="TAPE ECHOES" style="--rotation: -2deg;">
+                        <div class="tape-label">
+                            <span class="track-index">T-01</span>
+                            <span class="track-name">Tape Echoes (Ambient Loop)</span>
+                        </div>
+                        <div class="tape-plastic-base">
+                            <span class="wheel-hole"></span>
+                            <span class="wheel-hole"></span>
+                        </div>
+                    </div>
+
+                    <!-- Cassette 2 -->
+                    <div class="cassette-tape" data-track="sfx" data-title="SYNTH ODYSSEY" style="--rotation: 1deg;">
+                        <div class="tape-label">
+                            <span class="track-index">T-02</span>
+                            <span class="track-name">Synth Odyssey (Sci-Fi FX)</span>
+                        </div>
+                        <div class="tape-plastic-base">
+                            <span class="wheel-hole"></span>
+                            <span class="wheel-hole"></span>
+                        </div>
+                    </div>
+
+                    <!-- Cassette 3 -->
+                    <div class="cassette-tape" data-track="branding" data-title="BAODI WARM ID" style="--rotation: -1deg;">
+                        <div class="tape-label">
+                            <span class="track-index">T-03</span>
+                            <span class="track-name">BaoDi Warm ID (Sonic Logo)</span>
+                        </div>
+                        <div class="tape-plastic-base">
+                            <span class="wheel-hole"></span>
+                            <span class="wheel-hole"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Rack Panel: Synthesizer Knobs & Drum Toggles -->
+            <div class="rack-panel synth-controls-panel">
+                <div class="panel-header-strip">SECTION C // SIGNAL PARAMETERS</div>
+                
+                <!-- Moog Sliders -->
+                <div class="synth-parameter-dials">
+                    <div class="analog-dial-node">
+                        <label for="cutoff-slider">Lowpass Cutoff</label>
+                        <input type="range" id="cutoff-slider" min="100" max="3000" value="1000" class="analog-slider">
+                        <span id="cutoff-val" class="dial-val-readout">1000 Hz</span>
+                    </div>
+                    <div class="analog-dial-node">
+                        <label for="q-slider">Resonance (Q)</label>
+                        <input type="range" id="q-slider" min="1" max="12" value="3" class="analog-slider">
+                        <span id="q-val" class="dial-val-readout">3</span>
+                    </div>
+                    <div class="analog-dial-node">
+                        <label for="pitch-slider">Oscillator Pitch</label>
+                        <input type="range" id="pitch-slider" min="100" max="600" value="280" class="analog-slider">
+                        <span id="pitch-val" class="dial-val-readout">280 Hz</span>
+                    </div>
+                </div>
+
+                <!-- Toggles Drum Machine -->
+                <div class="synthesizer-toggles-grid">
+                    <div class="toggle-pad-item" data-pad="kick" data-key="A">
+                        <div class="switch-stick"></div>
+                        <span class="switch-key">A</span>
+                        <span class="switch-name">KICK</span>
+                    </div>
+                    <div class="toggle-pad-item" data-pad="snare" data-key="S">
+                        <div class="switch-stick"></div>
+                        <span class="switch-key">S</span>
+                        <span class="switch-name">SNARE</span>
+                    </div>
+                    <div class="toggle-pad-item" data-pad="hihat" data-key="D">
+                        <div class="switch-stick"></div>
+                        <span class="switch-key">D</span>
+                        <span class="switch-name">HIHAT</span>
+                    </div>
+                    <div class="toggle-pad-item" data-pad="beep" data-key="F">
+                        <div class="switch-stick"></div>
+                        <span class="switch-key">F</span>
+                        <span class="switch-name">BEEP</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bio & Contact Overlay Panel (Wooden drawer style) -->
+        <section id="about" class="casing-drawer-section">
+            <div class="drawer-grid">
+                <div class="drawer-bio">
+                    <h2 class="drawer-title">Minh Nguyen / Sound Architect</h2>
+                    <p class="drawer-text">I capture organic spatial soundscapes on vintage magnetic tape reels and synthesize warm, dusty acoustic textures for cinematic projects and digital sonic branding.</p>
+                    
+                    <h3 class="drawer-sub">Analog Hardware Inventory</h3>
+                    <ul class="drawer-gear">
+                        <li>Studer A80 1/4" Mastering Deck</li>
+                        <li>Nagra IV-S portable stereo recorder</li>
+                        <li>Moog Subsequent 37 hardware synthesizer</li>
+                        <li>Teletronix LA-2A optical compressor</li>
+                    </ul>
+                </div>
+                <div class="drawer-form-col">
+                    <h2 class="drawer-title">Dispatch Channel</h2>
+                    <form class="drawer-form" id="contact-form">
+                        <div class="form-group-flat">
+                            <input type="text" id="name" required placeholder="SENDER_NAME">
+                        </div>
+                        <div class="form-group-flat">
+                            <input type="email" id="email" required placeholder="EMAIL_ADDRESS">
+                        </div>
+                        <div class="form-group-flat">
+                            <textarea id="message" rows="3" required placeholder="DESCRIBE_SOUNDSCAPE_OBJECTIVE..."></textarea>
+                        </div>
+                        <button type="submit" class="flat-submit-btn">Transmit Signal</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-container">
+            <p>&copy; 2026 Minh Nguyen Analog Sound. All rights reserved.</p>
+            <p>[STATUS: CONSOLE LOCKED]</p>
+        </div>
+    </footer>
+
+    <!-- Custom JS -->
+    <script src="script.js?v=1.2"></script>
+</body>
+</html>

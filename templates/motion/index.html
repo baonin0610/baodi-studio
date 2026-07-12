@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vy Ngo — Motion Artist & 3D Animator</title>
+    <meta name="description" content="Portfolio of Vy Ngo, a Motion Designer & 3D Animator specializing in kinetic typography, spring-mass physics simulations, and rendering.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css?v=1.0">
+</head>
+<body>
+    <!-- Custom Scrub Cursor -->
+    <div id="custom-cursor" class="custom-cursor">
+        <span class="cursor-text"></span>
+    </div>
+
+    <!-- Navigation -->
+    <header class="site-header">
+        <nav class="nav-container">
+            <a href="#" class="logo">Vy.<span>Motion</span></a>
+            <div class="nav-links">
+                <a href="#showreel" class="nav-link">Showreel</a>
+                <a href="#sandbox" class="nav-link">Physics Lab</a>
+                <a href="#contact" class="nav-link">Contact</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Kinetic Background Grid -->
+    <div class="kinetic-bg-grid"></div>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <div class="hero-container">
+                <div class="hero-content">
+                    <span class="hero-badge">[STATUS: LIVE FOR COMPILE]</span>
+                    <h1 class="hero-title">VIBRANT INTERPOLATIONS.</h1>
+                    <p class="hero-desc">Hi, I'm Vy Ngo. I craft tactile digital graphics, spring-mass physics easing loop animations, and sound-reactive 3D kinetic loops.</p>
+                    <div class="hero-actions">
+                        <a href="#showreel" class="primary-btn">Inspect Reels</a>
+                        <a href="#sandbox" class="secondary-btn">Tune Inertia</a>
+                    </div>
+                </div>
+                <div class="hero-graphics-box">
+                    <div class="kinetic-circle-loop">
+                        <div class="orbiting-ring ring-1"></div>
+                        <div class="orbiting-ring ring-2"></div>
+                        <div class="orbiting-ring ring-3"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Motion Showcase (Scrubbable GIF/Video Cards) -->
+        <section id="showreel" class="work-section">
+            <div class="section-header">
+                <span class="section-number">// REEL_01 _</span>
+                <h2 class="section-title">Kinetic Catalog</h2>
+            </div>
+            
+            <p class="reel-intro">Hover over any project below. Move your cursor horizontally across the card to simulate interactive timeline frame scrubbing.</p>
+
+            <div class="works-vertical-list">
+                <!-- Project 1 -->
+                <div class="motion-card cursor-scrub">
+                    <div class="image-wrapper reveal-mask">
+                        <img src="assets/work_motion1.jpg" alt="Glowing tech vector sculpture grid">
+                    </div>
+                    <div class="motion-info">
+                        <h3 class="motion-title">Aura Kinetic Grid</h3>
+                        <span class="motion-category">[Kinetic Graphics / WebGL / 2026]</span>
+                    </div>
+                </div>
+
+                <!-- Project 2 -->
+                <div class="motion-card cursor-scrub">
+                    <div class="image-wrapper reveal-mask">
+                        <img src="assets/work_motion2.jpg" alt="Acoustic waveforms visual">
+                    </div>
+                    <div class="motion-info">
+                        <h3 class="motion-title">Lumina 3D Fluid Waves</h3>
+                        <span class="motion-category">[3D Rendering / Spline / 2026]</span>
+                    </div>
+                </div>
+
+                <!-- Project 3 -->
+                <div class="motion-card cursor-scrub">
+                    <div class="image-wrapper reveal-mask">
+                        <img src="assets/work_motion3.jpg" alt="Database tech CMS map">
+                    </div>
+                    <div class="motion-info">
+                        <h3 class="motion-title">Vortex Database Pathways</h3>
+                        <span class="motion-category">[Dynamic Easing / After Effects / 2025]</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Spring Physics Easing Lab (Interactive Sandbox) -->
+        <section id="sandbox" class="sandbox-section">
+            <div class="sandbox-container">
+                <div class="sandbox-info-col">
+                    <div class="section-header">
+                        <span class="section-number">// REEL_02 _</span>
+                        <h2 class="section-title">Inertia Physics Lab</h2>
+                    </div>
+                    <p class="sandbox-desc">Interact with kinetic interpolation curves. Click and drag the glowing central node on the black canvas, adjust the physics constants, and release it to observe spring-mass-damper easing loops in real-time.</p>
+                    
+                    <div class="sandbox-controls">
+                        <div class="control-group">
+                            <div class="control-label">
+                                <span>Spring Tension (Stiffness)</span>
+                                <span id="tension-val">0.15</span>
+                            </div>
+                            <input type="range" id="spring-tension" min="0.05" max="0.5" step="0.02" value="0.15" class="neon-slider">
+                        </div>
+                        <div class="control-group">
+                            <div class="control-label">
+                                <span>Friction (Damping)</span>
+                                <span id="damping-val">0.90</span>
+                            </div>
+                            <input type="range" id="spring-damping" min="0.75" max="0.99" step="0.01" value="0.90" class="neon-slider">
+                        </div>
+                        <div class="control-group">
+                            <div class="control-label">
+                                <span>Gravity Pull</span>
+                                <span id="gravity-val">0.0</span>
+                            </div>
+                            <input type="range" id="spring-gravity" min="0.0" max="2.0" step="0.2" value="0.0" class="neon-slider">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sandbox-canvas-col">
+                    <div class="canvas-casing">
+                        <canvas id="spring-canvas" class="spring-canvas"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dispatch Section -->
+        <section id="contact" class="contact-section">
+            <div class="contact-grid">
+                <div class="contact-info-col">
+                    <div class="section-header">
+                        <span class="section-number">// REEL_03 _</span>
+                        <h2 class="section-title">Signal Booking</h2>
+                    </div>
+                    <p class="contact-desc">Ready to render keyframes, map 3D dynamics, or animate interface transitions? Dispatch a booking.</p>
+                    <div class="contact-details">
+                        <div class="detail-item">
+                            <span>Main Port</span>
+                            <a href="mailto:vy@baodi.studio">vy@baodi.studio</a>
+                        </div>
+                        <div class="detail-item">
+                            <span>Phone Line</span>
+                            <a href="tel:+84909000000">+84 90 900 0000</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="contact-form-col">
+                    <form class="contact-form" id="contact-form">
+                        <div class="form-group">
+                            <label for="name">Target Company</label>
+                            <input type="text" id="name" required placeholder="User_01">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">E-Mail Address</label>
+                            <input type="email" id="email" required placeholder="user@domain.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Motion Specifications</label>
+                            <textarea id="message" rows="4" required placeholder="Describe target frame-rate, loop cycle length, rendering formats..."></textarea>
+                        </div>
+                        <button type="submit" class="submit-btn">
+                            <span>Transmit Booking</span>
+                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M5 12H19M19 12L13 6M19 12L13 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-container">
+            <p>&copy; 2026 Vy Ngo Motion. Powered by Easing curves.</p>
+            <p>[STATUS: SIGNAL DISPATCHED]</p>
+        </div>
+    </footer>
+
+    <!-- Custom JS -->
+    <script src="script.js?v=1.0"></script>
+</body>
+</html>

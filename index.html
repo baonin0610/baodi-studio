@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BaoDi Studio — Bespoke Portfolio Factory</title>
+    <meta name="description" content="Showcase and client feedback dashboard for BAODI Studio's high-end portfolio templates.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css?v=1.3">
+</head>
+<body>
+    <!-- Custom Cursor -->
+    <div id="custom-cursor" class="custom-cursor">
+        <span class="cursor-text"></span>
+    </div>
+
+    <!-- Navigation -->
+    <header class="site-header">
+        <nav class="nav-container">
+            <a href="#" class="logo">BaoDi.<span>Studio</span></a>
+            <div class="nav-links">
+                <a href="#showcase" class="nav-link">Showcase</a>
+                <a href="#forum" class="nav-link">Client Forum</a>
+                <a href="templates/editorial/index.html" target="_blank" class="launch-nav-btn">View Template #1</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <div class="hero-container">
+                <div class="hero-content">
+                    <span class="hero-badge">Next-gen Web Templates</span>
+                    <h1 class="hero-title">Bespoke Portfolios for Creative Thinkers.</h1>
+                    <p class="hero-desc">Welcome to the design showcase factory. Explore the library of premium layouts, check real-time developer implementations, and participate in our interactive client feedback system below.</p>
+                    <div class="hero-actions">
+                        <a href="#showcase" class="primary-btn">Explore Templates</a>
+                        <a href="#forum" class="secondary-btn">Join Discussions</a>
+                    </div>
+                </div>
+                <div class="hero-graphic-wrapper">
+                    <img src="assets/hub_hero.jpg" alt="Abstract creative design 3D mockup, glassmorphism" class="hero-graphic">
+                </div>
+            </div>
+        </section>
+
+        <!-- Showcase Gallery Section -->
+        <section id="showcase" class="showcase-section">
+            <div class="section-header">
+                <h2 class="section-title">Design Factory</h2>
+                <p class="section-sub">Filter and choose your digital identity</p>
+                <div class="filter-controls">
+                    <button class="filter-btn active" data-filter="all">All Themes</button>
+                    <button class="filter-btn" data-filter="live">Live Preview</button>
+                    <button class="filter-btn" data-filter="progress">Under Review</button>
+                </div>
+            </div>
+
+            <div class="showcase-grid">
+                <!-- Card 1: Live Editorial Portfolio -->
+                <div class="showcase-card filter-item live">
+                    <div class="card-image-wrapper">
+                        <img src="assets/preview_editorial.jpg" alt="Linh Nguyen Editorial Photographer Portfolio preview">
+                        <span class="card-status status-live">Live Demo</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-meta">
+                            <span class="theme-category">Photography & Art Direction</span>
+                            <span class="theme-style">Editorial Minimalist</span>
+                        </div>
+                        <h3 class="card-title">Linh Nguyen — Editorial Photographer</h3>
+                        <p class="card-desc">Features asymmetrical grid structures, high-contrast serif typography (Cormorant Garamond), custom scroll parallax, and aperture-like image reveal masks.</p>
+                        <div class="card-footer">
+                            <span class="design-version">v1.1 Active</span>
+                            <div class="card-actions">
+                                <button class="card-copy-btn" data-link="templates/editorial/index.html" aria-label="Copy Link">
+                                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M8 5H6C4.89543 5 4 5.89543 4 7V19C4 20.1046 4.89543 21 6 21H16C17.1046 21 18 20.1046 18 19V17M8 5C8 6.10457 8.89543 7 10 7H14C15.1046 7 16 6.10457 16 5M8 5C8 3.89543 8.89543 3 10 3H14C15.1046 3 16 3.89543 16 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                    <span>Copy</span>
+                                </button>
+                                <a href="templates/editorial/index.html" target="_blank" class="card-action-btn">
+                                    <span>Launch</span>
+                                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M7 17L17 7M17 7H7M17 7V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2: Interactive Developer (Live Demo) -->
+                <div class="showcase-card filter-item live">
+                    <div class="card-image-wrapper">
+                        <img src="assets/preview_developer.jpg" alt="Alex Nguyen Creative Developer Portfolio preview">
+                        <span class="card-status status-live">Live Demo</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-meta">
+                            <span class="theme-category">Interactive & Tech</span>
+                            <span class="theme-style">Cyber Glassmorphic</span>
+                        </div>
+                        <h3 class="card-title">Alex Nguyen — Creative Developer</h3>
+                        <p class="card-desc">Interactive canvas background with dynamic particle physics, customized trailing cursor tracking, glowing grid lines, and interactive laboratory playgrounds.</p>
+                        <div class="card-footer">
+                            <span class="design-version">v1.0 Active</span>
+                            <div class="card-actions">
+                                <button class="card-copy-btn" data-link="templates/developer/index.html" aria-label="Copy Link">
+                                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M8 5H6C4.89543 5 4 5.89543 4 7V19C4 20.1046 4.89543 21 6 21H16C17.1046 21 18 20.1046 18 19V17M8 5C8 6.10457 8.89543 7 10 7H14C15.1046 7 16 6.10457 16 5M8 5C8 3.89543 8.89543 3 10 3H14C15.1046 3 16 3.89543 16 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                    <span>Copy</span>
+                                </button>
+                                <a href="templates/developer/index.html" target="_blank" class="card-action-btn">
+                                    <span>Launch</span>
+                                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M7 17L17 7M17 7H7M17 7V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 3: Sound Designer (Live Demo) -->
+                <div class="showcase-card filter-item live">
+                    <div class="card-image-wrapper">
+                        <img src="assets/preview_sound.jpg" alt="Minh Nguyen Sound Designer Portfolio preview">
+                        <span class="card-status status-live">Live Demo</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-meta">
+                            <span class="theme-category">Sound & Tape Recording</span>
+                            <span class="theme-style">70s Analog Cabinet</span>
+                        </div>
+                        <h3 class="card-title">Minh Nguyen — Sound Designer</h3>
+                        <p class="card-desc">Retro cassette deck hardware casing featuring active oscilloscope wave screens, warm tape flutter oscillators, and tactile wooden synthesizer switches.</p>
+                        <div class="card-footer">
+                            <span class="design-version">v1.0 Active</span>
+                            <div class="card-actions">
+                                <button class="card-copy-btn" data-link="templates/sound/index.html" aria-label="Copy Link">
+                                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M8 5H6C4.89543 5 4 5.89543 4 7V19C4 20.1046 4.89543 21 6 21H16C17.1046 21 18 20.1046 18 19V17M8 5C8 6.10457 8.89543 7 10 7H14C15.1046 7 16 6.10457 16 5M8 5C8 3.89543 8.89543 3 10 3H14C15.1046 3 16 3.89543 16 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                    <span>Copy</span>
+                                </button>
+                                <a href="templates/sound/index.html" target="_blank" class="card-action-btn">
+                                    <span>Launch</span>
+                                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M7 17L17 7M17 7H7M17 7V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 4: Ms. Huong Le — Creative Teacher (Live Demo) -->
+                <div class="showcase-card filter-item live">
+                    <div class="card-image-wrapper">
+                        <img src="assets/preview_teacher.jpg" alt="Huong Le Creative Teacher Portfolio preview">
+                        <span class="card-status status-live">Live Demo</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-meta">
+                            <span class="theme-category">Education & Academics</span>
+                            <span class="theme-style">School Notebook / Planner</span>
+                        </div>
+                        <h3 class="card-title">Huong Le — Creative Teacher</h3>
+                        <p class="card-desc">Skeuomorphic school planner notebook layout featuring draggable sticky philosophy notes, and an interactive chalk blackboard quiz playground.</p>
+                        <div class="card-footer">
+                            <span class="design-version">v1.0 Active</span>
+                            <div class="card-actions">
+                                <button class="card-copy-btn" data-link="templates/teacher/index.html" aria-label="Copy Link">
+                                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M8 5H6C4.89543 5 4 5.89543 4 7V19C4 20.1046 4.89543 21 6 21H16C17.1046 21 18 20.1046 18 19V17M8 5C8 6.10457 8.89543 7 10 7H14C15.1046 7 16 6.10457 16 5M8 5C8 3.89543 8.89543 3 10 3H14C15.1046 3 16 3.89543 16 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                    <span>Copy</span>
+                                </button>
+                                <a href="templates/teacher/index.html" target="_blank" class="card-action-btn">
+                                    <span>Launch</span>
+                                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M7 17L17 7M17 7H7M17 7V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 5: Khanh Tran — Growth Marketer (Live Demo) -->
+                <div class="showcase-card filter-item live">
+                    <div class="card-image-wrapper">
+                        <img src="assets/preview_marketing.jpg" alt="Khanh Tran Growth Marketer Portfolio preview">
+                        <span class="card-status status-live">Live Demo</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-meta">
+                            <span class="theme-category">Marketing & Optimization</span>
+                            <span class="theme-style">Financial Editorial Journal</span>
+                        </div>
+                        <h3 class="card-title">Khanh Tran — Growth Marketer</h3>
+                        <p class="card-desc">High-contrast financial newspaper layout featuring news-column grid sections, text highlighter effects, and an interactive conversion ROI growth calculator.</p>
+                        <div class="card-footer">
+                            <span class="design-version">v1.0 Active</span>
+                            <div class="card-actions">
+                                <button class="card-copy-btn" data-link="templates/marketing/index.html" aria-label="Copy Link">
+                                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M8 5H6C4.89543 5 4 5.89543 4 7V19C4 20.1046 4.89543 21 6 21H16C17.1046 21 18 20.1046 18 19V17M8 5C8 6.10457 8.89543 7 10 7H14C15.1046 7 16 6.10457 16 5M8 5C8 3.89543 8.89543 3 10 3H14C15.1046 3 16 3.89543 16 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                    <span>Copy</span>
+                                </button>
+                                <a href="templates/marketing/index.html" target="_blank" class="card-action-btn">
+                                    <span>Launch</span>
+                                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M7 17L17 7M17 7H7M17 7V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 6: Nam Anh — Brutalist Architect (Live Demo) -->
+                <div class="showcase-card filter-item live">
+                    <div class="card-image-wrapper">
+                        <img src="assets/preview_architect.jpg" alt="Nam Anh Brutalist Architect Portfolio preview">
+                        <span class="card-status status-live">Live Demo</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-meta">
+                            <span class="theme-category">Architecture & Spatial</span>
+                            <span class="theme-style">Brutalist Concrete Blueprint</span>
+                        </div>
+                        <h3 class="card-title">Nam Anh — Brutalist Architect</h3>
+                        <p class="card-desc">Industrial raw concrete layout featuring a horizontal scroll grid strip, measurement crosshair cursor, and an interactive CAD canvas dimension scaler.</p>
+                        <div class="card-footer">
+                            <span class="design-version">v1.0 Active</span>
+                            <div class="card-actions">
+                                <button class="card-copy-btn" data-link="templates/architect/index.html" aria-label="Copy Link">
+                                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M8 5H6C4.89543 5 4 5.89543 4 7V19C4 20.1046 4.89543 21 6 21H16C17.1046 21 18 20.1046 18 19V17M8 5C8 6.10457 8.89543 7 10 7H14C15.1046 7 16 6.10457 16 5M8 5C8 3.89543 8.89543 3 10 3H14C15.1046 3 16 3.89543 16 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                    <span>Copy</span>
+                                </button>
+                                <a href="templates/architect/index.html" target="_blank" class="card-action-btn">
+                                    <span>Launch</span>
+                                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M7 17L17 7M17 7H7M17 7V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 7: Vy Ngo — Motion Artist (Live Demo) -->
+                <div class="showcase-card filter-item live">
+                    <div class="card-image-wrapper">
+                        <img src="assets/preview_motion.jpg" alt="Vy Ngo Motion Artist Portfolio preview">
+                        <span class="card-status status-live">Live Demo</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-meta">
+                            <span class="theme-category">Motion & 3D Animation</span>
+                            <span class="theme-style">Neon Cyber Dark Rave</span>
+                        </div>
+                        <h3 class="card-title">Vy Ngo — Motion Artist</h3>
+                        <p class="card-desc">Pitch black cinema layout featuring video timeline scrubbers cursor progress tracks, concentric rings, and an interactive spring-mass physics lab.</p>
+                        <div class="card-footer">
+                            <span class="design-version">v1.0 Active</span>
+                            <div class="card-actions">
+                                <button class="card-copy-btn" data-link="templates/motion/index.html" aria-label="Copy Link">
+                                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M8 5H6C4.89543 5 4 5.89543 4 7V19C4 20.1046 4.89543 21 6 21H16C17.1046 21 18 20.1046 18 19V17M8 5C8 6.10457 8.89543 7 10 7H14C15.1046 7 16 6.10457 16 5M8 5C8 3.89543 8.89543 3 10 3H14C15.1046 3 16 3.89543 16 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                    <span>Copy</span>
+                                </button>
+                                <a href="templates/motion/index.html" target="_blank" class="card-action-btn">
+                                    <span>Launch</span>
+                                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M7 17L17 7M17 7H7M17 7V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 8: Khanh Linh — Creative Director (Live Demo) -->
+                <div class="showcase-card filter-item live">
+                    <div class="card-image-wrapper">
+                        <img src="assets/preview_director.jpg" alt="Khanh Linh Creative Director Portfolio preview">
+                        <span class="card-status status-live">Live Demo</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-meta">
+                            <span class="theme-category">Direction & Art Styling</span>
+                            <span class="theme-style">Autopilot Slide Projector</span>
+                        </div>
+                        <h3 class="card-title">Khanh Linh — Creative Director</h3>
+                        <p class="card-desc">Obsidian cinema layout featuring auto-rotating photo slides, mechanical lens aperture zoom reveals, and synthesized clicking soundscapes.</p>
+                        <div class="card-footer">
+                            <span class="design-version">v1.0 Active</span>
+                            <div class="card-actions">
+                                <button class="card-copy-btn" data-link="templates/director/index.html" aria-label="Copy Link">
+                                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M8 5H6C4.89543 5 4 5.89543 4 7V19C4 20.1046 4.89543 21 6 21H16C17.1046 21 18 20.1046 18 19V17M8 5C8 6.10457 8.89543 7 10 7H14C15.1046 7 16 6.10457 16 5M8 5C8 3.89543 8.89543 3 10 3H14C15.1046 3 16 3.89543 16 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                    <span>Copy</span>
+                                </button>
+                                <a href="templates/director/index.html" target="_blank" class="card-action-btn">
+                                    <span>Launch</span>
+                                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M7 17L17 7M17 7H7M17 7V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 9: Minh Tri — Horologist (Live Demo) -->
+                <div class="showcase-card filter-item live">
+                    <div class="card-image-wrapper">
+                        <img src="assets/preview_horologist.jpg" alt="Minh Tri Horologist Portfolio preview">
+                        <span class="card-status status-live">Live Demo</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-meta">
+                            <span class="theme-category">Mechanical Horology & Dev</span>
+                            <span class="theme-style">Chronos Watch Mechanism</span>
+                        </div>
+                        <h3 class="card-title">Minh Tri — Horologist</h3>
+                        <p class="card-desc">Brass-steel watch dial interface featuring rotating interlocking background cogs, rotating watch hands, ticking soundscapes, and rotary dials navigation.</p>
+                        <div class="card-footer">
+                            <span class="design-version">v1.0 Active</span>
+                            <div class="card-actions">
+                                <button class="card-copy-btn" data-link="templates/horologist/index.html" aria-label="Copy Link">
+                                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M8 5H6C4.89543 5 4 5.89543 4 7V19C4 20.1046 4.89543 21 6 21H16C17.1046 21 18 20.1046 18 19V17M8 5C8 6.10457 8.89543 7 10 7H14C15.1046 7 16 6.10457 16 5M8 5C8 3.89543 8.89543 3 10 3H14C15.1046 3 16 3.89543 16 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                    <span>Copy</span>
+                                </button>
+                                <a href="templates/horologist/index.html" target="_blank" class="card-action-btn">
+                                    <span>Launch</span>
+                                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M7 17L17 7M17 7H7M17 7V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Client Forum Section -->
+        <section id="forum" class="forum-section">
+            <div class="forum-container">
+                <div class="forum-header-col">
+                    <h2 class="forum-title">Client Feedback Board</h2>
+                    <p class="forum-desc">Leave a review on template designs, request functional additions, or collaborate with the creative team. Your suggestions update the roadmap in real-time.</p>
+                    
+                    <form class="forum-form" id="forum-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="client-name">Your Name</label>
+                                <input type="text" id="client-name" required placeholder="Alice Smith">
+                            </div>
+                            <div class="form-group">
+                                <label for="client-email">Email</label>
+                                <input type="email" id="client-email" required placeholder="alice@company.com">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="template-select">Discussing Template</label>
+                            <select id="template-select">
+                                <option value="editorial">Linh Nguyen — Editorial Photographer (Mẫu 1)</option>
+                                <option value="developer">Alex Nguyen — Creative Developer (Mẫu 2)</option>
+                                <option value="sound">Minh Nguyen — Sound Designer (Mẫu 3)</option>
+                                <option value="teacher">Huong Le — Creative Teacher (Mẫu 4)</option>
+                                <option value="marketing">Khanh Tran — Growth Marketer (Mẫu 5)</option>
+                                <option value="architect">Nam Anh — Brutalist Architect (Mẫu 6)</option>
+                                <option value="motion">Vy Ngo — Motion Artist (Mẫu 7)</option>
+                                <option value="director">Khanh Linh — Creative Director (Mẫu 8)</option>
+                                <option value="horologist">Minh Tri — Horologist (Mẫu 9)</option>
+                                <option value="general">General Design Suggestions / Platform</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="client-message">Feedback / Customization Request</label>
+                            <textarea id="client-message" rows="4" required placeholder="Specify what you love or what modifications you want in this design..."></textarea>
+                        </div>
+                        <button type="submit" class="submit-forum-btn">
+                            <span>Post Feedback</span>
+                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M22 2L11 13M22 2L15 22L11 13M11 13L2 9L22 2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                    </form>
+                </div>
+
+                <div class="forum-feed-col">
+                    <h3 class="feed-title">Active Discussions (<span id="comment-count">3</span>)</h3>
+                    <div class="comment-list" id="comment-list">
+                        <!-- Preloaded Comment 1 -->
+                        <div class="comment-card">
+                            <div class="comment-header">
+                                <div class="comment-author">
+                                    <div class="author-avatar">TN</div>
+                                    <div>
+                                        <h4 class="author-name">Trung Nguyen</h4>
+                                        <span class="author-tag">Client Reviewer</span>
+                                    </div>
+                                </div>
+                                <span class="comment-date">Today, 10:20 AM</span>
+                            </div>
+                            <div class="comment-body">
+                                <span class="comment-ref">Discussing: Linh Nguyen — Editorial Photographer</span>
+                                <p>Giao diện nhiếp ảnh mẫu 1 thực sự rất đẹp và tinh tế! Màu kem Alabaster kết hợp hình ảnh mộc mạc trông cực kỳ cao cấp, đúng chất nghệ thuật chứ không bị công nghiệp. Nhóm hiệu ứng mở khẩu độ máy ảnh và di chuột View hoạt động rất mượt.</p>
+                            </div>
+                        </div>
+
+                        <!-- Preloaded Comment 2 -->
+                        <div class="comment-card">
+                            <div class="comment-header">
+                                <div class="comment-author">
+                                    <div class="author-avatar">MA</div>
+                                    <div>
+                                        <h4 class="author-name">Maria Anders</h4>
+                                        <span class="author-tag">Creative Director</span>
+                                    </div>
+                                </div>
+                                <span class="comment-date">Yesterday, 4:15 PM</span>
+                            </div>
+                            <div class="comment-body">
+                                <span class="comment-ref">Discussing: Alex Nguyen — Creative Developer</span>
+                                <p>Excited for the Creative Developer theme! The combination of dark backgrounds with neon lines and dynamic particle fields is exactly what we need to show our technical and creative side. Please add a dark-light theme toggle for it if possible.</p>
+                            </div>
+                        </div>
+
+                        <!-- Preloaded Comment 3 -->
+                        <div class="comment-card">
+                            <div class="comment-header">
+                                <div class="comment-author">
+                                    <div class="author-avatar">KD</div>
+                                    <div>
+                                        <h4 class="author-name">Khanh Do</h4>
+                                        <span class="author-tag">Interior Designer</span>
+                                    </div>
+                                </div>
+                                <span class="comment-date">Yesterday, 11:05 AM</span>
+                            </div>
+                            <div class="comment-body">
+                                <span class="comment-ref">Discussing: Linh Nguyen — Editorial Photographer</span>
+                                <p>Liệu chúng ta có thể tùy biến mẫu số 1 này thành trang web thiết kế nội thất được không? Mình thấy bố cục bất đối xứng và cách sắp xếp hình ảnh tỷ lệ 3:4 của nó rất phù hợp cho thiết kế không gian.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-container">
+            <p>&copy; 2026 BaoDi Studio. Curated Web Layout Factory.</p>
+            <p>Ready to deploy.</p>
+        </div>
+    </footer>
+
+    <!-- Custom JS -->
+    <script src="script.js?v=1.4"></script>
+</body>
+</html>

@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minh Tri — Micro-Interaction Engineer & Horologist</title>
+    <meta name="description" content="Portfolio of Minh Tri, a Micro-Interaction Engineer & Horologist featuring an interactive skeleton clockwork watch mechanism.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Plus+Jakarta+Sans:wght@300;400;500;600&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css?v=1.0">
+</head>
+<body>
+    <!-- Custom Cog Cursor -->
+    <div id="custom-cursor" class="custom-cursor">
+        <svg class="cursor-cog" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 8C9.79 8 8 9.79 8 12C8 14.21 9.79 16 12 16C14.21 16 16 14.21 16 12C16 9.79 14.21 8 12 8ZM12 14C10.9 14 10 13.1 10 12C10 10.9 10.9 10 12 10C13.1 10 14 10.9 14 12C14 13.1 13.1 14 12 14Z" fill="currentColor"/>
+            <path d="M19.43 12.98C19.47 12.66 19.5 12.34 19.5 12C19.5 11.66 19.47 11.34 19.43 11.02L21.54 9.37C21.73 9.22 21.78 8.95 21.66 8.73L19.66 5.27C19.54 5.05 19.27 4.97 19.05 5.05L16.56 6.05C16.04 5.65 15.48 5.32 14.87 5.07L14.49 2.42C14.46 2.18 14.25 2 14 2H10C9.75 2 9.54 2.18 9.51 2.42L9.13 5.07C8.52 5.32 7.96 5.66 7.44 6.05L4.95 5.05C4.73 4.97 4.46 5.05 4.34 5.27L2.34 8.73C2.21 8.95 2.27 9.22 2.46 9.37L4.57 11.02C4.53 11.34 4.5 11.67 4.5 12C4.5 12.33 4.53 12.66 4.57 12.98L2.46 14.63C2.27 14.78 2.22 15.05 2.34 15.27L4.34 18.73C4.46 18.95 4.73 19.03 4.95 18.95L7.44 17.95C7.96 18.35 8.52 18.68 9.13 18.93L9.51 21.58C9.54 21.82 9.75 22 10 22H14C14.25 22 14.46 21.82 14.49 21.58L14.87 18.93C15.48 18.68 16.04 18.34 16.56 17.95L19.05 18.95C19.27 19.03 19.54 18.95 19.66 18.73L21.66 15.27C21.78 15.05 21.73 14.78 21.54 14.63L19.43 12.98Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+        </svg>
+    </div>
+
+    <!-- Main Watch Chassis Wrapper -->
+    <div class="watch-chassis-container">
+        
+        <!-- Header Branding & Ticking Audio Toggle -->
+        <div class="watch-header">
+            <div class="logo">Tri.<span>Horology</span></div>
+            <div class="controls-group">
+                <button class="sound-toggle-btn" id="sound-toggle" aria-label="Toggle Ticking Sound">
+                    SOUND: <span id="sound-status">OFF</span>
+                </button>
+                <button class="sound-toggle-btn" id="cabinet-toggle" aria-label="Toggle Cabinet Expansion">
+                    SPECS: <span id="cabinet-status">RETRACTED</span>
+                </button>
+                <span class="model-spec">CALIBER // 9099_INTERACTIVE</span>
+            </div>
+        </div>
+
+        <!-- The Central Watch Mechanism Core -->
+        <div class="watch-mechanism-core">
+            
+            <!-- SVG Rotating Gears Background -->
+            <div class="gears-bg-container">
+                <svg class="gear-vector drive-gear" id="gear-large" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="50" cy="50" r="38" stroke="var(--metal-bronze)" stroke-dasharray="2.5 1.5" stroke-width="6" fill="none"/>
+                    <circle cx="50" cy="50" r="44" stroke="var(--metal-bronze)" stroke-dasharray="3.5 2.5" stroke-width="3" fill="none"/>
+                    <!-- Spokes -->
+                    <line x1="50" y1="6" x2="50" y2="94" stroke="var(--metal-bronze)" stroke-width="2"/>
+                    <line x1="6" y1="50" x2="94" y2="50" stroke="var(--metal-bronze)" stroke-width="2"/>
+                    <line x1="19" y1="19" x2="81" y2="81" stroke="var(--metal-bronze)" stroke-width="1.5"/>
+                    <line x1="81" y1="19" x2="19" y2="81" stroke="var(--metal-bronze)" stroke-width="1.5"/>
+                    <circle cx="50" cy="50" r="10" fill="#0C0B0A" stroke="var(--metal-bronze)" stroke-width="2"/>
+                </svg>
+
+                <svg class="gear-vector escape-wheel" id="gear-medium" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="50" cy="50" r="30" stroke="var(--metal-steel)" stroke-dasharray="1.8 1.2" stroke-width="5" fill="none"/>
+                    <line x1="50" y1="20" x2="50" y2="80" stroke="var(--metal-steel)" stroke-width="1.5"/>
+                    <line x1="20" y1="50" x2="80" y2="50" stroke="var(--metal-steel)" stroke-width="1.5"/>
+                    <circle cx="50" cy="50" r="6" fill="#0C0B0A" stroke="var(--metal-steel)" stroke-width="1.5"/>
+                </svg>
+
+                <svg class="gear-vector balance-wheel" id="gear-small" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="50" cy="50" r="20" stroke="var(--metal-gold)" stroke-dasharray="1.2 0.8" stroke-width="4" fill="none"/>
+                    <line x1="50" y1="30" x2="50" y2="70" stroke="var(--metal-gold)" stroke-width="1"/>
+                    <line x1="30" y1="50" x2="70" y2="50" stroke="var(--metal-gold)" stroke-width="1"/>
+                    <circle cx="50" cy="50" r="4" fill="#0C0B0A" stroke="var(--metal-gold)" stroke-width="1"/>
+                </svg>
+            </div>
+
+            <!-- Pocket Watch Dial Markers (Bezel Ring) -->
+            <div class="watch-dial-ring">
+                <span class="dial-mark m-12">XII</span>
+                <span class="dial-mark m-3">III</span>
+                <span class="dial-mark m-6">VI</span>
+                <span class="dial-mark m-9">IX</span>
+            </div>
+
+            <!-- Rotating Watch Hands -->
+            <div class="watch-hands-wrapper">
+                <div class="watch-hand hour-hand" id="hand-hour"></div>
+                <div class="watch-hand minute-hand" id="hand-minute"></div>
+                <div class="watch-hand second-hand" id="hand-second"></div>
+                <div class="center-cap"></div>
+            </div>
+
+            <!-- Information Display deck (Inside Watch Center Frame) -->
+            <div class="information-deck">
+                
+                <!-- Section 1: Chrono Bio (XII / 12:00) -->
+                <div class="info-panel active" id="panel-bio">
+                    <span class="panel-tag">CALIBER ASSEMBLY // BIO</span>
+                    <h2 class="panel-title">Minh Tri</h2>
+                    <p class="panel-desc">I design intricate mechanical watch assemblies and micro-interaction web architectures. I merge coordinate grids, gear mathematics, and interactive spring-mass systems to build tactile digital experiences.</p>
+                </div>
+
+                <!-- Section 2: Craftsmanship (III / 3:00) -->
+                <div class="info-panel" id="panel-projects">
+                    <span class="panel-tag">CHRONOMETRY // WORKS</span>
+                    <h2 class="panel-title">Mechanical Craft</h2>
+                    <div class="project-specs-list">
+                        <div class="spec-row">
+                            <span class="spec-lbl">01 / Aether Tourbillon:</span>
+                            <span class="spec-val">Rotary canvas visualizer mapping stellar coordinates.</span>
+                        </div>
+                        <div class="spec-row">
+                            <span class="spec-lbl">02 / Caliber Escapement:</span>
+                            <span class="spec-val">SVG gear simulation built with spring mechanics.</span>
+                        </div>
+                        <div class="spec-row">
+                            <span class="spec-lbl">03 / Chronos Winder:</span>
+                            <span class="spec-val">Audio ticks driver using oscillator math synthesis.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 3: Technical Specs (VI / 6:00) -->
+                <div class="info-panel" id="panel-mechanism">
+                    <span class="panel-tag">ENGINEERING // SPECS</span>
+                    <h2 class="panel-title">System Calibers</h2>
+                    <p class="panel-desc">We structure web codebases without scrolling inputs. Mechanics rely on rotary math, canvas math matrices, Web Audio oscillator nodes, and SVG linear keyframes to drive responsive motion.</p>
+                </div>
+
+                <!-- Section 4: Booking Order (IX / 9:00) -->
+                <div class="info-panel" id="panel-contact">
+                    <span class="panel-tag">DISPATCHER // ORDER</span>
+                    <h2 class="panel-title">Request Caliber</h2>
+                    <form class="horology-form" id="contact-form">
+                        <div class="form-row-flat">
+                            <input type="text" id="name" required placeholder="CLIENT_NAME">
+                            <input type="email" id="email" required placeholder="EMAIL_ADDR">
+                        </div>
+                        <div class="form-row-flat">
+                            <textarea id="message" rows="2" required placeholder="MECHANICAL_SPECIFICATIONS_REQUEST..."></textarea>
+                        </div>
+                        <button type="submit" class="submit-btn">Transmit Caliber</button>
+                    </form>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Radial Navigation Controller (Sub-Dials Circular menu) -->
+        <div class="sub-dials-nav">
+            <button class="nav-dial-btn active" data-target="bio" data-angle="0">
+                <span class="dial-num">XII</span>
+                <span class="dial-lbl">Chronology</span>
+            </button>
+            <button class="nav-dial-btn" data-target="projects" data-angle="90">
+                <span class="dial-num">III</span>
+                <span class="dial-lbl">Craftsmanship</span>
+            </button>
+            <button class="nav-dial-btn" data-target="mechanism" data-angle="180">
+                <span class="dial-num">VI</span>
+                <span class="dial-lbl">Mechanics</span>
+            </button>
+            <button class="nav-dial-btn" data-target="contact" data-angle="270">
+                <span class="dial-num">IX</span>
+                <span class="dial-lbl">Dispatcher</span>
+            </button>
+        </div>
+
+        <!-- Decorative spring wire vector details -->
+        <div class="chassis-decorations">
+            <div class="decor-screw s1"></div>
+            <div class="decor-screw s2"></div>
+            <div class="decor-screw s3"></div>
+            <div class="decor-screw s4"></div>
+        </div>
+
+        <!-- Sliding Mechanical Plate Expansion Cabinet -->
+        <div class="watch-expansion-drawer" id="watch-cabinet">
+            <button class="close-cabinet-btn" id="close-cabinet">RETRACT [X]</button>
+            <div class="cabinet-header">
+                <span class="cabinet-tag">MECHANOLOGY SYSTEM CATALOGUE</span>
+                <h3 class="cabinet-title">Specifications Index</h3>
+            </div>
+            
+            <div class="cabinet-grid">
+                <!-- Column 1: Project Archive -->
+                <div class="cabinet-col">
+                    <h4 class="col-title">[01 // PROJECT ARCHIVE]</h4>
+                    <div class="cabinet-project-card">
+                        <img src="assets/work_fashion.jpg" alt="Aether Tourbillon preview" class="proj-thumb">
+                        <div class="proj-meta">
+                            <h5>Aether Tourbillon</h5>
+                            <p>Stellar navigation visualizer mapping real-time cosmic coordinate arrays onto a rotating WebGL star map.</p>
+                        </div>
+                    </div>
+                    <div class="cabinet-project-card">
+                        <img src="assets/work_interior.jpg" alt="Caliber Escapement preview" class="proj-thumb">
+                        <div class="proj-meta">
+                            <h5>Caliber Escapement</h5>
+                            <p>High-fidelity physics simulator displaying mechanical watch anchor dynamics and hairspring kinetic force fields.</p>
+                        </div>
+                    </div>
+                    <div class="cabinet-project-card">
+                        <img src="assets/work_gallery.jpg" alt="Chronos Winder preview" class="proj-thumb">
+                        <div class="proj-meta">
+                            <h5>Chronos Winder</h5>
+                            <p>Synthesized audio controller converting micro-interaction rotary velocities into synthetic FM audio waveforms.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Column 2: Engine Caliber (Skills & Technical Specs) -->
+                <div class="cabinet-col">
+                    <h4 class="col-title">[02 // ENGINE CALIBER]</h4>
+                    <div class="skills-spec-section">
+                        <div class="skill-category">
+                            <h5>Audio Synthesis Engine</h5>
+                            <p>Synthesizing mechanical sounds, click impulses, and ticking clock oscillators using Web Audio API nodes.</p>
+                        </div>
+                        <div class="skill-category">
+                            <h5>Tactile Micro-Interactions</h5>
+                            <p>Programming rotary crown winders, drag coordinates calculators, and spring tension simulation parameters.</p>
+                        </div>
+                        <div class="skill-category">
+                            <h5>Mathematics & Geometry</h5>
+                            <p>Interlocking gear tooth profiles, angular speed conversion ratios, and 3D coordinate projection matrices.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Column 3: Chronological Registry (Experience) -->
+                <div class="cabinet-col">
+                    <h4 class="col-title">[03 // CHRONOLOGY]</h4>
+                    <div class="chronology-list">
+                        <div class="chronology-item">
+                            <span class="chrono-date">2024 - PRESENT</span>
+                            <h5>Lead Mechanical Dev</h5>
+                            <p>Chronos Lab (Hanoi) - Building skeuomorphic web systems and audio synthesizers.</p>
+                        </div>
+                        <div class="chronology-item">
+                            <span class="chrono-date">2021 - 2024</span>
+                            <h5>Interaction Designer</h5>
+                            <p>Gearbox Studio - Built responsive vector gear calculations and web physics toys.</p>
+                        </div>
+                        <div class="chronology-item">
+                            <span class="chrono-date">2018 - 2021</span>
+                            <h5>Mechanical Engineer B.Sc.</h5>
+                            <p>University of Tech - Specialized in micro-mechanisms and watchmaking calibrations.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Custom JS -->
+    <script src="script.js?v=1.0"></script>
+</body>
+</html>

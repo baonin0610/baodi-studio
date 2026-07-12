@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nam Anh — Brutalist Architect & Spatial Designer</title>
+    <meta name="description" content="Portfolio of Nam Anh, a Brutalist Architect specializing in raw concrete buildings, interior scale, and structural blueprints.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css?v=1.0">
+</head>
+<body>
+    <!-- Custom Measurement Crosshair Cursor -->
+    <div id="custom-cursor" class="custom-cursor">
+        <div class="cursor-coords" id="cursor-coords">X: 000 / Y: 000</div>
+    </div>
+
+    <!-- Horizontal Scroll Wrapper -->
+    <div class="horizontal-scroll-container" id="scroll-container">
+        
+        <!-- Panel 1: Hero Cover -->
+        <section class="console-panel hero-panel">
+            <div class="panel-inner">
+                <header class="panel-header">
+                    <span class="logo">Nam.<span>Arch</span></span>
+                    <span class="system-badge">[DECK_01 // COVER]</span>
+                </header>
+                <div class="hero-layout">
+                    <div class="hero-info">
+                        <span class="hero-tag">[METRIC: SCALE AND BRUTALISM]</span>
+                        <h1 class="hero-title">FORM FOLLOWS RAW STRUCTURES.</h1>
+                        <p class="hero-desc">I am Nam Anh, a spatial designer and brutalist architect. I compose monolithic concrete shapes and structural grids into honest, performant physical spaces.</p>
+                        <div class="hero-controls-tip">
+                            <span class="tip-arrow">&rarr;</span> Scroll wheel to navigate grid horizontal strip
+                        </div>
+                    </div>
+                    <div class="hero-portrait reveal-mask">
+                        <img src="assets/portrait.jpg" alt="Nam Anh Architect Portrait">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Panel 2: Selected Builds (Horizontal Showcase) -->
+        <section class="console-panel works-panel">
+            <div class="panel-inner">
+                <header class="panel-header">
+                    <span class="logo-mini">Nam.Arch</span>
+                    <span class="system-badge">[DECK_02 // PORTFOLIO]</span>
+                </header>
+                <h2 class="panel-title">Concrete Builds</h2>
+                
+                <div class="works-horizontal-strip">
+                    <!-- Project 1 -->
+                    <div class="project-strip-item">
+                        <div class="image-box reveal-mask cursor-view" data-cursor="SCALE 1:100">
+                            <img src="assets/work_project1.jpg" alt="Modern concrete architecture">
+                        </div>
+                        <div class="project-details">
+                            <h3>Aura Concrete House</h3>
+                            <span class="proj-meta">[Residential / Concrete / 2026]</span>
+                        </div>
+                    </div>
+
+                    <!-- Project 2 -->
+                    <div class="project-strip-item">
+                        <div class="image-box reveal-mask cursor-view" data-cursor="SCALE 1:50">
+                            <img src="assets/work_project2.jpg" alt="Minimal clean interior concrete room">
+                        </div>
+                        <div class="project-details">
+                            <h3>Lumina Brutalist Interior</h3>
+                            <span class="proj-meta">[Interior / Raw Board / 2026]</span>
+                        </div>
+                    </div>
+
+                    <!-- Project 3 -->
+                    <div class="project-strip-item">
+                        <div class="image-box reveal-mask cursor-view" data-cursor="SCALE 1:200">
+                            <img src="assets/work_project3.jpg" alt="Art gallery concrete frame">
+                        </div>
+                        <div class="project-details">
+                            <h3>Vortex Concrete Pavilion</h3>
+                            <span class="proj-meta">[Exhibition / Steel / 2025]</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Panel 3: Interactive Blueprint Planner -->
+        <section class="console-panel blueprint-panel">
+            <div class="panel-inner">
+                <header class="panel-header">
+                    <span class="logo-mini">Nam.Arch</span>
+                    <span class="system-badge">[DECK_03 // LAB]</span>
+                </header>
+                <h2 class="panel-title">Blueprint Planner</h2>
+                
+                <div class="blueprint-workspace">
+                    <div class="blueprint-dials">
+                        <p class="dial-desc">Tweak the structural dimensions below. The drafting canvas will re-draw walls, doors, and measurements in real-time.</p>
+                        
+                        <div class="control-group">
+                            <div class="control-label">
+                                <span>Room Width</span>
+                                <span id="width-val">8.0 m</span>
+                            </div>
+                            <input type="range" id="room-width" min="4.0" max="12.0" step="0.5" value="8.0" class="drafting-slider">
+                        </div>
+                        <div class="control-group">
+                            <div class="control-label">
+                                <span>Room Length</span>
+                                <span id="length-val">10.0 m</span>
+                            </div>
+                            <input type="range" id="room-length" min="6.0" max="18.0" step="0.5" value="10.0" class="drafting-slider">
+                        </div>
+                        <div class="control-group">
+                            <div class="control-label">
+                                <span>Wall Thickness</span>
+                                <span id="wall-val">20 cm</span>
+                            </div>
+                            <input type="range" id="room-wall" min="10" max="40" step="5" value="20" class="drafting-slider">
+                        </div>
+                        <button id="export-blueprint-btn" class="draft-submit-btn" style="margin-top: 1rem;">Export Blueprint (PNG)</button>
+                    </div>
+
+                    <div class="canvas-frame">
+                        <div class="canvas-border-lines">
+                            <canvas id="blueprint-canvas" class="blueprint-canvas"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Panel 4: Inquiries Dispatcher Form -->
+        <section class="console-panel contact-panel">
+            <div class="panel-inner">
+                <header class="panel-header">
+                    <span class="logo-mini">Nam.Arch</span>
+                    <span class="system-badge">[DECK_04 // DISPATCH]</span>
+                </header>
+                
+                <div class="contact-panel-layout">
+                    <div class="contact-info">
+                        <h2 class="panel-title">Review Channel</h2>
+                        <p class="contact-desc">Ready to outline custom concrete blueprints, scale spatial layouts, or initiate draft mockups? Transmit your building parameters.</p>
+                        
+                        <div class="arch-inv-details">
+                            <div class="inv-item">
+                                <span>Mailbox</span>
+                                <a href="mailto:nam@baodi.studio">nam@baodi.studio</a>
+                            </div>
+                            <div class="inv-item">
+                                <span>Location</span>
+                                <a href="#">Hanoi / Vietnam</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-container-box">
+                        <form class="draft-form" id="contact-form">
+                            <div class="form-group-draft">
+                                <label for="name">BUILDING_CLIENT_NAME</label>
+                                <input type="text" id="name" required placeholder="User_01">
+                            </div>
+                            <div class="form-group-draft">
+                                <label for="email">CLIENT_EMAIL_ADDRESS</label>
+                                <input type="email" id="email" required placeholder="user@domain.com">
+                            </div>
+                            <div class="form-group-draft">
+                                <label for="message">PROJECT_SPECIFICATIONS</label>
+                                <textarea id="message" rows="3" required placeholder="Define project footprint area, structural walls criteria, budget..."></textarea>
+                            </div>
+                            <button type="submit" class="draft-submit-btn">Compile Blueprint Specs</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Custom JS -->
+    <script src="script.js?v=1.0"></script>
+</body>
+</html>

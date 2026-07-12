@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Huong Le — Creative Literature & Humanities Teacher</title>
+    <meta name="description" content="Portfolio of Ms. Huong Le, a Literature & Humanities Educator specializing in interactive learning, creative writing workshops, and curriculum design.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css?v=1.1">
+</head>
+<body>
+    <!-- Custom Cursor -->
+    <div id="custom-cursor" class="custom-cursor">
+        <span class="cursor-text"></span>
+    </div>
+
+    <!-- Main Notebook Split Interface -->
+    <main class="notebook-binder-workspace">
+        <div class="notebook-binder">
+            <!-- Steel Binder Rings Center Separator -->
+            <div class="binder-rings">
+                <div class="ring"></div>
+                <div class="ring"></div>
+                <div class="ring"></div>
+                <div class="ring"></div>
+            </div>
+
+            <!-- Left Page: Constant Profile Cover -->
+            <div class="notebook-page left-page">
+                <span class="red-margin-rule"></span>
+                <div class="page-content">
+                    <div class="logo">Huong.<span>Edu</span></div>
+                    
+                    <!-- Left Panel 1: Philosophy Profile (Default Cover) -->
+                    <div class="left-panel active" id="left-panel-philosophy">
+                        <div class="profile-card">
+                            <div class="hero-portrait-wrapper reveal-mask revealed">
+                                <img src="assets/portrait.jpg" alt="Ms. Huong Le Portrait" class="portrait-img">
+                            </div>
+                            <div class="profile-details">
+                                <span class="hero-badge">[GRADE A+ / ACTIVE]</span>
+                                <h1 class="profile-title">Ms. Huong Le</h1>
+                                <p class="profile-subtitle">Creative Literature & Humanities Teacher</p>
+                                <p class="profile-bio">I design creative writing workshops and humanities curriculums that prompt students to explore stories, unpack history, and shape their original voice.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Left Panel 2: Credentials Timeline -->
+                    <div class="left-panel" id="left-panel-courses">
+                        <h3 class="left-panel-title">Credentials & Experience</h3>
+                        <div class="credentials-timeline">
+                            <div class="timeline-step">
+                                <span class="step-year">2018 - Present</span>
+                                <h4 class="step-role">Literature Educator</h4>
+                                <p class="step-desc">Senior Humanities teacher at Hanoi International Academy.</p>
+                            </div>
+                            <div class="timeline-step">
+                                <span class="step-year">2015 - 2018</span>
+                                <h4 class="step-role">Creative Writing Lead</h4>
+                                <p class="step-desc">Conducted youth workshops and publishing panels at the Arts Circle.</p>
+                            </div>
+                            <div class="timeline-step">
+                                <span class="step-year">2011 - 2015</span>
+                                <h4 class="step-role">B.A. Literature Education</h4>
+                                <p class="step-desc">Graduated with honors from National Pedagogical University.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Left Panel 3: Classroom Rules -->
+                    <div class="left-panel" id="left-panel-blackboard">
+                        <h3 class="left-panel-title">Classroom Guidelines</h3>
+                        <p class="rules-intro">Before entering the blackboard lab, all writers must align with these core learning guidelines:</p>
+                        <ul class="classroom-rules-list">
+                            <li>
+                                <span class="rule-num">01 /</span>
+                                <p><strong>Be Curious.</strong> Questions are the catalysts of deeper understanding.</p>
+                            </li>
+                            <li>
+                                <span class="rule-num">02 /</span>
+                                <p><strong>Respect Stories.</strong> Value the voice, history, and perspectives of peers.</p>
+                            </li>
+                            <li>
+                                <span class="rule-num">03 /</span>
+                                <p><strong>Draft Fearlessly.</strong> Write first, edit later. Progress beats perfection.</p>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Left Panel 4: Quick Details -->
+                    <div class="left-panel" id="left-panel-resources">
+                        <h3 class="left-panel-title">Office Hours & Location</h3>
+                        <div class="office-locator-box">
+                            <div class="locator-row">
+                                <span class="lbl">Office Code:</span>
+                                <span class="val">Room 402, Block B</span>
+                            </div>
+                            <div class="locator-row">
+                                <span class="lbl">Consultation Hours:</span>
+                                <span class="val">Tue & Thu, 14:00 - 16:30</span>
+                            </div>
+                            <div class="locator-row">
+                                <span class="lbl">Response Rate:</span>
+                                <span class="val">Within 24 business hours</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="quick-contact-box">
+                        <span>Office Hours: 08:00 - 17:00</span>
+                        <a href="mailto:huong@baodi.studio">huong@baodi.studio</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Page: Tabbed Worksheets Content -->
+            <div class="notebook-page right-page">
+                <span class="red-margin-rule"></span>
+                
+                <!-- Binder Page Tabs Navigation -->
+                <div class="binder-tabs">
+                    <button class="tab-trigger active" data-tab="philosophy">Philosophy</button>
+                    <button class="tab-trigger" data-tab="courses">Curriculum</button>
+                    <button class="tab-trigger" data-tab="blackboard">Blackboard Lab</button>
+                    <button class="tab-trigger" data-tab="resources">Resources</button>
+                </div>
+
+                <div class="page-content">
+                    <!-- Tab Panel 1: Philosophy (Draggable Sticky Notes) -->
+                    <div class="tab-panel active" id="panel-philosophy">
+                        <h2 class="panel-title">Philosophy of Learning</h2>
+                        <p class="panel-intro">Drag the sticky notes on the workspace desk below to organize my fundamental approaches to student learning.</p>
+
+                        <div class="sticky-notes-desk">
+                            <div class="sticky-note note-yellow" style="top: 20px; left: 20px;">
+                                <span class="note-pin"></span>
+                                <p class="note-text">"Teaching is not about filling a vessel, but lighting a fire of curiosity."</p>
+                                <span class="note-tag">#CoreValue</span>
+                            </div>
+                            <div class="sticky-note note-pink" style="top: 40px; left: 260px;">
+                                <span class="note-pin"></span>
+                                <p class="note-text">"Storytelling builds bridges of empathy across centuries."</p>
+                                <span class="note-tag">#Humanities</span>
+                            </div>
+                            <div class="sticky-note note-blue" style="top: 190px; left: 100px;">
+                                <span class="note-pin"></span>
+                                <p class="note-text">"Every student has an original story waiting to be polished."</p>
+                                <span class="note-tag">#CreativeWriting</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tab Panel 2: Curriculum List -->
+                    <div class="tab-panel" id="panel-courses">
+                        <h2 class="panel-title">Class Curriculums</h2>
+                        <div class="courses-list-stack">
+                            <!-- Course 1 -->
+                            <div class="course-row">
+                                <div class="course-info">
+                                    <h3>Vietnamese Literature</h3>
+                                    <p>Exploring the evolution of Vietnamese poetry and prose through dynastic eras, colonial shifts, and modern reflections.</p>
+                                </div>
+                                <div class="course-meta">
+                                    <span>12 Weeks</span>
+                                    <span>Grades 10-12</span>
+                                </div>
+                            </div>
+                            <!-- Course 2 -->
+                            <div class="course-row">
+                                <div class="course-info">
+                                    <h3>Creative Writing Workshop</h3>
+                                    <p>An interactive studio focus on character arcs, pacing, sensory details, and constructive peer critique loops.</p>
+                                </div>
+                                <div class="course-meta">
+                                    <span>8 Weeks</span>
+                                    <span>Open Workshop</span>
+                                </div>
+                            </div>
+                            <!-- Course 3 -->
+                            <div class="course-row">
+                                <div class="course-info">
+                                    <h3>World Humanities</h3>
+                                    <p>Dissecting pivotal philosophical texts, art movements, and socio-historical narratives that shaped Western and Eastern thoughts.</p>
+                                </div>
+                                <div class="course-meta">
+                                    <span>16 Weeks</span>
+                                    <span>Grades 11-12</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tab Panel 3: Blackboard Interactive Quiz -->
+                    <div class="tab-panel" id="panel-blackboard">
+                        <h2 class="panel-title">Interactive Blackboard Lab</h2>
+                        <p class="panel-intro">Choose the correct answer on the blackboard to test your literary device knowledge. Correct choices will be circled in white chalk, wrong choices crossed out.</p>
+                        
+                        <div class="blackboard-frame">
+                            <div class="blackboard-surface">
+                                <h3 class="blackboard-q-title">Q1: Identify the literary device:</h3>
+                                <p class="blackboard-q-text">"The leaves danced in the autumn wind."</p>
+                                
+                                <div class="blackboard-options">
+                                    <button class="quiz-option" data-correct="false" id="option-a">
+                                        <span class="option-num">A.</span> Metaphor
+                                        <svg class="chalk-mark cross" viewBox="0 0 24 24">
+                                            <path d="M5 5L19 19M19 5L5 19" stroke="#E57373" stroke-width="3" stroke-linecap="round"/>
+                                        </svg>
+                                    </button>
+                                    <button class="quiz-option" data-correct="true" id="option-b">
+                                        <span class="option-num">B.</span> Personification
+                                        <svg class="chalk-mark circle" viewBox="0 0 24 24">
+                                            <circle cx="12" cy="12" r="9" stroke="#81C784" stroke-width="3" fill="none" stroke-linecap="round"/>
+                                        </svg>
+                                    </button>
+                                    <button class="quiz-option" data-correct="false" id="option-c">
+                                        <span class="option-num">C.</span> Hyperbole
+                                        <svg class="chalk-mark cross" viewBox="0 0 24 24">
+                                            <path d="M5 5L19 19M19 5L5 19" stroke="#E57373" stroke-width="3" stroke-linecap="round"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                                <div id="quiz-feedback" class="quiz-feedback">Select an answer above.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tab Panel 4: Resources & Booking Form -->
+                    <div class="tab-panel" id="panel-resources">
+                        <h2 class="panel-title">Teaching Materials & Contact</h2>
+                        <div class="resources-split">
+                            <div class="resource-block">
+                                <h3>Downloadable Study Guides</h3>
+                                <ul class="study-guides-list">
+                                    <li>
+                                        <span>Analysis of Truyen Kieu (PDF)</span>
+                                        <a href="#" class="dl-btn">Download</a>
+                                    </li>
+                                    <li>
+                                        <span>Creative Writing Outline (PDF)</span>
+                                        <a href="#" class="dl-btn">Download</a>
+                                    </li>
+                                    <li>
+                                        <span>Year 11 Reading Syllabus</span>
+                                        <a href="#" class="dl-btn">Download</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="booking-block">
+                                <h3>Office Hours Inquiry</h3>
+                                <form class="office-form" id="contact-form">
+                                    <div class="form-group-flat">
+                                        <input type="text" id="name" required placeholder="Dr. Sarah Jenkins">
+                                    </div>
+                                    <div class="form-group-flat">
+                                        <input type="email" id="email" required placeholder="sarah@university.edu">
+                                    </div>
+                                    <div class="form-group-flat">
+                                        <textarea id="message" rows="3" required placeholder="Meeting objective..."></textarea>
+                                    </div>
+                                    <button type="submit" class="submit-btn">Send Booking</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Temporary Flipping Leaf for 3D page turns -->
+            <div class="notebook-flipping-leaf" id="flipping-leaf">
+                <span class="red-margin-rule" style="left: 2rem;"></span>
+            </div>
+        </div>
+    </main>
+
+    <!-- Custom JS -->
+    <script src="script.js?v=1.1"></script>
+</body>
+</html>

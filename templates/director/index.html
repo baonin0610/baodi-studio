@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Khanh Linh — Creative Director & Cinematic Stylist</title>
+    <meta name="description" content="Portfolio of Khanh Linh, a Creative Director & Cinematic Stylist featuring an autonomous, self-running cinematic art exhibition layout.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css?v=1.0">
+</head>
+<body>
+    <!-- Custom Lens Aperture Cursor -->
+    <div id="custom-cursor" class="custom-cursor">
+        <span class="cursor-text"></span>
+    </div>
+
+    <!-- Main Cinematic Projector Viewport -->
+    <div class="projector-viewport" id="projector-screen">
+        
+        <!-- Slide Slides Background Container -->
+        <div class="slides-container">
+            <!-- Slide 1 -->
+            <div class="projector-slide active" data-index="0" data-title="Aura Editorial Campaign" data-year="2026" data-concept="Framing high-contrast fabric dynamics and deep velvet crimson shadows. Kodachrome 64 format.">
+                <div class="slide-image-wrapper">
+                    <img src="assets/work_fashion.jpg" alt="Aura Editorial Campaign Photo">
+                </div>
+            </div>
+
+            <!-- Slide 2 -->
+            <div class="projector-slide" data-index="1" data-title="Lumina Brutalist Living" data-year="2026" data-concept="Architectural space styling exploring natural light reflections on raw concrete textures.">
+                <div class="slide-image-wrapper">
+                    <img src="assets/work_interior.jpg" alt="Lumina Spatial Living Photo">
+                </div>
+            </div>
+
+            <!-- Slide 3 -->
+            <div class="projector-slide" data-index="2" data-title="Vortex Curation Gallery" data-year="2025" data-concept="Exhibition layouts highlighting modular industrial steel structures and spatial audio zones.">
+                <div class="slide-image-wrapper">
+                    <img src="assets/work_gallery.jpg" alt="Vortex Exhibition Curation Photo">
+                </div>
+            </div>
+        </div>
+
+        <!-- Shutter Glass Glare filter overlay -->
+        <div class="shutter-glare"></div>
+
+        <!-- Left & Right Arrow Navigation -->
+        <button class="nav-arrow-btn prev-arrow" id="btn-prev-slide" aria-label="Previous Slide">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M15 19L8 12L15 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </button>
+        <button class="nav-arrow-btn next-arrow" id="btn-next-slide" aria-label="Next Slide">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M9 5L16 12L9 19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </button>
+
+        <!-- Typographic Editorial Overlay Info (Top Left & Top Right) -->
+        <div class="editorial-header-overlay">
+            <div class="logo">Linh.<span>Director</span></div>
+            <div class="director-meta">[DECK // AUTOPILOT EXHIBITION]</div>
+        </div>
+
+        <!-- Cinematic Projector HUD Overlay details -->
+        <div class="projector-hud-overlay">
+            <div class="left-hud-details">
+                <span class="hud-category">Active Slide Curation</span>
+                <h2 class="hud-title" id="hud-slide-title">AURA EDITORIAL CAMPAIGN</h2>
+                <p class="hud-concept" id="hud-slide-concept">Framing high-contrast fabric dynamics and deep velvet crimson shadows. Kodachrome 64 format.</p>
+            </div>
+            
+            <div class="right-hud-details">
+                <div class="director-handwritten-note">
+                    <span class="note-header">Director Notes:</span>
+                    <p class="note-text" id="hud-slide-note">Focus on raw textures and extreme shadows. Kodak 500T. Shift lens scale offset 2.5.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cinema Playback timeline bar (Bottom) -->
+        <div class="timeline-playback-bar">
+            <!-- Left Info status -->
+            <div class="playback-status-info">
+                <span class="status-indicator-dot blinking" id="status-dot"></span>
+                <span class="status-label" id="playback-status-text">PLAYING // FRAME 0001</span>
+            </div>
+
+            <!-- Center Controls -->
+            <div class="playback-controls">
+                <button class="control-btn" id="btn-play" aria-label="Play Slides">PLAY</button>
+                <button class="control-btn" id="btn-pause" aria-label="Pause Slides">PAUSE</button>
+            </div>
+
+            <!-- Right Timeline slider scrubber -->
+            <div class="timeline-scrubber-wrapper">
+                <div class="timeline-track" id="timeline-track">
+                    <div class="timeline-playhead" id="timeline-playhead"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Absolute Curation Contact side slide (Triggered via click) -->
+        <div class="booking-inquiry-box" id="inquiry-box">
+            <button class="close-inquiry-btn" id="close-inquiry-btn">CLOSE</button>
+            <h3 class="inquiry-title">Inquiry Dispatch</h3>
+            <form class="inquiry-form" id="contact-form">
+                <div class="form-group-flat">
+                    <input type="text" id="name" required placeholder="CURATOR_NAME">
+                </div>
+                <div class="form-group-flat">
+                    <input type="email" id="email" required placeholder="EMAIL_ADDRESS">
+                </div>
+                <div class="form-group-flat">
+                    <textarea id="message" rows="3" required placeholder="EXHIBITION_PROPOSAL_SPECIFICATIONS..."></textarea>
+                </div>
+                <button type="submit" class="submit-inquiry-btn">Transmit Request</button>
+            </form>
+        </div>
+
+        <!-- Floating contact trigger button -->
+        <button class="open-inquiry-btn-trigger" id="open-inquiry-btn-trigger">CONTACT</button>
+
+    </div>
+
+    <!-- Custom JS -->
+    <script src="script.js?v=1.0"></script>
+</body>
+</html>

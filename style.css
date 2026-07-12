@@ -810,27 +810,49 @@ body {
     }
 }
 
-/* Zalo Personalization Notice Toast */
+/* Zalo Personalization Notice Modal Overlay */
+.zalo-toast-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(4, 4, 6, 0.75);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 9999;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+}
+
+.zalo-toast-overlay.show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Zalo Personalization Notice Centered Modal Box */
 .zalo-toast {
     position: fixed;
-    bottom: -180px;
-    right: 2rem;
-    width: min(345px, 90vw);
-    background: rgba(10, 10, 12, 0.95);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -46%) scale(0.95);
+    width: min(390px, 90vw);
+    background: rgba(12, 12, 15, 0.96);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-top: 3px solid var(--accent-color);
-    border-radius: 8px;
-    padding: 1.2rem;
+    border-radius: 12px;
+    padding: 2.2rem 2rem;
     z-index: 10000;
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(12px);
+    box-shadow: 0 25px 65px rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(16px);
     opacity: 0;
-    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
     pointer-events: none;
 }
 
 .zalo-toast.show {
-    bottom: 2rem;
+    transform: translate(-50%, -50%) scale(1);
     opacity: 1;
     pointer-events: auto;
 }
@@ -910,10 +932,4 @@ body {
     height: 14px;
 }
 
-@media (max-width: 480px) {
-    .zalo-toast {
-        right: 5%;
-        left: 5%;
-        width: 90%;
-    }
-}
+

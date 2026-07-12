@@ -283,17 +283,25 @@ function initTemplateLinkCopier() {
  */
 function initZaloToast() {
     const toast = document.getElementById('zalo-notice-toast');
+    const overlay = document.getElementById('zalo-toast-overlay');
     const closeBtn = document.getElementById('close-zalo-toast');
     if (!toast) return;
 
-    // Show toast after 2 seconds
+    // Show toast and overlay after 2 seconds
     setTimeout(() => {
         toast.classList.add('show');
+        if (overlay) overlay.classList.add('show');
     }, 2000);
 
+    function closeToast() {
+        toast.classList.remove('show');
+        if (overlay) overlay.classList.remove('show');
+    }
+
     if (closeBtn) {
-        closeBtn.addEventListener('click', () => {
-            toast.classList.remove('show');
-        });
+        closeBtn.addEventListener('click', closeToast);
+    }
+    if (overlay) {
+        overlay.addEventListener('click', closeToast);
     }
 }

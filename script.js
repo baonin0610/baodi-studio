@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initShowcaseFilters();
     initForumEngine();
     initTemplateLinkCopier();
+    initZaloToast();
 });
 
 /**
@@ -274,4 +275,25 @@ function initTemplateLinkCopier() {
             }, 1800);
         });
     });
+}
+
+/**
+ * 5. Zalo Notice Toast Controller
+ * Displays the personalization notice toast after a slight delay, and handles closure.
+ */
+function initZaloToast() {
+    const toast = document.getElementById('zalo-notice-toast');
+    const closeBtn = document.getElementById('close-zalo-toast');
+    if (!toast) return;
+
+    // Show toast after 2 seconds
+    setTimeout(() => {
+        toast.classList.add('show');
+    }, 2000);
+
+    if (closeBtn) {
+        closeBtn.addEventListener('click', () => {
+            toast.classList.remove('show');
+        });
+    }
 }

@@ -809,3 +809,111 @@ body {
         display: none;
     }
 }
+
+/* Zalo Personalization Notice Toast */
+.zalo-toast {
+    position: fixed;
+    bottom: -180px;
+    right: 2rem;
+    width: min(345px, 90vw);
+    background: rgba(10, 10, 12, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-top: 3px solid var(--accent-color);
+    border-radius: 8px;
+    padding: 1.2rem;
+    z-index: 10000;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(12px);
+    opacity: 0;
+    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    pointer-events: none;
+}
+
+.zalo-toast.show {
+    bottom: 2rem;
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.zalo-toast-close {
+    position: absolute;
+    top: 0.6rem;
+    right: 0.8rem;
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-size: 1.2rem;
+    cursor: pointer;
+    line-height: 1;
+    transition: var(--transition-fast);
+}
+
+.zalo-toast-close:hover {
+    color: var(--text-color);
+}
+
+.zalo-toast-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.zalo-toast-badge {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: var(--accent-color);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.zalo-toast-dot {
+    width: 6px;
+    height: 6px;
+    background-color: var(--accent-color);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--accent-color);
+    display: inline-block;
+}
+
+.zalo-toast-body p {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+    margin: 0.2rem 0 0.8rem 0;
+    font-weight: 300;
+}
+
+.zalo-toast-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: var(--accent-color);
+    color: #fff;
+    font-weight: 600;
+    font-size: 0.8rem;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: var(--transition-fast);
+}
+
+.zalo-toast-link:hover {
+    background-color: #4f46e5;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+}
+
+.zalo-toast-link svg {
+    width: 14px;
+    height: 14px;
+}
+
+@media (max-width: 480px) {
+    .zalo-toast {
+        right: 5%;
+        left: 5%;
+        width: 90%;
+    }
+}

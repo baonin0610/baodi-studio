@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initHeroCardTilt();
     initMobileBottomNav();
     initMobileSwipeToast();
+    initMobileTouchSwiper();
 });
 
 /**
@@ -658,4 +659,109 @@ function initMobileSwipeToast() {
         }
         sessionStorage.setItem('swipe-toast-dismissed', 'true');
     }, { passive: true });
+}
+
+/**
+ * 12. Fluid Touch Gesture Swiper for Mobile Showcase
+ * Captures swipe velocity/direction on mobile touch screens to provide friction-free swipes.
+ */
+function initMobileTouchSwiper() {
+    const grid = document.querySelector('.showcase-grid');
+    if (!grid) return;
+
+    let isDown = false;
+    let startX;
+    let scrollLeft;
+    let startTime;
+    let touchStartX;
+    let touchStartY;
+    let isScrollingMode = null; // 'horizontal' or 'vertical'
+
+    grid.addEventListener('touchstart', (e) => {
+        if (window.innerWidth > 768) return; // Only process on mobile viewports
+        
+        isDown = true;
+        // Temporarily clear browser snap styling to allow raw, buttery drag motion
+        grid.style.scrollSnapType = 'none';
+        
+        startX = e.touches[0].pageX - grid.offsetLeft;
+        touchStartX = e.touches[0].pageX;
+        touchStartY = e.touches[0].pageY;
+        scrollLeft = grid.scrollLeft;
+        startTime = Date.now();
+        isScrollingMode = null;
+    }, { passive: true });
+
+    grid.addEventListener('touchmove', (e) => {
+        if (!isDown) return;
+        
+        const currentX = e.touches[0].pageX;
+        const currentY = e.touches[0].pageY;
+        const diffX = Math.abs(currentX - touchStartX);
+        const diffY = Math.abs(currentY - touchStartY);
+
+        // Detect direction on first move: if vertical scrolling, release lock and let browser scroll the page
+        if (isScrollingMode === null) {
+            if (diffY > diffX && diffY > 6) {
+                isScrollingMode = 'vertical';
+                isDown = false;
+                grid.style.scrollSnapType = 'x mandatory';
+                return;
+            } else if (diffX > diffY && diffX > 6) {
+                isScrollingMode = 'horizontal';
+            }
+        }
+
+        if (isScrollingMode === 'horizontal') {
+            // Apply slight multiplier for super responsive dragging
+            const x = currentX - grid.offsetLeft;
+            const walk = (x - startX) * 1.15;
+            grid.scrollLeft = scrollLeft - walk;
+        }
+    }, { passive: true });
+
+    grid.addEventListener('touchend', (e) => {
+        if (!isDown) return;
+        isDown = false;
+
+        // Restore mandatory scroll-snap to snap nicely into place
+        grid.style.scrollSnapType = 'x mandatory';
+
+        if (isScrollingMode !== 'horizontal') return;
+
+        const endX = e.changedTouches[0].pageX - grid.offsetLeft;
+        const dist = endX - startX;
+        const timeElapsed = Date.now() - startTime;
+
+        const cards = grid.querySelectorAll('.showcase-card');
+        if (!cards.length) return;
+
+        const cardWidth = cards[0].offsetWidth;
+        const gap = 19.2; // 1.2rem gap is ~19.2px
+        const step = cardWidth + gap;
+
+        // Current scroll center index calculation
+        const currentIndex = Math.round(grid.scrollLeft / step);
+
+        // Swipe metrics
+        const isFlick = timeElapsed < 250 && Math.abs(dist) > 20;
+        const isSignificantDrag = Math.abs(dist) > (cardWidth * 0.15); // Swiped more than 15% of card width
+
+        let targetIndex = currentIndex;
+        if (isFlick || isSignificantDrag) {
+            if (dist < 0) {
+                // Swiped left (dragged right-to-left) -> Next card
+                targetIndex = Math.min(currentIndex + 1, cards.length - 1);
+            } else {
+                // Swiped right (dragged left-to-right) -> Previous card
+                targetIndex = Math.max(currentIndex - 1, 0);
+            }
+        }
+
+        const targetScrollLeft = targetIndex * step;
+        grid.scrollTo({
+            left: targetScrollLeft,
+            behavior: 'smooth'
+        });
+    });
 }

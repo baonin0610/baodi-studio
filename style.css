@@ -529,10 +529,24 @@ body {
 }
 
 .desktop-recommendation-note .note-icon {
-    width: 14px;
-    height: 14px;
+    width: 14px !important;
+    height: 14px !important;
+    flex-shrink: 0;
     stroke: var(--accent-color);
     stroke-width: 2px;
+}
+
+@media (max-width: 480px) {
+    .desktop-recommendation-note {
+        font-size: 0.62rem;
+        padding: 0.35rem 0.8rem;
+        margin-bottom: 1.8rem;
+        gap: 0.4rem;
+    }
+    .desktop-recommendation-note .note-icon {
+        width: 12px !important;
+        height: 12px !important;
+    }
 }
 
 .filter-controls {

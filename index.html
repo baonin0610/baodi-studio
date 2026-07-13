@@ -30,6 +30,14 @@
             <div class="nav-links">
                 <a href="#showcase" class="nav-link">Showcase</a>
                 <a href="#forum" class="nav-link">Client Forum</a>
+                <button class="guide-nav-btn" id="open-guide-btn" aria-label="Open User Guide">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                        <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                    </svg>
+                    <span>Hướng Dẫn</span>
+                </button>
                 <a href="templates/editorial/index.html" target="_blank" class="launch-nav-btn">View Template #1</a>
             </div>
         </nav>
@@ -611,6 +619,103 @@
         <div class="preview-iframe-container">
             <div class="preview-iframe-wrapper desktop" id="preview-iframe-wrapper">
                 <iframe id="preview-iframe" src="" title="Live Template Preview"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <!-- User Guide Modal -->
+    <div id="guide-modal" class="guide-modal">
+        <div class="guide-modal-content">
+            <button class="guide-modal-close" id="close-guide-btn" aria-label="Close Guide">&times;</button>
+            <div class="guide-header">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="guide-icon">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                </svg>
+                <h2>Hướng Dẫn Sử Dụng & Đặt Hàng</h2>
+            </div>
+            
+            <div class="guide-tabs">
+                <button class="guide-tab-btn active" data-tab="guide-tab-1">1. Trải nghiệm</button>
+                <button class="guide-tab-btn" data-tab="guide-tab-2">2. Chọn mẫu & Gửi yêu cầu</button>
+                <button class="guide-tab-btn" data-tab="guide-tab-3">3. Bàn giao & Vận hành</button>
+            </div>
+            
+            <div class="guide-tab-content active" id="guide-tab-1">
+                <h3>🔍 Khám phá & Trải nghiệm tương tác</h3>
+                <ul class="guide-steps">
+                    <li>
+                        <div class="step-num">01</div>
+                        <div class="step-text">
+                            <strong>Chọn Giao diện:</strong> Cuộn xuống danh sách <strong>Design Factory</strong> để duyệt qua 9 mẫu portfolio được thiết kế may đo cho nhiều lĩnh vực nghệ thuật & công nghệ.
+                        </div>
+                    </li>
+                    <li>
+                        <div class="step-num">02</div>
+                        <div class="step-text">
+                            <strong>Trải nghiệm nhanh (Launch):</strong> Bấm nút <strong>Launch</strong> trên thẻ bất kỳ để mở trình mô phỏng trực tiếp ngay trên trang chủ.
+                        </div>
+                    </li>
+                    <li>
+                        <div class="step-num">03</div>
+                        <div class="step-text">
+                            <strong>Mô phỏng thiết bị (Responsive Viewport):</strong> Sử dụng bộ nút <strong>[Desktop]</strong>, <strong>[Tablet]</strong>, <strong>[Mobile]</strong> trên đỉnh thanh công cụ để kiểm tra độ co giãn mượt mà của mẫu trên máy tính bảng hoặc điện thoại.
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="guide-tab-content" id="guide-tab-2">
+                <h3>📋 Chọn mẫu & Gửi thông tin cá nhân hóa</h3>
+                <ul class="guide-steps">
+                    <li>
+                        <div class="step-num">01</div>
+                        <div class="step-text">
+                            <strong>Sao chép liên kết mẫu (Copy):</strong> Khi ưng ý một mẫu nào đó, bạn chỉ cần bấm nút <strong>Copy</strong> bên cạnh nút Launch. Hệ thống sẽ tự động sao chép đường link tuyệt đối của mẫu đó vào bộ nhớ tạm.
+                        </div>
+                    </li>
+                    <li>
+                        <div class="step-num">02</div>
+                        <div class="step-text">
+                            <strong>Thảo luận trên Forum:</strong> Cuộn xuống cuối trang đến mục <strong>Client Feedback Board</strong>, chọn tên mẫu đã thích, điền tên và email của bạn kèm theo lời nhắn tùy biến giao diện, rồi nhấn gửi.
+                        </div>
+                    </li>
+                    <li>
+                        <div class="step-num">03</div>
+                        <div class="step-text">
+                            <strong>Gửi trực tiếp qua Zalo:</strong> Hoặc cách nhanh nhất, bạn bấm vào nút <strong>Personalization</strong> góc dưới màn hình (hoặc quét số Zalo <strong>0979605867</strong>) rồi dán liên kết mẫu đã copy gửi sang để Duy hỗ trợ may đo ngay lập tức.
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="guide-tab-content" id="guide-tab-3">
+                <h3>🚀 Quy trình bàn giao & Vận hành Web trọn đời</h3>
+                <ul class="guide-steps">
+                    <li>
+                        <div class="step-num">01</div>
+                        <div class="step-text">
+                            <strong>Cá nhân hóa nội dung:</strong> Bạn gửi ảnh chân dung, các dự án tiêu biểu, đường link MXH của bạn cho Duy. Duy sẽ trực tiếp ráp thông tin, tùy chỉnh màu sắc theo ý muốn của bạn trong 24 giờ.
+                        </div>
+                    </li>
+                    <li>
+                        <div class="step-num">02</div>
+                        <div class="step-text">
+                            <strong>Duy trì 0đ trọn đời (Zero Hosting Cost):</strong> Web của bạn sẽ được deploy chạy trên nền tảng đám mây tĩnh **GitHub Pages**, cam kết không bao giờ sập link và hoàn toàn miễn phí duy trì máy chủ hàng năm.
+                        </div>
+                    </li>
+                    <li>
+                        <div class="step-num">03</div>
+                        <div class="step-text">
+                            <strong>Hỗ trợ Tên miền riêng (.com, .vn):</strong> Duy hỗ trợ miễn phí cấu hình kết nối tên miền riêng của bạn (Ví dụ: `tenbancuaban.com`) để website của bạn trông chuyên nghiệp nhất.
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="guide-footer">
+                <p>Mọi thắc mắc và yêu cầu hỗ trợ gấp, vui lòng liên hệ Zalo: <strong>0979.605.867</strong> (Bao Duy)</p>
             </div>
         </div>
     </div>

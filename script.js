@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initZaloToast();
     initScrollReveal();
     initLivePreviewModal();
+    initUserGuideModal();
 });
 
 /**
@@ -408,6 +409,64 @@ function initLivePreviewModal() {
             if (iframeWrapper) {
                 iframeWrapper.className = `preview-iframe-wrapper ${viewport}`;
             }
+        });
+    });
+}
+
+/**
+ * 8. User Guide Modal Controller
+ * Handles toggling, tab switching, and backdrop closure of the user guide modal.
+ */
+function initUserGuideModal() {
+    const openBtn = document.getElementById('open-guide-btn');
+    const modal = document.getElementById('guide-modal');
+    const closeBtn = document.getElementById('close-guide-btn');
+    const tabBtns = document.querySelectorAll('.guide-tab-btn');
+    const tabContents = document.querySelectorAll('.guide-tab-content');
+
+    if (!modal || !openBtn || !closeBtn) return;
+
+    // Open Modal
+    openBtn.addEventListener('click', () => {
+        modal.classList.add('show');
+    });
+
+    // Close Modal
+    function closeGuide() {
+        modal.classList.remove('show');
+    }
+
+    closeBtn.addEventListener('click', closeGuide);
+
+    // Close on backdrop click
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            closeGuide();
+        }
+    });
+
+    // Close on Escape key
+    window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.classList.contains('show')) {
+            closeGuide();
+        }
+    });
+
+    // Tab switching
+    tabBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const targetTabId = btn.getAttribute('data-tab');
+            const targetContent = document.getElementById(targetTabId);
+
+            if (!targetContent) return;
+
+            // Update button states
+            tabBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            // Update content states
+            tabContents.forEach(c => c.classList.remove('active'));
+            targetContent.classList.add('active');
         });
     });
 }

@@ -852,6 +852,8 @@ body {
     border-radius: 0px; /* Clean sharp fields */
     outline: none;
     transition: var(--transition-fast);
+    width: 100%;
+    max-width: 100%;
 }
 
 .form-group input:focus,
@@ -928,6 +930,8 @@ body {
     border-radius: 0px; /* Flat layout rules */
     transition: var(--transition-fast);
     animation: enterCard 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+    max-width: 100%;
+    overflow-wrap: break-word;
 }
 
 .comment-card:hover {

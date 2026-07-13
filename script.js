@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initUserGuideModal();
     initHeroCardTilt();
     initMobileBottomNav();
+    initMobileSwipeToast();
 });
 
 /**
@@ -604,4 +605,57 @@ function initMobileBottomNav() {
             }
         });
     });
+}
+
+/**
+ * 11. Mobile Swipe Guide Toast
+ * Displays a floating help toast when the showcase gallery enters screen space,
+ * and immediately hides it as soon as the user swipe-scrolls the grid container.
+ */
+function initMobileSwipeToast() {
+    const showcaseGrid = document.querySelector('.showcase-grid');
+    const swipeToast = document.getElementById('swipe-guide-toast');
+    if (!showcaseGrid || !swipeToast) return;
+
+    const showcaseSection = document.getElementById('showcase');
+    
+    // Check if the toast has already been dismissed this session
+    const isDismissed = sessionStorage.getItem('swipe-toast-dismissed') === 'true';
+
+    if (showcaseSection && !isDismissed) {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                // Trigger only on mobile screens
+                if (entry.isIntersecting && window.innerWidth <= 768) {
+                    // Slight delay for elegant slide in
+                    setTimeout(() => {
+                        if (sessionStorage.getItem('swipe-toast-dismissed') !== 'true') {
+                            swipeToast.classList.add('show');
+                        }
+                    }, 800);
+                    
+                    // Auto-hide after 5 seconds
+                    setTimeout(() => {
+                        swipeToast.classList.remove('show');
+                    }, 5800);
+                    
+                    // Stop observing once triggered once
+                    observer.unobserve(showcaseSection);
+                }
+            });
+        }, {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        });
+
+        observer.observe(showcaseSection);
+    }
+
+    // Dismiss toast instantly upon user swiping/scrolling the grid
+    showcaseGrid.addEventListener('scroll', () => {
+        if (swipeToast.classList.contains('show')) {
+            swipeToast.classList.remove('show');
+        }
+        sessionStorage.setItem('swipe-toast-dismissed', 'true');
+    }, { passive: true });
 }

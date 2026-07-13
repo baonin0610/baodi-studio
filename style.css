@@ -483,6 +483,7 @@ body {
     max-width: 1400px;
     margin: 0 auto;
     padding: 8rem 4%;
+    position: relative;
 }
 
 .section-header {
@@ -2102,6 +2103,58 @@ body {
     body {
         padding-bottom: 74px;
     }
+    
+    /* Swipe Guide Toast (Visible on Mobile) */
+    .swipe-guide-toast {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.6rem;
+        position: absolute;
+        left: 50%;
+        transform: translate(-50%, 20px);
+        bottom: 2.2rem;
+        background: rgba(12, 12, 16, 0.88);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: #FFFFFF;
+        padding: 0.55rem 1.2rem;
+        border-radius: 30px;
+        font-family: var(--font-body);
+        font-size: 0.72rem;
+        font-weight: 500;
+        letter-spacing: 0.02em;
+        z-index: 100;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+    
+    .swipe-guide-toast.show {
+        opacity: 1;
+        transform: translate(-50%, 0);
+    }
+    
+    .swipe-arrow {
+        display: inline-block;
+        animation: swipe-arrow-bounce 1.5s infinite ease-in-out;
+    }
+    
+    .swipe-arrow:first-child {
+        animation-delay: 0.2s;
+    }
+    
+    @keyframes swipe-arrow-bounce {
+        0%, 100% { transform: translateX(0); }
+        50% { transform: translateX(-4px); }
+    }
+}
+
+/* Hide swipe guide toast on desktop completely */
+.swipe-guide-toast {
+    display: none;
 }
 
 

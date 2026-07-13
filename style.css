@@ -1674,8 +1674,8 @@ body {
     align-items: center;
     gap: 0.5rem;
     background: transparent;
-    border: 1px solid var(--border-color);
-    color: var(--text-color);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #e5e3df;
     font-family: var(--font-mono);
     font-size: 0.75rem;
     text-transform: uppercase;
@@ -1688,7 +1688,8 @@ body {
 
 .preview-back-btn:hover {
     border-color: var(--accent-color);
-    color: var(--accent-color);
+    color: #ffffff;
+    background-color: rgba(255, 255, 255, 0.05);
 }
 
 .preview-back-btn svg {

@@ -769,4 +769,91 @@ function initMobileTouchSwiper() {
             behavior: 'smooth'
         });
     });
+
+    // Carousel navigation buttons logic
+    const prevBtn = document.getElementById('carousel-prev-btn');
+    const nextBtn = document.getElementById('carousel-next-btn');
+
+    if (prevBtn && nextBtn) {
+        const getScrollMetrics = () => {
+            const cards = grid.querySelectorAll('.showcase-card');
+            if (!cards.length) return { step: 0, length: 0 };
+            const cardWidth = cards[0].offsetWidth;
+            const gap = 19.2; // 1.2rem
+            return { step: cardWidth + gap, length: cards.length };
+        };
+
+        const updateNavButtons = () => {
+            const { step, length } = getScrollMetrics();
+            if (!step || length <= 1) {
+                prevBtn.style.opacity = '0';
+                prevBtn.style.visibility = 'hidden';
+                nextBtn.style.opacity = '0';
+                nextBtn.style.visibility = 'hidden';
+                return;
+            }
+
+            const currentIndex = Math.round(grid.scrollLeft / step);
+
+            // Left arrow visibility
+            if (currentIndex === 0) {
+                prevBtn.style.opacity = '0';
+                prevBtn.style.visibility = 'hidden';
+            } else {
+                prevBtn.style.opacity = '1';
+                prevBtn.style.visibility = 'visible';
+            }
+
+            // Right arrow visibility
+            if (currentIndex === length - 1) {
+                nextBtn.style.opacity = '0';
+                nextBtn.style.visibility = 'hidden';
+            } else {
+                nextBtn.style.opacity = '1';
+                nextBtn.style.visibility = 'visible';
+            }
+        };
+
+        prevBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const { step } = getScrollMetrics();
+            if (!step) return;
+            
+            const currentIndex = Math.round(grid.scrollLeft / step);
+            const targetIndex = Math.max(currentIndex - 1, 0);
+            grid.scrollTo({
+                left: targetIndex * step,
+                behavior: 'smooth'
+            });
+            
+            // Set guide toast as read
+            sessionStorage.setItem('swipe-toast-dismissed', 'true');
+            const swipeToast = document.getElementById('swipe-guide-toast');
+            if (swipeToast) swipeToast.classList.remove('show');
+        });
+
+        nextBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const { step, length } = getScrollMetrics();
+            if (!step) return;
+
+            const currentIndex = Math.round(grid.scrollLeft / step);
+            const targetIndex = Math.min(currentIndex + 1, length - 1);
+            grid.scrollTo({
+                left: targetIndex * step,
+                behavior: 'smooth'
+            });
+
+            // Set guide toast as read
+            sessionStorage.setItem('swipe-toast-dismissed', 'true');
+            const swipeToast = document.getElementById('swipe-guide-toast');
+            if (swipeToast) swipeToast.classList.remove('show');
+        });
+
+        // Listen to scroll events to update button opacities dynamically
+        grid.addEventListener('scroll', updateNavButtons, { passive: true });
+        
+        // Slight delay on start to allow DOM measurements to complete
+        setTimeout(updateNavButtons, 200);
+    }
 }

@@ -122,7 +122,15 @@
                 </div>
             </div>
 
-            <!-- Swipe Guide Toast (Visible on Mobile) -->
+            <!-- Showcase Carousel Wrapper (For mobile side navigation floating buttons) -->
+            <div class="showcase-carousel-wrapper">
+                <button class="carousel-nav-btn prev-btn" id="carousel-prev-btn" aria-label="Previous template">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="15 18 9 12 15 6"></polyline>
+                    </svg>
+                </button>
+
+                <!-- Swipe Guide Toast (Visible on Mobile) -->
             <div class="swipe-guide-toast" id="swipe-guide-toast">
                 <span class="swipe-arrow">👈</span>
                 <span>Vuốt để xem thêm mẫu</span>
@@ -427,7 +435,14 @@
                     </div>
                 </div>
             </div>
-        </section>
+
+            <button class="carousel-nav-btn next-btn" id="carousel-next-btn" aria-label="Next template">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+            </button>
+        </div>
+    </section>
 
         <!-- About the Developer Section -->
         <section id="about-developer" class="about-section">

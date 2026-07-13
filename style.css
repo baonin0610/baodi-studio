@@ -2188,9 +2188,9 @@ body {
         border: 1px solid rgba(255, 255, 255, 0.12);
         color: #FFFFFF;
         box-shadow: 0 8px 25px rgba(0, 0, 0, 0.22);
-        z-index: 10;
+        z-index: 150;
         cursor: pointer;
-        transition: opacity 0.3s ease, transform 0.2s ease, visibility 0.3s ease;
+        transition: opacity 0.3s ease, transform 0.2s ease;
     }
     
     .carousel-nav-btn:active {
@@ -2198,11 +2198,11 @@ body {
     }
     
     .carousel-nav-btn.prev-btn {
-        left: calc(10vw - 20px);
+        left: calc(10vw + 15px);
     }
     
     .carousel-nav-btn.next-btn {
-        right: calc(10vw - 20px);
+        right: calc(10vw + 15px);
     }
     
     .carousel-nav-btn svg {

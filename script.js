@@ -787,30 +787,27 @@ function initMobileTouchSwiper() {
             const { step, length } = getScrollMetrics();
             if (!step || length <= 1) {
                 prevBtn.style.opacity = '0';
-                prevBtn.style.visibility = 'hidden';
-                nextBtn.style.opacity = '0';
-                nextBtn.style.visibility = 'hidden';
                 return;
             }
 
             const currentIndex = Math.round(grid.scrollLeft / step);
 
-            // Left arrow visibility
+            // Left arrow: Always visible, just faded out/disabled at card 0
             if (currentIndex === 0) {
-                prevBtn.style.opacity = '0';
-                prevBtn.style.visibility = 'hidden';
+                prevBtn.style.opacity = '0.15';
+                prevBtn.style.pointerEvents = 'none';
             } else {
-                prevBtn.style.opacity = '1';
-                prevBtn.style.visibility = 'visible';
+                prevBtn.style.opacity = '0.85';
+                prevBtn.style.pointerEvents = 'auto';
             }
 
-            // Right arrow visibility
+            // Right arrow: Always visible, just faded out/disabled at last card
             if (currentIndex === length - 1) {
-                nextBtn.style.opacity = '0';
-                nextBtn.style.visibility = 'hidden';
+                nextBtn.style.opacity = '0.15';
+                nextBtn.style.pointerEvents = 'none';
             } else {
-                nextBtn.style.opacity = '1';
-                nextBtn.style.visibility = 'visible';
+                nextBtn.style.opacity = '0.85';
+                nextBtn.style.pointerEvents = 'auto';
             }
         };
 

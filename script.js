@@ -119,22 +119,22 @@ function initForumEngine() {
             name: "Trung Nguyen",
             tag: "Client Reviewer",
             date: "Today, 10:20 AM",
-            ref: "Linh Nguyen — Editorial Photographer (Mẫu 1)",
-            message: "Giao diện nhiếp ảnh mẫu 1 thực sự rất đẹp và tinh tế! Màu kem Alabaster kết hợp hình ảnh mộc mạc trông cực kỳ cao cấp, đúng chất nghệ thuật chứ không bị công nghiệp. Nhóm hiệu ứng mở khẩu độ máy ảnh và di chuột View hoạt động rất mượt."
+            ref: "Linh Nguyen — Editorial Photographer (Template 1)",
+            message: "Photography template #1 is absolutely stunning and elegant! The Alabaster tone combined with natural imagery looks extremely premium, capturing real artistry rather than industrial feel. The aperture reveal and View hover work beautifully."
         },
         {
             name: "Maria Anders",
             tag: "Creative Director",
             date: "Yesterday, 4:15 PM",
-            ref: "Alex Nguyen — Creative Developer (Mẫu 2)",
+            ref: "Alex Nguyen — Creative Developer (Template 2)",
             message: "Excited for the Creative Developer theme! The combination of dark backgrounds with neon lines and dynamic particle fields is exactly what we need to show our technical and creative side. Please add a dark-light theme toggle for it if possible."
         },
         {
             name: "Khanh Do",
             tag: "Interior Designer",
             date: "Yesterday, 11:05 AM",
-            ref: "Linh Nguyen — Editorial Photographer (Mẫu 1)",
-            message: "Liệu chúng ta có thể tùy biến mẫu số 1 này thành trang web thiết kế nội thất được không? Mình thấy bố cục bất đối xứng và cách sắp xếp hình ảnh tỷ lệ 3:4 của nó rất phù hợp cho thiết kế không gian."
+            ref: "Linh Nguyen — Editorial Photographer (Template 1)",
+            message: "Can we customize template #1 into an interior design showcase? I feel its asymmetrical grid layout and 3:4 image crops fit space design perfectly."
         }
     ];
 

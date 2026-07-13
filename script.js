@@ -357,26 +357,22 @@ function initLivePreviewModal() {
 
     if (!modal || !iframe || !closeBtn) return;
 
+    const loader = document.getElementById('iframe-loader');
+
     launchBtns.forEach(btn => {
         btn.addEventListener('click', (e) => {
-            // Check if it's the nav bar button or a card launch button
-            if (btn.classList.contains('launch-nav-btn')) return; // Allow nav bar button to open normally
-
-            // MOBILE OPTIMIZATION: If on mobile (screen <= 768px) or a touch screen, open directly in a new tab natively
-            // instead of stacking an iframe modal simulator which ruins responsive viewport tests and drains memory!
-            if (window.innerWidth <= 768 || window.matchMedia('(pointer: coarse)').matches) {
-                // Let the browser perform standard navigation using the target="_blank" attribute on the anchor
-                return;
-            }
+            if (btn.classList.contains('launch-nav-btn')) return;
 
             e.preventDefault();
             
             const url = btn.getAttribute('href');
-            // Try to find the template title from the card body
             const cardBody = btn.closest('.card-body');
             const titleText = cardBody ? cardBody.querySelector('.card-title').textContent : 'Template Preview';
 
-            // Configure modal details
+            // Show loader overlay and hide iframe during loading
+            if (loader) loader.classList.add('show');
+            iframe.style.opacity = '0';
+            
             iframe.src = url;
             previewTitle.textContent = titleText;
             externalLink.href = url;
@@ -390,15 +386,21 @@ function initLivePreviewModal() {
                 iframeWrapper.className = 'preview-iframe-wrapper desktop';
             }
 
-            // Show modal
             modal.classList.add('show');
         });
+    });
+
+    // Hide loading spinner and fade in iframe when loaded
+    iframe.addEventListener('load', () => {
+        if (loader) loader.classList.remove('show');
+        iframe.style.opacity = '1';
     });
 
     // Close preview modal
     function closePreview() {
         modal.classList.remove('show');
-        // VERY IMPORTANT: Clear the iframe source to stop background sounds (e.g. tape flutter, clock ticking) from playing!
+        if (loader) loader.classList.remove('show');
+        iframe.style.opacity = '0';
         iframe.src = '';
     }
 

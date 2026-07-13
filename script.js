@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initScrollReveal();
     initLivePreviewModal();
     initUserGuideModal();
+    initHeroCardTilt();
 });
 
 /**
@@ -468,5 +469,46 @@ function initUserGuideModal() {
             tabContents.forEach(c => c.classList.remove('active'));
             targetContent.classList.add('active');
         });
+    });
+}
+
+/**
+ * 9. Interactive 3D Card Tilt with Glare Sweep
+ * Follows cursor position to rotate card in 3D space and sweep reflective radial highlights.
+ */
+function initHeroCardTilt() {
+    const card = document.getElementById('hero-tilt-card');
+    const glare = card ? card.querySelector('.hero-card-glare') : null;
+    if (!card) return;
+
+    card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        
+        // Tilt angles (max 10 degrees)
+        const rotateX = ((centerY - y) / centerY) * 10;
+        const rotateY = ((x - centerX) / centerX) * 10;
+        
+        // Set transform matrix
+        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+        card.style.boxShadow = `${-rotateY * 1.2}px ${rotateX * 1.2}px 30px rgba(0,0,0,0.06)`;
+
+        // Highlight glare position
+        if (glare) {
+            glare.style.opacity = '1';
+            const glareX = (x / rect.width) * 100;
+            const glareY = (y / rect.height) * 100;
+            glare.style.background = `radial-gradient(circle at ${glareX}% ${glareY}%, rgba(255,255,255,0.3) 0%, transparent 60%)`;
+        }
+    });
+
+    card.addEventListener('mouseleave', () => {
+        card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg)';
+        card.style.boxShadow = '0 10px 30px rgba(0,0,0,0.03)';
+        if (glare) glare.style.opacity = '0';
     });
 }

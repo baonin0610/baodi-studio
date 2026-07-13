@@ -257,12 +257,99 @@ body {
     width: 85%;
     margin-left: auto;
     border-radius: 8px;
+    background-color: #F5F3EF;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 3rem 2.6rem 2.6rem;
+    box-sizing: border-box;
+    transform-style: preserve-3d;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+    transition: transform 0.1s ease-out, box-shadow 0.1s ease-out;
 }
 
-.hero-graphic {
+.hero-card-glare {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.4) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 5;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.hero-card-header-text {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    z-index: 2;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 800;
+    font-size: clamp(3.2rem, 5.5vw, 4.8rem);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    transform: translateZ(30px);
+}
+
+.hero-card-header-text span {
+    color: #1a1a1a;
+    display: inline-block;
+    cursor: default;
+    transition: color 0.25s ease, transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.hero-card-header-text span:hover {
+    color: var(--accent-color);
+    transform: translateY(-8px) scale(1.08);
+}
+
+.hero-card-signature {
+    font-family: 'Mr De Haviland', cursive;
+    font-size: clamp(4.5rem, 8vw, 6.5rem);
+    color: #262626;
+    text-align: center;
+    user-select: none;
+    z-index: 2;
+    margin-top: -1rem;
+    margin-bottom: -1rem;
+    transform: translateZ(50px);
+    transition: transform 0.4s ease;
+}
+
+.hero-card-signature:hover {
+    transform: translateZ(55px) scale(1.05) rotate(-2deg);
+}
+
+.hero-card-footer-meta {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    width: 100%;
+    z-index: 2;
+    border-top: 1px solid rgba(0,0,0,0.06);
+    padding-top: 1.8rem;
+    transform: translateZ(20px);
+}
+
+.hero-card-footer-meta .meta-col {
+    font-family: var(--font-mono);
+    font-size: clamp(0.55rem, 1vw, 0.65rem);
+    color: #555;
+    line-height: 1.6;
+    text-align: left;
+    font-weight: 300;
+}
+
+.hero-card-footer-meta .meta-col strong {
+    color: #1a1a1a;
+    font-weight: 600;
+}
+
+.hero-card-footer-meta .meta-col.text-right {
+    text-align: right;
 }
 
 /* Showcase Section */

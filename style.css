@@ -1137,4 +1137,108 @@ body {
     }
 }
 
+/* Hero Stats Row */
+.hero-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.stat-box {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.stat-num {
+    font-family: var(--font-heading);
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--accent-color);
+}
+
+.stat-label {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+@media (max-width: 768px) {
+    .hero-stats {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.2rem;
+    }
+}
+
+/* Ambient Background Glow Elements */
+.ambient-glow {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(140px);
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.06;
+    mix-blend-mode: screen;
+}
+
+.glow-1 {
+    width: 450px;
+    height: 450px;
+    background: radial-gradient(circle, var(--accent-color) 0%, transparent 80%);
+    top: 5%;
+    left: -100px;
+    animation: float-glow-1 25s ease-in-out infinite alternate;
+}
+
+.glow-2 {
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, #8b5cf6 0%, transparent 85%);
+    bottom: 10%;
+    right: -150px;
+    animation: float-glow-2 30s ease-in-out infinite alternate;
+}
+
+.glow-3 {
+    width: 350px;
+    height: 350px;
+    background: radial-gradient(circle, #3b82f6 0%, transparent 80%);
+    top: 50%;
+    left: 40%;
+    animation: float-glow-3 20s ease-in-out infinite alternate;
+}
+
+@keyframes float-glow-1 {
+    0% { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(80px, 50px) scale(1.15); }
+}
+
+@keyframes float-glow-2 {
+    0% { transform: translate(0, 0) scale(1.1); }
+    100% { transform: translate(-100px, -60px) scale(0.9); }
+}
+
+@keyframes float-glow-3 {
+    0% { transform: translate(0, 0) scale(0.95); }
+    100% { transform: translate(50px, -80px) scale(1.1); }
+}
+
+/* Scroll Reveal Animation Styles */
+.reveal-on-scroll {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform;
+}
+
+.reveal-on-scroll.revealed {
+    opacity: 1;
+    transform: translateY(0);
+}
+
 

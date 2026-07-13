@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initForumEngine();
     initTemplateLinkCopier();
     initZaloToast();
+    initScrollReveal();
 });
 
 /**
@@ -304,4 +305,31 @@ function initZaloToast() {
     if (overlay) {
         overlay.addEventListener('click', closeToast);
     }
+}
+
+/**
+ * 6. Scroll Reveal Observer & Dynamic Classes setup
+ * Programmatically tracks elements and fades them up beautifully when scrolled into view.
+ */
+function initScrollReveal() {
+    const targets = document.querySelectorAll('.showcase-card, .section-header, .about-section, .forum-section');
+    
+    // Add scroll reveal classes dynamically
+    targets.forEach(el => {
+        el.classList.add('reveal-on-scroll');
+    });
+
+    const observer = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('revealed');
+                obs.unobserve(entry.target); // Stop tracking once revealed
+            }
+        });
+    }, {
+        threshold: 0.05,
+        rootMargin: '0px 0px -50px 0px'
+    });
+
+    targets.forEach(el => observer.observe(el));
 }

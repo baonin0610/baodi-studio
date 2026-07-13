@@ -299,7 +299,41 @@ body {
     box-sizing: border-box;
     transform-style: preserve-3d;
     box-shadow: 0 10px 30px rgba(0,0,0,0.03);
-    transition: transform 0.1s ease-out, box-shadow 0.1s ease-out;
+    transition: transform 0.1s ease-out, box-shadow 0.1s ease-out, background-color 0.5s ease, border-color 0.5s ease, box-shadow 0.5s ease;
+}
+
+/* Card Local Dark Mode Easter Egg Styles */
+.hero-graphic-wrapper.dark-mode {
+    background-color: #0c0b0d !important;
+    border-color: rgba(255, 255, 255, 0.12) !important;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5) !important;
+}
+
+.hero-graphic-wrapper.dark-mode .hero-card-header-text span {
+    color: #ffffff !important;
+}
+
+.hero-graphic-wrapper.dark-mode .hero-card-signature {
+    color: var(--accent-color) !important;
+    text-shadow: 0 0 20px rgba(99, 102, 241, 0.45);
+}
+
+.hero-graphic-wrapper.dark-mode .hero-card-footer-meta {
+    border-top-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+.hero-graphic-wrapper.dark-mode .hero-card-footer-meta .meta-col {
+    color: #aaa !important;
+}
+
+.hero-graphic-wrapper.dark-mode .hero-card-footer-meta .meta-col strong {
+    color: #ffffff !important;
+}
+
+.hero-graphic-wrapper.dark-mode .card-interaction-hint {
+    background-color: rgba(255, 255, 255, 0.04) !important;
+    border-color: rgba(255, 255, 255, 0.08) !important;
+    color: #aaa !important;
 }
 
 /* Hero Card Interaction Hint */
@@ -392,7 +426,14 @@ body {
     margin-top: -1rem;
     margin-bottom: -1rem;
     transform: translateZ(50px);
-    transition: transform 0.4s ease;
+    background: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    width: 100%;
+    display: block;
+    outline: none;
+    transition: transform 0.4s ease, color 0.5s ease, text-shadow 0.5s ease;
 }
 
 .hero-card-signature:hover {

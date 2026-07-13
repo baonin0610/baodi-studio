@@ -479,6 +479,7 @@ function initUserGuideModal() {
 function initHeroCardTilt() {
     const card = document.getElementById('hero-tilt-card');
     const glare = card ? card.querySelector('.hero-card-glare') : null;
+    const signature = card ? card.querySelector('.hero-card-signature') : null;
     if (!card) return;
 
     card.addEventListener('mousemove', (e) => {
@@ -508,7 +509,20 @@ function initHeroCardTilt() {
 
     card.addEventListener('mouseleave', () => {
         card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg)';
-        card.style.boxShadow = '0 10px 30px rgba(0,0,0,0.03)';
+        // Maintain shadow depending on dark-mode class
+        if (card.classList.contains('dark-mode')) {
+            card.style.boxShadow = '0 15px 40px rgba(0,0,0,0.5)';
+        } else {
+            card.style.boxShadow = '0 10px 30px rgba(0,0,0,0.03)';
+        }
         if (glare) glare.style.opacity = '0';
     });
+
+    // Dark-mode toggle easter egg on signature click
+    if (signature) {
+        signature.addEventListener('click', (e) => {
+            e.stopPropagation();
+            card.classList.toggle('dark-mode');
+        });
+    }
 }

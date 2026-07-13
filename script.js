@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initLivePreviewModal();
     initUserGuideModal();
     initHeroCardTilt();
+    initMobileBottomNav();
 });
 
 /**
@@ -533,4 +534,74 @@ function initHeroCardTilt() {
             card.classList.toggle('dark-mode');
         });
     }
+}
+
+/**
+ * 10. Mobile Bottom Navigation & Scroll Spy Indicator
+ * Handles smooth clicks and dynamically highlights the active navigation tab as screen scrolls.
+ */
+function initMobileBottomNav() {
+    const bottomNav = document.querySelector('.mobile-bottom-nav');
+    if (!bottomNav) return;
+
+    const navItems = bottomNav.querySelectorAll('.mobile-nav-item');
+    const sections = {
+        'hero-section': document.getElementById('hero-section'),
+        'showcase': document.getElementById('showcase'),
+        'forum': document.getElementById('forum'),
+        'about-developer': document.getElementById('about-developer')
+    };
+
+    // Smooth scroll offset adjustments
+    navItems.forEach(item => {
+        item.addEventListener('click', (e) => {
+            e.preventDefault();
+            const targetId = item.getAttribute('data-target');
+            const targetEl = document.getElementById(targetId);
+
+            if (targetEl) {
+                const headerOffset = 60;
+                const elementPosition = targetEl.getBoundingClientRect().top;
+                const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: 'smooth'
+                });
+
+                // Update active tab class immediately
+                navItems.forEach(nav => nav.classList.remove('active'));
+                item.classList.add('active');
+            }
+        });
+    });
+
+    // Scroll Spy active indicator listener
+    window.addEventListener('scroll', () => {
+        // Skip scroll spy on large viewports where bottom-nav is hidden
+        if (window.innerWidth > 768) return;
+
+        let currentSectionId = 'hero-section';
+        const scrollPosition = window.scrollY + 200; // Offset for trigger bounds
+
+        for (const [id, element] of Object.entries(sections)) {
+            if (element) {
+                const top = element.offsetTop;
+                const height = element.offsetHeight;
+
+                if (scrollPosition >= top && scrollPosition < top + height) {
+                    currentSectionId = id;
+                }
+            }
+        }
+
+        // Highlight matching tab element
+        navItems.forEach(item => {
+            if (item.getAttribute('data-target') === currentSectionId) {
+                item.classList.add('active');
+            } else {
+                item.classList.remove('active');
+            }
+        });
+    });
 }

@@ -197,8 +197,42 @@ body {
     line-height: 1.15;
     font-weight: 600;
     letter-spacing: -0.03em;
-    margin-bottom: 2rem;
+    margin-bottom: 2.2rem;
     color: var(--text-color);
+    overflow: hidden;
+    display: flex;
+    flex-wrap: wrap;
+    row-gap: 0.4rem;
+}
+
+.reveal-word {
+    display: inline-block;
+    transform: translateY(105%);
+    opacity: 0;
+    margin-right: 0.65rem;
+    animation: reveal-word-up 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation-delay: calc(var(--word-index) * 0.08s + 0.15s);
+}
+
+@keyframes reveal-word-up {
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.load-reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: load-reveal-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation-delay: var(--reveal-delay, 0s);
+}
+
+@keyframes load-reveal-up {
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
 }
 
 .hero-desc {

@@ -506,7 +506,33 @@ body {
 .section-sub {
     font-size: 1.05rem;
     color: var(--text-muted);
-    margin-bottom: 3rem;
+    margin-bottom: 1.5rem;
+}
+
+.desktop-recommendation-note {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--accent-color);
+    background-color: rgba(140, 124, 109, 0.08);
+    border: 1px solid rgba(140, 124, 109, 0.16);
+    padding: 0.5rem 1.1rem;
+    border-radius: 20px;
+    margin-bottom: 2.2rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+}
+
+.desktop-recommendation-note .note-icon {
+    width: 14px;
+    height: 14px;
+    stroke: var(--accent-color);
+    stroke-width: 2px;
 }
 
 .filter-controls {

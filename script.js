@@ -713,12 +713,17 @@ function initMobileTouchSwiper() {
         }
 
         if (isScrollingMode === 'horizontal') {
+            // CRITICAL MOBILE UX FIX: Prevent the parent page from shifting/scrolling vertically during card swipes
+            if (e.cancelable) {
+                e.preventDefault();
+            }
+            
             // Apply slight multiplier for super responsive dragging
             const x = currentX - grid.offsetLeft;
             const walk = (x - startX) * 1.15;
             grid.scrollLeft = scrollLeft - walk;
         }
-    }, { passive: true });
+    }, { passive: false });
 
     grid.addEventListener('touchend', (e) => {
         if (!isDown) return;

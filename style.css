@@ -1063,6 +1063,33 @@ body {
         gap: 2.2rem;
     }
     
+    /* Forum Mobile Optimizations */
+    .forum-form {
+        padding: 1.5rem;
+        gap: 1.2rem;
+    }
+    
+    .form-row {
+        flex-direction: column;
+        gap: 1.2rem;
+    }
+    
+    .submit-forum-btn {
+        align-self: stretch;
+        justify-content: center;
+        padding: 0.9rem 1.5rem;
+    }
+    
+    .comment-card {
+        padding: 1.4rem;
+    }
+    
+    .comment-header {
+        flex-direction: column;
+        gap: 0.6rem;
+        align-items: flex-start;
+    }
+    
     .nav-links {
         display: flex;
         gap: 0.5rem;

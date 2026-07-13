@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initTemplateLinkCopier();
     initZaloToast();
     initScrollReveal();
+    initLivePreviewModal();
 });
 
 /**
@@ -332,4 +333,81 @@ function initScrollReveal() {
     });
 
     targets.forEach(el => observer.observe(el));
+}
+
+/**
+ * 7. Live Template Preview Modal & Viewport Switcher
+ * Opens an iframe modal for instant template preview and device viewport simulation.
+ */
+function initLivePreviewModal() {
+    const launchBtns = document.querySelectorAll('.card-action-btn');
+    const modal = document.getElementById('preview-modal');
+    const iframe = document.getElementById('preview-iframe');
+    const iframeWrapper = document.getElementById('preview-iframe-wrapper');
+    const previewTitle = document.getElementById('preview-title');
+    const externalLink = document.getElementById('preview-external-link');
+    const closeBtn = document.getElementById('close-preview-modal');
+    const viewportBtns = document.querySelectorAll('.viewport-btn');
+
+    if (!modal || !iframe || !closeBtn) return;
+
+    launchBtns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            // Check if it's the nav bar button or a card launch button
+            if (btn.classList.contains('launch-nav-btn')) return; // Allow nav bar button to open normally
+
+            e.preventDefault();
+            
+            const url = btn.getAttribute('href');
+            // Try to find the template title from the card body
+            const cardBody = btn.closest('.card-body');
+            const titleText = cardBody ? cardBody.querySelector('.card-title').textContent : 'Template Preview';
+
+            // Configure modal details
+            iframe.src = url;
+            previewTitle.textContent = titleText;
+            externalLink.href = url;
+
+            // Reset viewport to desktop
+            viewportBtns.forEach(b => b.classList.remove('active'));
+            const desktopBtn = Array.from(viewportBtns).find(b => b.getAttribute('data-viewport') === 'desktop');
+            if (desktopBtn) desktopBtn.classList.add('active');
+            
+            if (iframeWrapper) {
+                iframeWrapper.className = 'preview-iframe-wrapper desktop';
+            }
+
+            // Show modal
+            modal.classList.add('show');
+        });
+    });
+
+    // Close preview modal
+    function closePreview() {
+        modal.classList.remove('show');
+        // VERY IMPORTANT: Clear the iframe source to stop background sounds (e.g. tape flutter, clock ticking) from playing!
+        iframe.src = '';
+    }
+
+    closeBtn.addEventListener('click', closePreview);
+
+    // Close modal if pressing Escape key
+    window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.classList.contains('show')) {
+            closePreview();
+        }
+    });
+
+    // Viewport controls switcher
+    viewportBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            viewportBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            const viewport = btn.getAttribute('data-viewport');
+            if (iframeWrapper) {
+                iframeWrapper.className = `preview-iframe-wrapper ${viewport}`;
+            }
+        });
+    });
 }

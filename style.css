@@ -1241,4 +1241,207 @@ body {
     transform: translateY(0);
 }
 
+/* Live Template Preview Modal */
+.preview-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(10, 10, 12, 0.98);
+    z-index: 30000;
+    display: flex;
+    flex-direction: column;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+}
+
+.preview-modal.show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.preview-modal-header {
+    height: 70px;
+    background-color: #0c0b0d;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 2rem;
+    box-sizing: border-box;
+}
+
+.preview-back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: var(--transition-fast);
+}
+
+.preview-back-btn:hover {
+    border-color: var(--accent-color);
+    color: var(--accent-color);
+}
+
+.preview-back-btn svg {
+    width: 14px;
+    height: 14px;
+}
+
+.viewport-controls {
+    display: flex;
+    gap: 0.4rem;
+    background-color: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-color);
+    padding: 0.25rem;
+    border-radius: 6px;
+}
+
+.viewport-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0.4rem 0.8rem;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: var(--transition-fast);
+}
+
+.viewport-btn svg {
+    width: 14px;
+    height: 14px;
+}
+
+.viewport-btn:hover {
+    color: var(--text-color);
+}
+
+.viewport-btn.active {
+    background-color: var(--accent-color);
+    color: #fff;
+}
+
+.preview-header-right {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.preview-template-title {
+    font-family: var(--font-heading);
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text-muted);
+}
+
+.preview-external-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: transparent;
+    border: 1px solid var(--accent-color);
+    color: var(--accent-color);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: var(--transition-fast);
+}
+
+.preview-external-btn:hover {
+    background-color: var(--accent-color);
+    color: #fff;
+}
+
+.preview-external-btn svg {
+    width: 12px;
+    height: 12px;
+}
+
+.preview-iframe-container {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #08080a;
+    padding: 2rem;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.preview-iframe-wrapper {
+    background-color: #000;
+    transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1), height 0.4s cubic-bezier(0.16, 1, 0.3, 1), border 0.3s ease, border-radius 0.3s ease;
+    box-sizing: border-box;
+}
+
+.preview-iframe-wrapper.desktop {
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-radius: 0;
+}
+
+.preview-iframe-wrapper.tablet {
+    width: 768px;
+    height: 100%;
+    max-height: 1024px;
+    border: 10px solid #1c1b1f;
+    border-radius: 20px;
+    box-shadow: 0 30px 70px rgba(0,0,0,0.85);
+}
+
+.preview-iframe-wrapper.mobile {
+    width: 375px;
+    height: 100%;
+    max-height: 780px;
+    border: 12px solid #1c1b1f;
+    border-radius: 30px;
+    box-shadow: 0 30px 70px rgba(0,0,0,0.85);
+}
+
+.preview-iframe-wrapper iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    background-color: #000;
+    border-radius: inherit;
+}
+
+@media (max-width: 768px) {
+    .preview-modal-header {
+        padding: 0 1rem;
+    }
+    
+    .viewport-controls {
+        display: none; /* Hide viewport togglers on mobile viewports since the screen itself is small */
+    }
+    
+    .preview-template-title {
+        display: none;
+    }
+}
+
 

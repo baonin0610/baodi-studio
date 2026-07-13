@@ -1081,7 +1081,7 @@ body {
     
     .forum-container {
         grid-template-columns: 1fr;
-        gap: 5rem;
+        gap: 3.5rem;
     }
 }
 
@@ -1134,8 +1134,17 @@ body {
         scroll-snap-align: center;
         max-width: 380px;
     }
+
+    .filter-btn {
+        padding: 0.6rem 1rem;
+        font-size: 0.7rem;
+    }
     
     /* Forum Mobile Optimizations */
+    .forum-desc {
+        margin-bottom: 2rem;
+    }
+
     .forum-form {
         padding: 1.5rem;
         gap: 1.2rem;
@@ -1157,9 +1166,12 @@ body {
     }
     
     .comment-header {
-        flex-direction: column;
-        gap: 0.6rem;
-        align-items: flex-start;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 0.8rem;
     }
     
     .nav-links {
@@ -1203,6 +1215,25 @@ body {
     .launch-nav-btn {
         padding: 0.5rem 0.8rem;
         font-size: 0.7rem;
+    }
+
+    .filter-btn {
+        padding: 0.5rem 0.6rem;
+        font-size: 0.65rem;
+    }
+
+    .comment-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.4rem;
+    }
+
+    .comment-date {
+        margin-left: 56px;
+    }
+
+    .zalo-toast {
+        padding: 2rem 1.5rem;
     }
 }
 
@@ -1526,6 +1557,10 @@ body {
     
     .detail-item {
         justify-content: center;
+    }
+
+    .detail-label {
+        min-width: auto;
     }
     
     .about-socials {

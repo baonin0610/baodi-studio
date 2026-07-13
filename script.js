@@ -4,6 +4,12 @@
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
+    // Load dark theme state
+    const savedTheme = localStorage.getItem('studio-dark-theme');
+    if (savedTheme === 'enabled') {
+        document.body.classList.add('dark-theme');
+    }
+
     initCustomCursor();
     initShowcaseFilters();
     initForumEngine();
@@ -509,8 +515,8 @@ function initHeroCardTilt() {
 
     card.addEventListener('mouseleave', () => {
         card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg)';
-        // Maintain shadow depending on dark-mode class
-        if (card.classList.contains('dark-mode')) {
+        // Maintain shadow depending on dark-theme class
+        if (document.body.classList.contains('dark-theme')) {
             card.style.boxShadow = '0 15px 40px rgba(0,0,0,0.5)';
         } else {
             card.style.boxShadow = '0 10px 30px rgba(0,0,0,0.03)';
@@ -518,11 +524,15 @@ function initHeroCardTilt() {
         if (glare) glare.style.opacity = '0';
     });
 
-    // Dark-mode toggle easter egg on signature click
+    // Dark-mode toggle easter egg on signature click (Toggles theme globally!)
     if (signature) {
         signature.addEventListener('click', (e) => {
             e.stopPropagation();
-            card.classList.toggle('dark-mode');
+            document.body.classList.toggle('dark-theme');
+            
+            // Save state to localStorage for persistence
+            const isDark = document.body.classList.contains('dark-theme');
+            localStorage.setItem('studio-dark-theme', isDark ? 'enabled' : 'disabled');
         });
     }
 }

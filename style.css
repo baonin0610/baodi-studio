@@ -20,6 +20,22 @@
     --transition-fast: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+/* Global Dark Theme Variable Overrides */
+body.dark-theme {
+    --bg-color: #0b0a0d;        /* Deep Obsidian / Dark */
+    --bg-card: #121115;         /* Dark card background */
+    --text-color: #F5F3EF;      /* Warm white */
+    --text-muted: #9E9C98;      /* Grey muted text */
+    --accent-color: #8f92f6;    /* Vibrant glowing lavender/indigo */
+    --border-color: rgba(255, 255, 255, 0.08); /* Dark subtle border */
+    --border-hover: #F5F3EF;    /* White border on hover */
+}
+
+/* Global transitions for smooth theme switching */
+body, header, section, footer, .showcase-card, .forum-section, .about-section, .hero-graphic-wrapper, .site-header, .logo {
+    transition: background-color 0.6s ease, border-color 0.6s ease, box-shadow 0.6s ease, color 0.6s ease;
+}
+
 /* Reset & Global Base */
 * {
     box-sizing: border-box;
@@ -303,34 +319,41 @@ body {
 }
 
 /* Card Local Dark Mode Easter Egg Styles */
-.hero-graphic-wrapper.dark-mode {
+.hero-graphic-wrapper.dark-mode,
+body.dark-theme .hero-graphic-wrapper {
     background-color: #0c0b0d !important;
     border-color: rgba(255, 255, 255, 0.12) !important;
     box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5) !important;
 }
 
-.hero-graphic-wrapper.dark-mode .hero-card-header-text span {
+.hero-graphic-wrapper.dark-mode .hero-card-header-text span,
+body.dark-theme .hero-graphic-wrapper .hero-card-header-text span {
     color: #ffffff !important;
 }
 
-.hero-graphic-wrapper.dark-mode .hero-card-signature {
+.hero-graphic-wrapper.dark-mode .hero-card-signature,
+body.dark-theme .hero-graphic-wrapper .hero-card-signature {
     color: var(--accent-color) !important;
     text-shadow: 0 0 20px rgba(99, 102, 241, 0.45);
 }
 
-.hero-graphic-wrapper.dark-mode .hero-card-footer-meta {
+.hero-graphic-wrapper.dark-mode .hero-card-footer-meta,
+body.dark-theme .hero-graphic-wrapper .hero-card-footer-meta {
     border-top-color: rgba(255, 255, 255, 0.08) !important;
 }
 
-.hero-graphic-wrapper.dark-mode .hero-card-footer-meta .meta-col {
+.hero-graphic-wrapper.dark-mode .hero-card-footer-meta .meta-col,
+body.dark-theme .hero-graphic-wrapper .hero-card-footer-meta .meta-col {
     color: #aaa !important;
 }
 
-.hero-graphic-wrapper.dark-mode .hero-card-footer-meta .meta-col strong {
+.hero-graphic-wrapper.dark-mode .hero-card-footer-meta .meta-col strong,
+body.dark-theme .hero-graphic-wrapper .hero-card-footer-meta .meta-col strong {
     color: #ffffff !important;
 }
 
-.hero-graphic-wrapper.dark-mode .card-interaction-hint {
+.hero-graphic-wrapper.dark-mode .card-interaction-hint,
+body.dark-theme .hero-graphic-wrapper .card-interaction-hint {
     background-color: rgba(255, 255, 255, 0.04) !important;
     border-color: rgba(255, 255, 255, 0.08) !important;
     color: #aaa !important;

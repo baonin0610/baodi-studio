@@ -2198,11 +2198,11 @@ body {
     }
     
     .carousel-nav-btn.prev-btn {
-        left: 4px;
+        left: calc(10vw - 20px);
     }
     
     .carousel-nav-btn.next-btn {
-        right: 4px;
+        right: calc(10vw - 20px);
     }
     
     .carousel-nav-btn svg {

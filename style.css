@@ -253,7 +253,7 @@ body {
     position: relative;
     overflow: hidden;
     border: 1px solid var(--border-color);
-    aspect-ratio: 3/2;
+    aspect-ratio: 1/1;
 }
 
 .hero-graphic {

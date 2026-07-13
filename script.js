@@ -359,6 +359,13 @@ function initLivePreviewModal() {
             // Check if it's the nav bar button or a card launch button
             if (btn.classList.contains('launch-nav-btn')) return; // Allow nav bar button to open normally
 
+            // MOBILE OPTIMIZATION: If on mobile (screen <= 768px) or a touch screen, open directly in a new tab natively
+            // instead of stacking an iframe modal simulator which ruins responsive viewport tests and drains memory!
+            if (window.innerWidth <= 768 || window.matchMedia('(pointer: coarse)').matches) {
+                // Let the browser perform standard navigation using the target="_blank" attribute on the anchor
+                return;
+            }
+
             e.preventDefault();
             
             const url = btn.getAttribute('href');

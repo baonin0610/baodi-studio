@@ -271,6 +271,19 @@ body {
     opacity: 0.8;
 }
 
+.image-side {
+    cursor: pointer;
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.image-side:hover {
+    transform: scale(1.015);
+}
+
+.image-side:active {
+    transform: scale(0.99);
+}
+
 /* Frames */
 .img-frame {
     width: 100%;

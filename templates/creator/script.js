@@ -166,16 +166,43 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
     
-    // Click Listeners
+    // Autoplay Timer (Auto advance every 7.5 seconds)
+    let autoplayTimer = null;
+    
+    function startAutoplay() {
+        if (window.innerWidth <= 768) return; // Disable autoplay on mobile
+        stopAutoplay();
+        autoplayTimer = setInterval(() => {
+            let nextIdx = currentSlide + 1;
+            if (nextIdx >= totalSlides) nextIdx = 0; // Loop around
+            goToSlide(nextIdx);
+        }, 7500);
+    }
+    
+    function stopAutoplay() {
+        if (autoplayTimer) {
+            clearInterval(autoplayTimer);
+            autoplayTimer = null;
+        }
+    }
+    
+    function resetAutoplay() {
+        stopAutoplay();
+        startAutoplay();
+    }
+    
+    // Click Listeners for Navigation Buttons
     if (prevBtn) {
         prevBtn.addEventListener('click', () => {
             goToSlide(currentSlide - 1);
+            resetAutoplay();
         });
     }
     
     if (nextBtn) {
         nextBtn.addEventListener('click', () => {
             goToSlide(currentSlide + 1);
+            resetAutoplay();
         });
     }
 
@@ -184,26 +211,39 @@ document.addEventListener('DOMContentLoaded', () => {
     if (pulseTrigger) {
         pulseTrigger.addEventListener('click', () => {
             let nextIdx = currentSlide + 1;
-            if (nextIdx >= totalSlides) nextIdx = 0; // Loop back to cover slide!
+            if (nextIdx >= totalSlides) nextIdx = 0;
             goToSlide(nextIdx);
+            resetAutoplay();
         });
     }
+
+    // Direct Image Column Clicks to Advance to Next Page
+    const imageSides = document.querySelectorAll('.image-side');
+    imageSides.forEach((side) => {
+        side.addEventListener('click', () => {
+            let nextIdx = currentSlide + 1;
+            if (nextIdx >= totalSlides) nextIdx = 0;
+            goToSlide(nextIdx);
+            resetAutoplay();
+        });
+    });
     
     // Keyboard Arrow Keys Support
     window.addEventListener('keydown', (e) => {
-        // Only run horizontal slide shortcuts if viewport is desktop width
         if (window.innerWidth > 768) {
             if (e.key === 'ArrowRight' || e.key === ' ') {
                 e.preventDefault();
                 goToSlide(currentSlide + 1);
+                resetAutoplay();
             } else if (e.key === 'ArrowLeft') {
                 e.preventDefault();
                 goToSlide(currentSlide - 1);
+                resetAutoplay();
             }
         }
     });
 
-    // Touch Swipe Event Listeners (For tablet horizontal swipes)
+    // Touch Swipe Event Listeners
     let touchStartX = 0;
     let touchEndX = 0;
     
@@ -218,20 +258,53 @@ document.addEventListener('DOMContentLoaded', () => {
     
     function handleSwipe() {
         if (window.innerWidth > 768) {
-            const threshold = 50; // swipe minimum distance
+            const threshold = 50;
             if (touchStartX - touchEndX > threshold) {
-                // Swipe Left -> Next Slide
                 goToSlide(currentSlide + 1);
+                resetAutoplay();
             } else if (touchEndX - touchStartX > threshold) {
-                // Swipe Right -> Prev Slide
                 goToSlide(currentSlide - 1);
+                resetAutoplay();
             }
         }
     }
+
+    // Mouse Wheel Scroll hijack for Desktop transitions
+    let lastScrollTime = 0;
+    window.addEventListener('wheel', (e) => {
+        if (window.innerWidth <= 768) return; // Disable scroll hijack on mobile
+        
+        const currentTime = new Date().getTime();
+        // Allow a scroll transition at most once every 1200ms
+        if (currentTime - lastScrollTime < 1200) {
+            e.preventDefault();
+            return;
+        }
+        
+        // Threshold check to avoid accidental trigger on micro-scrolls
+        if (Math.abs(e.deltaY) > 15) {
+            e.preventDefault();
+            lastScrollTime = currentTime;
+            
+            if (e.deltaY > 0) {
+                // Scroll down -> Next Slide
+                let nextIdx = currentSlide + 1;
+                if (nextIdx >= totalSlides) nextIdx = 0;
+                goToSlide(nextIdx);
+            } else {
+                // Scroll up -> Previous Slide
+                let prevIdx = currentSlide - 1;
+                if (prevIdx < 0) prevIdx = totalSlides - 1;
+                goToSlide(prevIdx);
+            }
+            resetAutoplay();
+        }
+    }, { passive: false });
     
     // Resize Listener to handle mobile layouts fluidly
     window.addEventListener('resize', () => {
         if (window.innerWidth <= 768) {
+            stopAutoplay();
             slides.forEach((slide) => {
                 slide.classList.remove('active', 'exit-next', 'exit-prev', 'enter-next', 'enter-prev');
             });
@@ -243,10 +316,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
             updateControls();
+            startAutoplay();
         }
     });
     
     // Init
     initDots();
-    goToSlide(0); // Lock initial state
+    goToSlide(0);
+    startAutoplay(); // Lock initial state
 });

@@ -26,6 +26,13 @@ document.addEventListener('DOMContentLoaded', () => {
         slide.appendChild(glow1);
         slide.appendChild(glow2);
     });
+
+    // Split Heading Typography Masking Reveal
+    const titles = document.querySelectorAll('.slide-title');
+    titles.forEach((title) => {
+        const text = title.textContent;
+        title.innerHTML = `<span class="title-line-mask"><span class="title-line-content">${text}</span></span>`;
+    });
     
     // Hide floating back button if loaded inside an iframe (like the Studio Hub modal)
     if (window.self !== window.top) {
@@ -120,6 +127,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function updateControls() {
+        // Update top progress bar width percentage
+        const progressBar = document.getElementById('deck-progress-bar');
+        if (progressBar) {
+            const percentage = (currentSlide / (totalSlides - 1)) * 100;
+            progressBar.style.width = `${percentage}%`;
+        }
+
         // Update Dots
         const dots = document.querySelectorAll('.progress-dot');
         dots.forEach((dot, idx) => {

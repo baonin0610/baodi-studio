@@ -143,48 +143,63 @@ body {
         transition: transform 0.9s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.9s ease;
     }
 
-    /* 2. Slide Exiting State (Splitting apart to the sides) */
-    .slide.exit-next .col-left,
-    .slide.exit-prev .col-left {
-        transform: translate3d(-100%, 0, 0);
+    /* 2. Slide Exiting State (Peeling and sliding out) */
+    .slide.exit-next .col-left {
+        transform: translate3d(-100%, 0, 0) skewX(-8deg) scale(0.9);
         opacity: 0;
-        transition: transform 0.8s cubic-bezier(0.7, 0, 0.3, 1), opacity 0.8s ease;
+        transition: transform 0.9s cubic-bezier(0.7, 0, 0.3, 1), opacity 0.9s ease;
     }
 
-    .slide.exit-next .col-right,
-    .slide.exit-prev .col-right {
-        transform: translate3d(100%, 0, 0);
+    .slide.exit-next .col-right {
+        transform: translate3d(100%, 0, 0) skewX(8deg) scale(0.9);
         opacity: 0;
-        transition: transform 0.8s cubic-bezier(0.7, 0, 0.3, 1), opacity 0.8s ease;
+        transition: transform 0.9s cubic-bezier(0.7, 0, 0.3, 1), opacity 0.9s ease;
+    }
+
+    .slide.exit-prev .col-left {
+        transform: translate3d(-100%, 0, 0) skewX(8deg) scale(0.9);
+        opacity: 0;
+        transition: transform 0.9s cubic-bezier(0.7, 0, 0.3, 1), opacity 0.9s ease;
+    }
+
+    .slide.exit-prev .col-right {
+        transform: translate3d(100%, 0, 0) skewX(-8deg) scale(0.9);
+        opacity: 0;
+        transition: transform 0.9s cubic-bezier(0.7, 0, 0.3, 1), opacity 0.9s ease;
     }
 
     .slide.exit-next .col-center,
     .slide.exit-prev .col-center {
-        transform: translate3d(0, 100%, 0);
+        transform: translate3d(0, 100%, 0) scale(0.85);
         opacity: 0;
-        transition: transform 0.8s cubic-bezier(0.7, 0, 0.3, 1), opacity 0.8s ease;
+        transition: transform 0.9s cubic-bezier(0.7, 0, 0.3, 1), opacity 0.9s ease;
     }
 
-    /* 3. Slide Entering State (Starting position split apart) */
-    .slide.enter-next .col-left,
+    /* 3. Slide Entering State (Starting position split and skewed before sliding in) */
+    .slide.enter-next .col-left {
+        transform: translate3d(-100%, 0, 0) skewX(-8deg) scale(0.9);
+        opacity: 0;
+    }
+
+    .slide.enter-next .col-right {
+        transform: translate3d(100%, 0, 0) skewX(8deg) scale(0.9);
+        opacity: 0;
+    }
+
     .slide.enter-prev .col-left {
-        transform: translate3d(-100%, 0, 0);
+        transform: translate3d(-100%, 0, 0) skewX(8deg) scale(0.9);
         opacity: 0;
-        transition: none;
     }
 
-    .slide.enter-next .col-right,
     .slide.enter-prev .col-right {
-        transform: translate3d(100%, 0, 0);
+        transform: translate3d(100%, 0, 0) skewX(-8deg) scale(0.9);
         opacity: 0;
-        transition: none;
     }
 
     .slide.enter-next .col-center,
     .slide.enter-prev .col-center {
-        transform: translate3d(0, 100%, 0);
+        transform: translate3d(0, 100%, 0) scale(0.85);
         opacity: 0;
-        transition: none;
     }
 }
 
@@ -275,6 +290,12 @@ body {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    transform: scale(1.02);
+    transition: transform 12s cubic-bezier(0.1, 0.8, 0.2, 1);
+}
+
+.slide.active .img-frame img {
+    transform: scale(1.12);
 }
 
 .frame-red {
@@ -981,5 +1002,59 @@ body {
 @media (max-width: 768px) {
     .ambient-glow {
         display: none !important; /* Disable on mobile to maximize performance and save battery */
+    }
+}
+
+/* Header Presentation Progress Bar */
+.deck-progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 0%;
+    height: 4px;
+    background-color: var(--bg-burgundy);
+    z-index: 1010;
+    transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.5s ease;
+}
+
+/* Color updates for progress bar based on active themes */
+.slide.active.theme-burgundy ~ .deck-progress-bar {
+    background-color: #ffffff;
+}
+
+.slide.active.theme-cream ~ .deck-progress-bar {
+    background-color: var(--bg-burgundy);
+}
+
+.slide.active.theme-green ~ .deck-progress-bar {
+    background-color: var(--accent-orange);
+}
+
+/* Typography Line Masking Reveal */
+.title-line-mask {
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: top;
+    width: 100%;
+}
+
+.title-line-content {
+    display: block;
+    transform: translate3d(0, 100%, 0);
+    transition: transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.slide.active .title-line-content {
+    transform: translate3d(0, 0, 0);
+    transition-delay: 0.15s; /* Reveal slightly after columns slide in */
+}
+
+@media (max-width: 768px) {
+    .deck-progress-bar {
+        display: none !important;
+    }
+    .title-line-content {
+        transform: none !important;
+        transition: none !important;
     }
 }

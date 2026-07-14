@@ -44,17 +44,72 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
     
+    let isTransitioning = false;
+    
     // Main Go To Slide Function
     function goToSlide(index) {
-        // Enforce boundary limits
-        if (index < 0) index = 0;
-        if (index >= totalSlides) index = totalSlides - 1;
+        if (isTransitioning) return;
         
+        // Enforce boundary limits
+        if (index < 0 || index >= totalSlides) return;
+        
+        const isInitial = !slides[currentSlide].classList.contains('active');
+        const isNext = index > currentSlide;
+        const prevIndex = currentSlide;
         currentSlide = index;
         
-        // Translate container horizontally
-        container.style.transform = `translateX(-${currentSlide * 100}vw)`;
+        // If mobile width, do not trigger slide transitions (mobile has static vertical flow)
+        if (window.innerWidth <= 768) {
+            slides.forEach((slide, idx) => {
+                slide.classList.remove('active', 'exit-next', 'exit-prev', 'enter-next', 'enter-prev');
+                if (idx === currentSlide) {
+                    slide.classList.add('active');
+                }
+            });
+            updateControls();
+            return;
+        }
         
+        // Initial page load setup
+        if (isInitial) {
+            slides[currentSlide].classList.add('active');
+            updateControls();
+            return;
+        }
+        
+        // Desktop Screen Splitting Shutter Transitions
+        isTransitioning = true;
+        
+        const activeSlide = slides[prevIndex];
+        const targetSlide = slides[currentSlide];
+        
+        const enterClass = isNext ? 'enter-next' : 'enter-prev';
+        const exitClass = isNext ? 'exit-next' : 'exit-prev';
+        
+        // Setup entrance start positions
+        targetSlide.classList.add(enterClass);
+        
+        // Force reflow
+        targetSlide.offsetWidth;
+        
+        // Animate columns to center (active) and old columns out (exit)
+        targetSlide.classList.add('active');
+        targetSlide.classList.remove(enterClass);
+        
+        activeSlide.classList.add(exitClass);
+        activeSlide.classList.remove('active');
+        
+        // Update Dots and Arrow states immediately
+        updateControls();
+        
+        // Reset classes after transition completes
+        setTimeout(() => {
+            activeSlide.classList.remove(exitClass);
+            isTransitioning = false;
+        }, 900); // Matches transition duration of 0.9s
+    }
+
+    function updateControls() {
         // Update Dots
         const dots = document.querySelectorAll('.progress-dot');
         dots.forEach((dot, idx) => {
@@ -143,11 +198,17 @@ document.addEventListener('DOMContentLoaded', () => {
     // Resize Listener to handle mobile layouts fluidly
     window.addEventListener('resize', () => {
         if (window.innerWidth <= 768) {
-            // Remove inline horizontal translate on mobile vertical layout
-            container.style.transform = 'none';
+            slides.forEach((slide) => {
+                slide.classList.remove('active', 'exit-next', 'exit-prev', 'enter-next', 'enter-prev');
+            });
         } else {
-            // Reapply horizontal position
-            goToSlide(currentSlide);
+            slides.forEach((slide, idx) => {
+                slide.classList.remove('active', 'exit-next', 'exit-prev', 'enter-next', 'enter-prev');
+                if (idx === currentSlide) {
+                    slide.classList.add('active');
+                }
+            });
+            updateControls();
         }
     });
     

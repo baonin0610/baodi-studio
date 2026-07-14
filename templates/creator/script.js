@@ -155,17 +155,14 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Center Split Seam Button Trigger
-    const splitter = document.getElementById('screen-splitter');
-    if (splitter) {
-        const splitBtn = splitter.querySelector('.splitter-button');
-        if (splitBtn) {
-            splitBtn.addEventListener('click', () => {
-                let nextIdx = currentSlide + 1;
-                if (nextIdx >= totalSlides) nextIdx = 0; // Loop back to cover slide!
-                goToSlide(nextIdx);
-            });
-        }
+    // Floating Pulsing Next Trigger click listener
+    const pulseTrigger = document.getElementById('pulse-next-trigger');
+    if (pulseTrigger) {
+        pulseTrigger.addEventListener('click', () => {
+            let nextIdx = currentSlide + 1;
+            if (nextIdx >= totalSlides) nextIdx = 0; // Loop back to cover slide!
+            goToSlide(nextIdx);
+        });
     }
     
     // Keyboard Arrow Keys Support

@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bui Linh Chi — Slide Deck Marketing Portfolio</title>
+    <meta name="description" content="Slide deck style marketing portfolio for Bui Linh Chi, Growth Marketer and Content Creator.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Brand Preloader Overlay -->
+    <div id="preloader" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: #0c0b0d; z-index: 999999; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.2rem; transition: opacity 0.5s ease, visibility 0.5s ease; color: #8c7c6d;">
+        <div class="preloader-ring" style="width: 32px; height: 32px; border: 2px solid rgba(140, 124, 109, 0.12); border-top-color: #8c7c6d; border-radius: 50%; animation: preloader-spin 0.8s infinite linear;"></div>
+        <span style="font-family: monospace; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.18em; font-weight: 500;">Loading Portfolio</span>
+        <style>
+            @keyframes preloader-spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
+        </style>
+    </div>
+
+    <!-- Floating Back button (Only visible when viewed directly, not in iframe modal) -->
+    <a href="../../index.html" class="back-to-hub-btn" id="back-hub-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        <span>Back to Hub</span>
+    </a>
+
+    <!-- Slider Wrapper -->
+    <div class="slider-wrapper">
+        <div class="slides-container" id="slides-container">
+            
+            <!-- Slide 1: Cover -->
+            <section class="slide theme-burgundy" data-slide="1">
+                <div class="slide-grid grid-split-cover">
+                    <div class="content-side col-left">
+                        <span class="slide-meta">BUI LINH CHI / PORTFOLIO</span>
+                        <h1 class="slide-title title-huge">PORTFOLIO</h1>
+                        <div class="title-details">
+                            <span class="name-badge">BÙI LINH CHI</span>
+                            <div class="subtitle-block">
+                                <span class="role-text">MARKETING</span>
+                                <span class="date-text">AUGUST / 2026</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="image-side col-right">
+                        <div class="img-frame frame-red">
+                            <img src="assets/cover.jpg" alt="Bui Linh Chi Cover Photo">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 2: Table of Contents -->
+            <section class="slide theme-cream" data-slide="2">
+                <div class="slide-grid grid-split-toc">
+                    <div class="content-side col-left">
+                        <div class="mini-frame">
+                            <img src="assets/cover.jpg" alt="Mini Portrait">
+                        </div>
+                    </div>
+                    <div class="content-side col-right">
+                        <span class="slide-meta">INDEX / CONTENTS</span>
+                        <h2 class="slide-title color-burgundy">NỘI DUNG</h2>
+                        <ul class="toc-list">
+                            <li>
+                                <span class="toc-num">01</span>
+                                <span class="toc-name">GIỚI THIỆU</span>
+                                <span class="toc-page">P. 03</span>
+                            </li>
+                            <li>
+                                <span class="toc-num">02</span>
+                                <span class="toc-name">GIÁO DỤC</span>
+                                <span class="toc-page">P. 04</span>
+                            </li>
+                            <li>
+                                <span class="toc-num">03</span>
+                                <span class="toc-name">KỸ NĂNG</span>
+                                <span class="toc-page">P. 05</span>
+                            </li>
+                            <li>
+                                <span class="toc-num">04</span>
+                                <span class="toc-name">KINH NGHIỆM</span>
+                                <span class="toc-page">P. 06</span>
+                            </li>
+                            <li>
+                                <span class="toc-num">05</span>
+                                <span class="toc-name">DỰ ÁN</span>
+                                <span class="toc-page">P. 07</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 3: About Me -->
+            <section class="slide theme-cream" data-slide="3">
+                <div class="slide-grid grid-split-about">
+                    <div class="content-side col-left">
+                        <span class="slide-meta">01 / INTRODUCTION</span>
+                        <h2 class="slide-title color-green">ABOUT ME</h2>
+                        <p class="slide-desc">Tôi là Bùi Linh Chi - một Growth Marketer và Content Creator với hơn 4 năm kinh nghiệm hoạt động trong môi trường truyền thông số. Tôi tập trung vào việc lập kế hoạch nội dung định hướng doanh thu, phát triển chiến dịch thương hiệu và thiết lập các kênh tiếp cận tối ưu hiệu quả nhằm mang lại sự tăng trưởng bền vững cho doanh nghiệp.</p>
+                        <div class="about-contact-info">
+                            <div class="contact-line"><strong>Email:</strong> linhchi.growth@gmail.com</div>
+                            <div class="contact-line"><strong>LinkedIn:</strong> /in/linhchi.digital</div>
+                            <div class="contact-line"><strong>Phone:</strong> 098xxxxx43</div>
+                        </div>
+                    </div>
+                    <div class="image-side col-right">
+                        <div class="img-frame frame-green">
+                            <img src="assets/about.jpg" alt="Bui Linh Chi Profile">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 4: Education -->
+            <section class="slide theme-cream" data-slide="4">
+                <div class="slide-grid grid-split-edu">
+                    <div class="content-side col-left flex-center">
+                        <h2 class="slide-title title-huge text-hollow">EDUCATION</h2>
+                    </div>
+                    <div class="image-side col-center">
+                        <div class="img-frame frame-red">
+                            <img src="assets/about.jpg" alt="Education Model">
+                        </div>
+                    </div>
+                    <div class="content-side col-right flex-column justify-center">
+                        <span class="slide-meta">02 / EDUCATION</span>
+                        <div class="edu-card">
+                            <h3 class="edu-school">ĐẠI HỌC KINH TẾ QUỐC DÂN</h3>
+                            <span class="edu-year">2020 - 2024</span>
+                            <p class="edu-desc-text">Chuyên ngành Marketing - Tốt nghiệp loại Giỏi</p>
+                        </div>
+                        <div class="edu-card">
+                            <h3 class="edu-school">CHỨNG CHỈ NỔI BẬT</h3>
+                            <span class="edu-year">2023 - 2025</span>
+                            <p class="edu-desc-text">Advanced SEO & Content Strategy (HubSpot), Google Analytics Individual Qualification (GAIQ)</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 5: Experience -->
+            <section class="slide theme-green" data-slide="5">
+                <div class="slide-grid grid-split-exp">
+                    <div class="image-side col-left">
+                        <div class="img-frame frame-orange">
+                            <img src="assets/experience.jpg" alt="Experience Model">
+                        </div>
+                    </div>
+                    <div class="content-side col-right">
+                        <span class="slide-meta color-light-green">03 / EXPERIENCE</span>
+                        <h2 class="slide-title">EXPERIENCE</h2>
+                        
+                        <div class="exp-card">
+                            <h3 class="exp-role">SEO & LEAD GENERATION MANAGER - CÔNG TY ABC</h3>
+                            <span class="exp-duration">2024 - HIỆN TẠI</span>
+                            <ul class="exp-bullets">
+                                <li>Lập dàn ý chiến lược SEO bài bản cho hệ thống website thương mại điện tử, tăng 140% lượng truy cập tự nhiên trong vòng 6 tháng.</li>
+                                <li>Thiết lập phễu thu thập dữ liệu khách hàng tiềm năng thông qua biểu mẫu đăng ký dùng thử, tối ưu chi phí CPL (Cost-per-Lead) giảm 25% so với quý trước.</li>
+                            </ul>
+                        </div>
+
+                        <div class="exp-card">
+                            <h3 class="exp-role">SEO & LEAD GENERATION MANAGER - CÔNG TY ABC</h3>
+                            <span class="exp-duration">2022 - 2024</span>
+                            <ul class="exp-bullets">
+                                <li>Quản lý đội ngũ 5 CTV viết nội dung, thực hiện kiểm toán từ khóa và cấu trúc liên kết nội bộ toàn trang web.</li>
+                                <li>Phối hợp cùng team Growth chạy thử nghiệm các kênh tiếp thị liên kết (Affiliate Marketing) thu về hơn 500 khách hàng chuyển đổi mới mỗi tháng.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 6: My Skills -->
+            <section class="slide theme-cream" data-slide="6">
+                <div class="slide-grid grid-split-skills">
+                    <div class="content-side col-left">
+                        <span class="slide-meta">04 / SKILLS</span>
+                        <h2 class="slide-title title-blocky color-green">MY<br>SKILLS</h2>
+                        <div class="skills-mini-gallery">
+                            <div class="img-frame">
+                                <img src="assets/experience.jpg" alt="Detail 1">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="content-side col-right">
+                        <div class="skill-row">
+                            <h3 class="skill-name">SEO & CONTENT OPTIMIZATION</h3>
+                            <p class="skill-desc-text">Nghiên cứu từ khóa chuyên sâu, lập dàn ý bài chuẩn SEO, tối ưu hóa On-page/Off-page cho hệ thống website nhằm mục đích tăng thứ hạng từ khóa trên Google.</p>
+                        </div>
+                        <div class="skill-row">
+                            <h3 class="skill-name">LEAD GENERATION STRATEGY</h3>
+                            <p class="skill-desc-text">Thiết lập phễu biểu mẫu chuyển đổi, thiết kế Landing Page định hướng thu thập thông tin khách hàng, chạy quảng cáo bám đuổi (Remarketing).</p>
+                        </div>
+                        <div class="skill-row">
+                            <h3 class="skill-name">DATA-DRIVEN PERFORMANCE</h3>
+                            <p class="skill-desc-text">Đọc dữ liệu qua các công cụ đo lường (GA4, Google Search Console, Ahrefs, SEMrush) để phân tích hành vi người dùng và liên tục thử nghiệm A/B Testing.</p>
+                        </div>
+                        <div class="skill-row">
+                            <h3 class="skill-name">PROJECT & TIME MANAGEMENT</h3>
+                            <p class="skill-desc-text">Quản lý dự án nội bộ, dẫn dắt đội ngũ làm content, đáp ứng đúng hạn KPIs đề ra từ cấp quản lý.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 7: Project 01 -->
+            <section class="slide theme-cream" data-slide="7">
+                <div class="slide-grid grid-split-project">
+                    <div class="content-side col-left flex-column justify-between">
+                        <div>
+                            <span class="slide-meta">05 / PROJECTS</span>
+                            <h2 class="slide-title color-green">PROJECT 01</h2>
+                            <p class="project-desc">Chiến dịch tối ưu nội dung số cho dự án khởi nghiệp thời trang cá nhân. Lập chiến lược viết bài, phân bổ ngân sách quảng cáo và phát triển bộ nhận diện thương hiệu trực tuyến.</p>
+                        </div>
+                        <div class="project-results">
+                            <div class="result-box">
+                                <span class="result-num">+150%</span>
+                                <span class="result-label">Organic Traffic</span>
+                            </div>
+                            <div class="result-box">
+                                <span class="result-num">+35%</span>
+                                <span class="result-label">Sales Conversion</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="image-side col-right">
+                        <div class="project-gallery">
+                            <div class="img-frame project-main-frame">
+                                <img src="assets/cover.jpg" alt="Project 1 Cover">
+                            </div>
+                            <div class="img-frame project-sub-frame">
+                                <img src="assets/about.jpg" alt="Project 1 Detail">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 8: Project 02 -->
+            <section class="slide theme-cream" data-slide="8">
+                <div class="slide-grid grid-split-project">
+                    <div class="content-side col-left flex-column justify-between">
+                        <div>
+                            <span class="slide-meta">05 / PROJECTS</span>
+                            <h2 class="slide-title color-green">PROJECT 02</h2>
+                            <p class="project-desc">Tái cấu trúc hệ thống website và phễu thu thập leads cho thương hiệu đồ uống tự nhiên. Tập trung phân tích số liệu chuyển đổi hành vi để tối ưu giao diện đặt hàng.</p>
+                        </div>
+                        <div class="project-results">
+                            <div class="result-box">
+                                <span class="result-num">-25%</span>
+                                <span class="result-label">CPL Lead Cost</span>
+                            </div>
+                            <div class="result-box">
+                                <span class="result-num">+45%</span>
+                                <span class="result-label">Lead Quality</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="image-side col-right">
+                        <div class="project-gallery">
+                            <div class="img-frame project-main-frame">
+                                <img src="assets/experience.jpg" alt="Project 2 Cover">
+                            </div>
+                            <div class="img-frame project-sub-frame">
+                                <img src="assets/portrait.jpg" alt="Project 2 Detail">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 9: Let's Work Together -->
+            <section class="slide theme-burgundy" data-slide="9">
+                <div class="slide-grid grid-split-work">
+                    <div class="content-side col-left flex-column justify-center">
+                        <span class="slide-meta">06 / CONTACT</span>
+                        <h2 class="slide-title title-huge">LET'S WORK</h2>
+                        <h3 class="work-sub">TOGETHER</h3>
+                        
+                        <div class="work-contact-details">
+                            <p><strong>Email:</strong> linhchi.growth@gmail.com</p>
+                            <p><strong>LinkedIn:</strong> linkedin.com/in/linhchi.digital</p>
+                            <p><strong>Phone:</strong> 098xxxxx43</p>
+                        </div>
+                    </div>
+                    <div class="image-side col-right">
+                        <div class="img-frame frame-red">
+                            <img src="assets/portrait.jpg" alt="Bui Linh Chi Portrait">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Navigation Controls (Desktop Arrows & Bottom Progress Dock) -->
+    <div class="deck-controls">
+        <button class="nav-arrow-btn arrow-prev" id="slide-prev-btn" aria-label="Previous Slide">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+        </button>
+        
+        <!-- Center Progress Dots -->
+        <div class="slide-progress" id="slide-progress-dots">
+            <!-- Dynamic dots inserted here -->
+        </div>
+
+        <button class="nav-arrow-btn arrow-next" id="slide-next-btn" aria-label="Next Slide">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+        </button>
+    </div>
+
+    <!-- Keyboard Hint overlay -->
+    <div class="keyboard-hint">Use ← / → keys or swipe to navigate</div>
+
+    <!-- Custom JS -->
+    <script src="script.js"></script>
+    <script>
+        // Preloader self-destruct
+        window.addEventListener('load', function() {
+            var loader = document.getElementById('preloader');
+            if (loader) {
+                loader.style.opacity = '0';
+                loader.style.visibility = 'hidden';
+                setTimeout(function() {
+                    loader.remove();
+                }, 500);
+            }
+        });
+    </script>
+</body>
+</html>

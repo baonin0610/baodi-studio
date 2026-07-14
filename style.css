@@ -2664,4 +2664,50 @@ body {
     }
 }
 
+/* 3D Floating Animation Wrappers (Bobbing in water effect) */
+.collage-card-wrapper {
+    position: absolute;
+    transform-style: preserve-3d;
+    will-change: transform;
+}
+
+.wrapper-left {
+    animation: floatLeftCard 6s ease-in-out infinite alternate;
+}
+
+.wrapper-right {
+    animation: floatRightCard 7s ease-in-out infinite alternate;
+}
+
+.wrapper-center {
+    animation: floatCenterCard 5s ease-in-out infinite alternate;
+}
+
+@keyframes floatLeftCard {
+    0% {
+        transform: translateY(-4px);
+    }
+    100% {
+        transform: translateY(4px);
+    }
+}
+
+@keyframes floatRightCard {
+    0% {
+        transform: translateY(3px);
+    }
+    100% {
+        transform: translateY(-3px);
+    }
+}
+
+@keyframes floatCenterCard {
+    0% {
+        transform: translateY(-5px);
+    }
+    100% {
+        transform: translateY(5px);
+    }
+}
+
 

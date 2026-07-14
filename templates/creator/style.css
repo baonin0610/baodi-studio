@@ -82,6 +82,8 @@ body {
     height: 100vh;
     position: relative;
     overflow: hidden;
+    perspective: 1600px;
+    perspective-origin: 50% 50%;
 }
 
 .slides-container {
@@ -89,6 +91,7 @@ body {
     width: fit-content;
     height: 100%;
     will-change: transform;
+    transform-style: preserve-3d;
 }
 
 /* Single Slide Common Styles - Side by Side */
@@ -103,6 +106,9 @@ body {
     box-sizing: border-box;
     overflow: hidden;
     position: relative;
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
+    will-change: transform, opacity;
 }
 
 /* Active State for transitions and reveal triggers */
@@ -243,6 +249,8 @@ body {
     object-fit: cover;
     transform: scale(1.02);
     transition: transform 12s cubic-bezier(0.1, 0.8, 0.2, 1);
+    filter: url(#liquid-distortion);
+    will-change: filter;
 }
 
 .slide.active .img-frame img {

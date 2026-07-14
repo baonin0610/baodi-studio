@@ -124,9 +124,10 @@ document.addEventListener('DOMContentLoaded', () => {
     function animate() {
         if (window.innerWidth > 768) {
             // Apply Linear Interpolation (LERP) for physics-based smoothing
-            scrollX += (targetScrollX - scrollX) * 0.085;
+            const lerpFactor = 0.08;
+            scrollX += (targetScrollX - scrollX) * lerpFactor;
             
-            // Translate the entire container
+            // Translate the slides container horizontally
             container.style.transform = `translate3d(-${scrollX}px, 0, 0)`;
             
             // Calculate active slide based on scroll coordinates
@@ -135,10 +136,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 currentSlide = activeIndex;
             }
             
-            // Update active states and calculate element parallax shifts
+            // Calculate scroll velocity for liquid distortion scale
+            const velocity = Math.abs(targetScrollX - scrollX);
+            const warpScale = Math.min(velocity * 0.18, 65); // Cap warp scale at 65px
+            const displacementMap = document.getElementById('displacement-map');
+            if (displacementMap) {
+                displacementMap.setAttribute('scale', warpScale);
+            }
+            
+            // Update active states and calculate 3D cylindrical and parallax transforms
             slides.forEach((slide, idx) => {
                 const slideOffset = idx * windowWidth;
                 const relativeX = scrollX - slideOffset; // 0 when centered
+                const screenRatio = relativeX / windowWidth; // -1 on left, 1 on right
                 
                 // Toggle active state for CSS triggers
                 if (idx === currentSlide) {
@@ -151,17 +161,26 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 }
                 
-                // Deep Parallax Shifts
+                // 3D Cylindrical Scroll layout (rotate and recede on coordinates)
+                const rotateY = screenRatio * -30; // 30 degrees max rotation
+                const translateZ = Math.abs(screenRatio) * -400; // Recede back 400px
+                const translateX = screenRatio * -60; // Pull edges closer to close gaps
+                const opacity = 1 - Math.min(Math.abs(screenRatio) * 0.7, 0.7); // Fade back elements
+                
+                slide.style.transform = `rotateY(${rotateY}deg) translateZ(${translateZ}px) translateX(${translateX}px)`;
+                slide.style.opacity = opacity;
+                
+                // Deep Parallax Shifts inside the 3D pane
                 const parallaxBgText = slide.querySelector('.parallax-bg');
                 if (parallaxBgText) {
-                    // Slides slower than foreground (moving in opposite direction of scroll)
-                    parallaxBgText.style.transform = `translate3d(${relativeX * 0.38}px, 0, 0)`;
+                    // Slides slower than slide body
+                    parallaxBgText.style.transform = `translate3d(${relativeX * 0.32}px, 0, 0)`;
                 }
                 
                 const parallaxFgBadge = slide.querySelector('.parallax-fg');
                 if (parallaxFgBadge) {
-                    // Slides faster than foreground (moving in direction of scroll)
-                    parallaxFgBadge.style.transform = `translate3d(${relativeX * -0.18}px, 0, 0)`;
+                    // Slides faster than slide body
+                    parallaxFgBadge.style.transform = `translate3d(${relativeX * -0.15}px, 0, 0)`;
                 }
             });
             
@@ -213,6 +232,8 @@ document.addEventListener('DOMContentLoaded', () => {
             container.style.transform = 'none';
             slides.forEach((slide) => {
                 slide.classList.remove('active');
+                slide.style.transform = 'none';
+                slide.style.opacity = '1';
             });
         } else {
             // Relock positions

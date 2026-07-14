@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="style.css?v=1.7">
+    <link rel="stylesheet" href="style.css?v=1.8">
 </head>
 <body>
     <!-- Brand Preloader Overlay -->
@@ -24,6 +24,16 @@
             }
         </style>
     </div>
+
+    <!-- SVG Liquid Distortion Filter Definitions -->
+    <svg class="liquid-svg-filter" style="position: absolute; width: 0; height: 0; pointer-events: none;">
+        <defs>
+            <filter id="liquid-distortion">
+                <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" result="noise" />
+                <feDisplacementMap in="SourceGraphic" in2="noise" scale="0" xChannelSelector="R" yChannelSelector="G" id="displacement-map" />
+            </filter>
+        </defs>
+    </svg>
 
     <!-- Presentation progress bar -->
     <div class="deck-progress-bar" id="deck-progress-bar"></div>
@@ -323,7 +333,7 @@
     <div class="keyboard-hint">Scroll down / up or use keyboard ← / → keys to explore</div>
 
     <!-- Custom JS -->
-    <script src="script.js?v=1.7"></script>
+    <script src="script.js?v=1.8"></script>
     <script>
         // Preloader self-destruct
         window.addEventListener('load', function() {

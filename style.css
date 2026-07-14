@@ -2582,17 +2582,17 @@ body {
 }
 
 /* Overlapping Z-Axis Positions */
-.card-left {
+.pos-left {
     transform: translate3d(-55px, -8px, -20px) rotate(-8deg);
     z-index: 1;
 }
 
-.card-right {
+.pos-right {
     transform: translate3d(55px, 8px, -10px) rotate(8deg);
     z-index: 2;
 }
 
-.card-center {
+.pos-center {
     transform: translate3d(0, -4px, 20px) scale(1.05);
     z-index: 3;
     border-color: var(--accent-color);
@@ -2600,17 +2600,17 @@ body {
 }
 
 /* Parallax Pop-out on Hover */
-.hero-graphic-wrapper:hover .card-left {
+.hero-graphic-wrapper:hover .pos-left {
     transform: translate3d(-95px, -18px, 15px) rotate(-14deg);
     box-shadow: 0 15px 30px rgba(0,0,0,0.12);
 }
 
-.hero-graphic-wrapper:hover .card-right {
+.hero-graphic-wrapper:hover .pos-right {
     transform: translate3d(95px, 18px, 25px) rotate(14deg);
     box-shadow: 0 15px 30px rgba(0,0,0,0.12);
 }
 
-.hero-graphic-wrapper:hover .card-center {
+.hero-graphic-wrapper:hover .pos-center {
     transform: translate3d(0, -10px, 55px) scale(1.08);
     box-shadow: 0 25px 50px rgba(140, 124, 109, 0.22);
 }
@@ -2650,22 +2650,22 @@ body {
     .collage-card {
         padding: 4px;
     }
-    .card-left {
+    .pos-left {
         transform: translate3d(-40px, -5px, -15px) rotate(-8deg);
     }
-    .card-right {
+    .pos-right {
         transform: translate3d(40px, 5px, -10px) rotate(8deg);
     }
-    .card-center {
+    .pos-center {
         transform: translate3d(0, -2px, 15px) scale(1.05);
     }
-    .hero-graphic-wrapper:hover .card-left {
+    .hero-graphic-wrapper:hover .pos-left {
         transform: translate3d(-65px, -10px, 10px) rotate(-12deg);
     }
-    .hero-graphic-wrapper:hover .card-right {
+    .hero-graphic-wrapper:hover .pos-right {
         transform: translate3d(65px, 10px, 20px) rotate(12deg);
     }
-    .hero-graphic-wrapper:hover .card-center {
+    .hero-graphic-wrapper:hover .pos-center {
         transform: translate3d(0, -6px, 35px) scale(1.08);
     }
 }

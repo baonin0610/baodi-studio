@@ -538,6 +538,38 @@ function initHeroCardTilt() {
             card.classList.toggle('dark-mode');
         });
     }
+
+    // Automatic Card Shuffling Logic (Swap layers every 3.2 seconds)
+    const collageCards = card.querySelectorAll('.collage-card');
+    let positions = ['pos-left', 'pos-center', 'pos-right'];
+    let shuffleInterval = null;
+
+    function startShuffle() {
+        if (shuffleInterval) return;
+        shuffleInterval = setInterval(() => {
+            positions.push(positions.shift());
+            collageCards.forEach((c, idx) => {
+                c.classList.remove('pos-left', 'pos-center', 'pos-right');
+                c.classList.add(positions[idx]);
+            });
+        }, 3200);
+    }
+
+    function stopShuffle() {
+        if (shuffleInterval) {
+            clearInterval(shuffleInterval);
+            shuffleInterval = null;
+        }
+    }
+
+    // Start shuffling initially
+    startShuffle();
+
+    // Pause on user interaction to allow 3D tilt inspections
+    card.addEventListener('mouseenter', stopShuffle);
+    card.addEventListener('mouseleave', startShuffle);
+    card.addEventListener('touchstart', stopShuffle, { passive: true });
+    card.addEventListener('touchend', startShuffle, { passive: true });
 }
 
 /**

@@ -795,3 +795,118 @@ body {
         font-size: 0.65rem;
     }
 }
+
+/* Interactive Screen Splitter Divider Seam */
+.screen-divider {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 100%;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+}
+
+.divider-line {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1px;
+    height: 100%;
+    background-color: var(--border-color);
+    opacity: 0.35;
+    transition: var(--transition-fast);
+}
+
+/* Dynamically adjust divider line color based on active slide theme */
+.slide.active.theme-burgundy ~ .screen-divider .divider-line,
+.slide.active.theme-green ~ .screen-divider .divider-line {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.splitter-button {
+    position: relative;
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    background-color: #ffffff;
+    border: 1px solid var(--border-color);
+    color: var(--text-dark);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    pointer-events: auto;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s, border-color 0.3s, color 0.3s, box-shadow 0.3s;
+    z-index: 1005;
+}
+
+.splitter-button::before {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    right: -4px;
+    bottom: -4px;
+    border: 1px dashed var(--bg-burgundy);
+    border-radius: 50%;
+    opacity: 0.3;
+    animation: rotateDashed 20s linear infinite;
+    pointer-events: none;
+    transition: var(--transition-fast);
+}
+
+@keyframes rotateDashed {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.splitter-button:hover {
+    transform: scale(1.15);
+    background-color: var(--bg-burgundy);
+    color: #ffffff;
+    border-color: var(--bg-burgundy);
+    box-shadow: 0 8px 30px rgba(128, 44, 52, 0.35);
+}
+
+.splitter-button:hover::before {
+    border-color: #ffffff;
+    opacity: 0.6;
+    top: -6px;
+    left: -6px;
+    right: -6px;
+    bottom: -6px;
+}
+
+.splitter-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.splitter-icon svg {
+    width: 18px;
+    height: 18px;
+    stroke-width: 2.2px;
+}
+
+.splitter-text {
+    font-family: var(--font-sans);
+    font-size: 0.45rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    margin-top: 0.15rem;
+}
+
+@media (max-width: 768px) {
+    .screen-divider {
+        display: none !important;
+    }
+}

@@ -154,6 +154,19 @@ document.addEventListener('DOMContentLoaded', () => {
             goToSlide(currentSlide + 1);
         });
     }
+
+    // Center Split Seam Button Trigger
+    const splitter = document.getElementById('screen-splitter');
+    if (splitter) {
+        const splitBtn = splitter.querySelector('.splitter-button');
+        if (splitBtn) {
+            splitBtn.addEventListener('click', () => {
+                let nextIdx = currentSlide + 1;
+                if (nextIdx >= totalSlides) nextIdx = 0; // Loop back to cover slide!
+                goToSlide(nextIdx);
+            });
+        }
+    }
     
     // Keyboard Arrow Keys Support
     window.addEventListener('keydown', (e) => {

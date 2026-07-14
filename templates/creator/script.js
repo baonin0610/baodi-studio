@@ -1,21 +1,24 @@
 /* ==========================================================================
-   Slide Deck Marketing Portfolio Script - 'Creator' Template
+   Horizontal Scroll & Parallax Exhibition Script - 'Creator' Template
    Bui Linh Chi Style Concept
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
     
-    // Slide Navigation Elements
-    const container = document.getElementById('slides-container');
+    // Core Layout Elements
+    const container = document.querySelector('.slides-container');
     const slides = document.querySelectorAll('.slide');
-    const prevBtn = document.getElementById('slide-prev-btn');
-    const nextBtn = document.getElementById('slide-next-btn');
-    const dotsContainer = document.getElementById('slide-progress-dots');
     
     if (!container || slides.length === 0) return;
     
-    let currentSlide = 0;
     const totalSlides = slides.length;
+    let windowWidth = window.innerWidth;
+    let maxScrollX = (totalSlides - 1) * windowWidth;
+    
+    // Smooth Scroll Coordinates
+    let scrollX = 0;
+    let targetScrollX = 0;
+    let currentSlide = 0;
     
     // Inject Ambient Background Motion Glows into each slide dynamically
     slides.forEach((slide) => {
@@ -42,141 +45,154 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Dynamic Dot Generation
-    function initDots() {
-        if (!dotsContainer) return;
-        dotsContainer.innerHTML = ''; // Clear
-        
-        for (let i = 0; i < totalSlides; i++) {
-            const dot = document.createElement('div');
-            dot.className = `progress-dot ${i === 0 ? 'active' : ''}`;
-            dot.setAttribute('data-index', i);
-            dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
-            
-            dot.addEventListener('click', () => {
-                goToSlide(i);
-            });
-            
-            dotsContainer.appendChild(dot);
-        }
+    // Direct Image Column Clicks to Advance to Next Page
+    const imageSides = document.querySelectorAll('.image-side');
+    imageSides.forEach((side) => {
+        side.addEventListener('click', () => {
+            let nextIdx = currentSlide + 1;
+            if (nextIdx >= totalSlides) nextIdx = 0; // Loop back
+            scrollToSlide(nextIdx);
+            resetAutoplay();
+        });
+    });
+
+    // Scroll to Specific Slide Index
+    function scrollToSlide(index) {
+        if (window.innerWidth <= 768) return;
+        targetScrollX = index * windowWidth;
+        // Clamp bounds
+        targetScrollX = Math.max(0, Math.min(targetScrollX, maxScrollX));
     }
+
+    // Keyboard Arrow Keys Support
+    window.addEventListener('keydown', (e) => {
+        if (window.innerWidth > 768) {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                e.preventDefault();
+                let nextIdx = currentSlide + 1;
+                if (nextIdx >= totalSlides) nextIdx = 0;
+                scrollToSlide(nextIdx);
+                resetAutoplay();
+            } else if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                let prevIdx = currentSlide - 1;
+                if (prevIdx < 0) prevIdx = totalSlides - 1;
+                scrollToSlide(prevIdx);
+                resetAutoplay();
+            }
+        }
+    });
+
+    // Mouse Wheel Scroll Hijack for Desktop Horizontal Exhibition
+    let lastUserScrollTime = 0;
     
-    let isTransitioning = false;
+    window.addEventListener('wheel', (e) => {
+        if (window.innerWidth <= 768) return; // Disable scroll hijack on mobile
+        
+        e.preventDefault(); // Lock default vertical scrolling
+        lastUserScrollTime = Date.now();
+        resetAutoplay();
+        
+        // Accumulate scroll input into target scroll destination
+        targetScrollX += e.deltaY * 0.95;
+        
+        // Clamp boundaries
+        targetScrollX = Math.max(0, Math.min(targetScrollX, maxScrollX));
+    }, { passive: false });
+
+    // Touch Swipe Event Listeners for Mobile/Tablet Swiping
+    let touchStartX = 0;
+    let touchStartXScroll = 0;
     
-    // Main Go To Slide Function
-    function goToSlide(index) {
-        if (isTransitioning) return;
+    window.addEventListener('touchstart', (e) => {
+        if (window.innerWidth <= 768) return;
+        touchStartX = e.changedTouches[0].screenX;
+        touchStartXScroll = targetScrollX;
+        resetAutoplay();
+    }, { passive: true });
+    
+    window.addEventListener('touchmove', (e) => {
+        if (window.innerWidth <= 768) return;
+        const touchCurrentX = e.changedTouches[0].screenX;
+        const deltaX = touchStartX - touchCurrentX;
         
-        // Enforce boundary limits
-        if (index < 0 || index >= totalSlides) return;
-        
-        const isInitial = !slides[currentSlide].classList.contains('active');
-        const isNext = index > currentSlide;
-        const prevIndex = currentSlide;
-        currentSlide = index;
-        
-        // If mobile width, do not trigger slide transitions (mobile has static vertical flow)
-        if (window.innerWidth <= 768) {
+        targetScrollX = touchStartXScroll + deltaX * 1.5;
+        targetScrollX = Math.max(0, Math.min(targetScrollX, maxScrollX));
+    }, { passive: true });
+
+    // LERP Animation Loop (Liquid-smooth rendering loop)
+    function animate() {
+        if (window.innerWidth > 768) {
+            // Apply Linear Interpolation (LERP) for physics-based smoothing
+            scrollX += (targetScrollX - scrollX) * 0.085;
+            
+            // Translate the entire container
+            container.style.transform = `translate3d(-${scrollX}px, 0, 0)`;
+            
+            // Calculate active slide based on scroll coordinates
+            const activeIndex = Math.round(scrollX / windowWidth);
+            if (activeIndex !== currentSlide && activeIndex >= 0 && activeIndex < totalSlides) {
+                currentSlide = activeIndex;
+            }
+            
+            // Update active states and calculate element parallax shifts
             slides.forEach((slide, idx) => {
-                slide.classList.remove('active', 'exit-next', 'exit-prev', 'enter-next', 'enter-prev');
+                const slideOffset = idx * windowWidth;
+                const relativeX = scrollX - slideOffset; // 0 when centered
+                
+                // Toggle active state for CSS triggers
                 if (idx === currentSlide) {
-                    slide.classList.add('active');
+                    if (!slide.classList.contains('active')) {
+                        slide.classList.add('active');
+                    }
+                } else {
+                    if (slide.classList.contains('active')) {
+                        slide.classList.remove('active');
+                    }
+                }
+                
+                // Deep Parallax Shifts
+                const parallaxBgText = slide.querySelector('.parallax-bg');
+                if (parallaxBgText) {
+                    // Slides slower than foreground (moving in opposite direction of scroll)
+                    parallaxBgText.style.transform = `translate3d(${relativeX * 0.38}px, 0, 0)`;
+                }
+                
+                const parallaxFgBadge = slide.querySelector('.parallax-fg');
+                if (parallaxFgBadge) {
+                    // Slides faster than foreground (moving in direction of scroll)
+                    parallaxFgBadge.style.transform = `translate3d(${relativeX * -0.18}px, 0, 0)`;
                 }
             });
-            updateControls();
-            return;
-        }
-        
-        // Initial page load setup
-        if (isInitial) {
-            slides[currentSlide].classList.add('active');
-            updateControls();
-            return;
-        }
-        
-        // Desktop Screen Splitting Shutter Transitions
-        isTransitioning = true;
-        
-        const activeSlide = slides[prevIndex];
-        const targetSlide = slides[currentSlide];
-        
-        const enterClass = isNext ? 'enter-next' : 'enter-prev';
-        const exitClass = isNext ? 'exit-next' : 'exit-prev';
-        
-        // Setup entrance start positions
-        targetSlide.classList.add(enterClass);
-        
-        // Force reflow
-        targetSlide.offsetWidth;
-        
-        // Animate columns to center (active) and old columns out (exit)
-        targetSlide.classList.add('active');
-        targetSlide.classList.remove(enterClass);
-        
-        activeSlide.classList.add(exitClass);
-        activeSlide.classList.remove('active');
-        
-        // Update Dots and Arrow states immediately
-        updateControls();
-        
-        // Reset classes after transition completes
-        setTimeout(() => {
-            activeSlide.classList.remove(exitClass);
-            isTransitioning = false;
-        }, 900); // Matches transition duration of 0.9s
-    }
-
-    function updateControls() {
-        // Update top progress bar width percentage
-        const progressBar = document.getElementById('deck-progress-bar');
-        if (progressBar) {
-            const percentage = (currentSlide / (totalSlides - 1)) * 100;
-            progressBar.style.width = `${percentage}%`;
-        }
-
-        // Update Dots
-        const dots = document.querySelectorAll('.progress-dot');
-        dots.forEach((dot, idx) => {
-            if (idx === currentSlide) {
-                dot.classList.add('active');
-            } else {
-                dot.classList.remove('active');
-            }
-        });
-        
-        // Update Arrow Button States (Opacity/Disabled look)
-        if (prevBtn) {
-            if (currentSlide === 0) {
-                prevBtn.style.opacity = '0.3';
-                prevBtn.style.pointerEvents = 'none';
-            } else {
-                prevBtn.style.opacity = '1';
-                prevBtn.style.pointerEvents = 'auto';
+            
+            // Update Top Progress Bar width percentage
+            const progressBar = document.getElementById('deck-progress-bar');
+            if (progressBar && maxScrollX > 0) {
+                const percentage = (scrollX / maxScrollX) * 100;
+                progressBar.style.width = `${percentage}%`;
             }
         }
         
-        if (nextBtn) {
-            if (currentSlide === totalSlides - 1) {
-                nextBtn.style.opacity = '0.3';
-                nextBtn.style.pointerEvents = 'none';
-            } else {
-                nextBtn.style.opacity = '1';
-                nextBtn.style.pointerEvents = 'auto';
-            }
-        }
+        requestAnimationFrame(animate);
     }
     
-    // Autoplay Timer (Auto advance every 7.5 seconds)
+    // Start Animation Loop
+    requestAnimationFrame(animate);
+
+    // Autoplay Timer (Slow auto-advance drift)
     let autoplayTimer = null;
     
     function startAutoplay() {
-        if (window.innerWidth <= 768) return; // Disable autoplay on mobile
+        if (window.innerWidth <= 768) return;
         stopAutoplay();
         autoplayTimer = setInterval(() => {
-            let nextIdx = currentSlide + 1;
-            if (nextIdx >= totalSlides) nextIdx = 0; // Loop around
-            goToSlide(nextIdx);
-        }, 7500);
+            // Only auto-advance if user hasn't scrolled manually in the last 4.5 seconds
+            if (Date.now() - lastUserScrollTime > 4500) {
+                let nextIdx = currentSlide + 1;
+                if (nextIdx >= totalSlides) nextIdx = 0;
+                scrollToSlide(nextIdx);
+            }
+        }, 8500); // Trigger auto-glide check every 8.5 seconds
     }
     
     function stopAutoplay() {
@@ -186,142 +202,26 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
     
-    function resetAutoplay() {
-        stopAutoplay();
-        startAutoplay();
-    }
-    
-    // Click Listeners for Navigation Buttons
-    if (prevBtn) {
-        prevBtn.addEventListener('click', () => {
-            goToSlide(currentSlide - 1);
-            resetAutoplay();
-        });
-    }
-    
-    if (nextBtn) {
-        nextBtn.addEventListener('click', () => {
-            goToSlide(currentSlide + 1);
-            resetAutoplay();
-        });
-    }
-
-    // Floating Pulsing Next Trigger click listener
-    const pulseTrigger = document.getElementById('pulse-next-trigger');
-    if (pulseTrigger) {
-        pulseTrigger.addEventListener('click', () => {
-            let nextIdx = currentSlide + 1;
-            if (nextIdx >= totalSlides) nextIdx = 0;
-            goToSlide(nextIdx);
-            resetAutoplay();
-        });
-    }
-
-    // Direct Image Column Clicks to Advance to Next Page
-    const imageSides = document.querySelectorAll('.image-side');
-    imageSides.forEach((side) => {
-        side.addEventListener('click', () => {
-            let nextIdx = currentSlide + 1;
-            if (nextIdx >= totalSlides) nextIdx = 0;
-            goToSlide(nextIdx);
-            resetAutoplay();
-        });
-    });
-    
-    // Keyboard Arrow Keys Support
-    window.addEventListener('keydown', (e) => {
-        if (window.innerWidth > 768) {
-            if (e.key === 'ArrowRight' || e.key === ' ') {
-                e.preventDefault();
-                goToSlide(currentSlide + 1);
-                resetAutoplay();
-            } else if (e.key === 'ArrowLeft') {
-                e.preventDefault();
-                goToSlide(currentSlide - 1);
-                resetAutoplay();
-            }
-        }
-    });
-
-    // Touch Swipe Event Listeners
-    let touchStartX = 0;
-    let touchEndX = 0;
-    
-    window.addEventListener('touchstart', (e) => {
-        touchStartX = e.changedTouches[0].screenX;
-    }, { passive: true });
-    
-    window.addEventListener('touchend', (e) => {
-        touchEndX = e.changedTouches[0].screenX;
-        handleSwipe();
-    }, { passive: true });
-    
-    function handleSwipe() {
-        if (window.innerWidth > 768) {
-            const threshold = 50;
-            if (touchStartX - touchEndX > threshold) {
-                goToSlide(currentSlide + 1);
-                resetAutoplay();
-            } else if (touchEndX - touchStartX > threshold) {
-                goToSlide(currentSlide - 1);
-                resetAutoplay();
-            }
-        }
-    }
-
-    // Mouse Wheel Scroll hijack for Desktop transitions
-    let lastScrollTime = 0;
-    window.addEventListener('wheel', (e) => {
-        if (window.innerWidth <= 768) return; // Disable scroll hijack on mobile
-        
-        const currentTime = new Date().getTime();
-        // Allow a scroll transition at most once every 1200ms
-        if (currentTime - lastScrollTime < 1200) {
-            e.preventDefault();
-            return;
-        }
-        
-        // Threshold check to avoid accidental trigger on micro-scrolls
-        if (Math.abs(e.deltaY) > 15) {
-            e.preventDefault();
-            lastScrollTime = currentTime;
-            
-            if (e.deltaY > 0) {
-                // Scroll down -> Next Slide
-                let nextIdx = currentSlide + 1;
-                if (nextIdx >= totalSlides) nextIdx = 0;
-                goToSlide(nextIdx);
-            } else {
-                // Scroll up -> Previous Slide
-                let prevIdx = currentSlide - 1;
-                if (prevIdx < 0) prevIdx = totalSlides - 1;
-                goToSlide(prevIdx);
-            }
-            resetAutoplay();
-        }
-    }, { passive: false });
-    
-    // Resize Listener to handle mobile layouts fluidly
+    // Resize Listener to handle fluid viewports
     window.addEventListener('resize', () => {
-        if (window.innerWidth <= 768) {
+        windowWidth = window.innerWidth;
+        maxScrollX = (totalSlides - 1) * windowWidth;
+        
+        if (windowWidth <= 768) {
             stopAutoplay();
+            // Reset transforms for mobile vertical scroll
+            container.style.transform = 'none';
             slides.forEach((slide) => {
-                slide.classList.remove('active', 'exit-next', 'exit-prev', 'enter-next', 'enter-prev');
+                slide.classList.remove('active');
             });
         } else {
-            slides.forEach((slide, idx) => {
-                slide.classList.remove('active', 'exit-next', 'exit-prev', 'enter-next', 'enter-prev');
-                if (idx === currentSlide) {
-                    slide.classList.add('active');
-                }
-            });
-            updateControls();
+            // Relock positions
+            targetScrollX = currentSlide * windowWidth;
+            scrollX = targetScrollX;
             startAutoplay();
         }
     });
     
-    // Init
-    initDots();
-    goToSlide(0);
-    startAutoplay(); // Lock initial state
+    // Init autoplay
+    startAutoplay();
 });

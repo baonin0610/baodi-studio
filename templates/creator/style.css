@@ -212,6 +212,8 @@ body {
     height: 100%;
     grid-gap: 4rem;
     align-items: center;
+    position: relative;
+    z-index: 2;
 }
 
 .slide-meta {
@@ -890,5 +892,94 @@ body {
 @media (max-width: 768px) {
     .pulse-next-btn {
         display: none !important;
+    }
+}
+
+/* Ambient Background Motion Glows */
+.ambient-glow {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(130px);
+    -webkit-filter: blur(130px);
+    z-index: 0;
+    pointer-events: none;
+    will-change: transform;
+    transition: opacity 0.5s ease;
+}
+
+.glow-1 {
+    width: 380px;
+    height: 380px;
+    top: -8%;
+    left: -10%;
+    animation: floatBlob1 28s infinite alternate ease-in-out;
+}
+
+.glow-2 {
+    width: 480px;
+    height: 480px;
+    bottom: -12%;
+    right: -10%;
+    animation: floatBlob2 34s infinite alternate ease-in-out;
+}
+
+/* Theme variations for ambient colors */
+.theme-burgundy .glow-1 {
+    background: radial-gradient(circle, #D96B43 0%, transparent 70%);
+    opacity: 0.22;
+}
+
+.theme-burgundy .glow-2 {
+    background: radial-gradient(circle, #E87A5D 0%, transparent 70%);
+    opacity: 0.25;
+}
+
+.theme-cream .glow-1 {
+    background: radial-gradient(circle, #E8DCC4 0%, transparent 70%);
+    opacity: 0.45;
+}
+
+.theme-cream .glow-2 {
+    background: radial-gradient(circle, #D3C2A3 0%, transparent 70%);
+    opacity: 0.45;
+}
+
+.theme-green .glow-1 {
+    background: radial-gradient(circle, #A3C9A8 0%, transparent 70%);
+    opacity: 0.18;
+}
+
+.theme-green .glow-2 {
+    background: radial-gradient(circle, #8EA8BD 0%, transparent 70%);
+    opacity: 0.18;
+}
+
+@keyframes floatBlob1 {
+    0% {
+        transform: translate(0, 0) scale(1) rotate(0deg);
+    }
+    50% {
+        transform: translate(60px, 80px) scale(1.15) rotate(180deg);
+    }
+    100% {
+        transform: translate(-30px, -50px) scale(0.9) rotate(360deg);
+    }
+}
+
+@keyframes floatBlob2 {
+    0% {
+        transform: translate(0, 0) scale(1) rotate(0deg);
+    }
+    50% {
+        transform: translate(-70px, 60px) scale(1.2) rotate(-180deg);
+    }
+    100% {
+        transform: translate(40px, -30px) scale(0.9) rotate(-360deg);
+    }
+}
+
+@media (max-width: 768px) {
+    .ambient-glow {
+        display: none !important; /* Disable on mobile to maximize performance and save battery */
     }
 }

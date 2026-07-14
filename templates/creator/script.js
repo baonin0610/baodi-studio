@@ -17,6 +17,16 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentSlide = 0;
     const totalSlides = slides.length;
     
+    // Inject Ambient Background Motion Glows into each slide dynamically
+    slides.forEach((slide) => {
+        const glow1 = document.createElement('div');
+        glow1.className = 'ambient-glow glow-1';
+        const glow2 = document.createElement('div');
+        glow2.className = 'ambient-glow glow-2';
+        slide.appendChild(glow1);
+        slide.appendChild(glow2);
+    });
+    
     // Hide floating back button if loaded inside an iframe (like the Studio Hub modal)
     if (window.self !== window.top) {
         const backBtn = document.getElementById('back-hub-btn');

@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     // Index / TOC Click Links
     const tocItems = document.querySelectorAll('.toc-list li');
-    const tocMapping = [2, 3, 5, 4, 6]; // Map Index positions to slide coordinates
+    const tocMapping = [2, 3, 4, 5, 6, 8, 9, 10]; // Map Index positions to slide coordinates
     tocItems.forEach((item, idx) => {
         item.addEventListener('click', () => {
             if (tocMapping[idx] !== undefined) {

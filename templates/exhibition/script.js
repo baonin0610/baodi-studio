@@ -176,6 +176,38 @@ document.addEventListener('DOMContentLoaded', () => {
             const category = card.getAttribute('data-desc');
             const cardCategory = card.querySelector('.card-category').textContent;
 
+            // Get view elements
+            const viewProj = document.getElementById('view-project-specs');
+            const viewProfile = document.getElementById('view-profile-specs');
+            const viewExp = document.getElementById('view-experience-specs');
+            const actionBtn = document.getElementById('overlay-action-btn');
+
+            if (idx === '1') {
+                if (viewProj) viewProj.style.display = 'none';
+                if (viewExp) viewExp.style.display = 'none';
+                if (viewProfile) viewProfile.style.display = 'block';
+                if (actionBtn) {
+                    actionBtn.textContent = 'ESTABLISH EMAIL CONNECTION';
+                    actionBtn.href = 'mailto:linhchi.growth@gmail.com';
+                }
+            } else if (idx === '2') {
+                if (viewProj) viewProj.style.display = 'none';
+                if (viewProfile) viewProfile.style.display = 'none';
+                if (viewExp) viewExp.style.display = 'block';
+                if (actionBtn) {
+                    actionBtn.textContent = 'ESTABLISH PHONE CONNECTION';
+                    actionBtn.href = 'tel:098xxxxx43';
+                }
+            } else {
+                if (viewProfile) viewProfile.style.display = 'none';
+                if (viewExp) viewExp.style.display = 'none';
+                if (viewProj) viewProj.style.display = 'block';
+                if (actionBtn) {
+                    actionBtn.textContent = 'RUN VIRTUAL PREVIEW';
+                    actionBtn.href = '#';
+                }
+            }
+
             // Populating Overlay details
             if (overlayTitle) overlayTitle.textContent = title;
             if (overlayDesc) overlayDesc.textContent = desc;

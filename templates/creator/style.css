@@ -197,6 +197,24 @@ body {
     --border-color: rgba(26, 40, 34, 0.12);
 }
 .slide[data-slide="9"] {
+    background-color: #121113;
+    color: #F5EFEB;
+    --color-accent: #A3C9A8;
+    --border-color: rgba(245, 239, 235, 0.12);
+}
+.slide[data-slide="10"] {
+    background-color: #FAF8F5;
+    color: #1B1A18;
+    --color-accent: #D96B43;
+    --border-color: rgba(27, 26, 24, 0.12);
+}
+.slide[data-slide="11"] {
+    background-color: #1E2F27;
+    color: #EBF2ED;
+    --color-accent: #E5A35E;
+    --border-color: rgba(235, 242, 237, 0.15);
+}
+.slide[data-slide="12"] {
     background-color: #6E222A;
     color: #FDFBF9;
     --color-accent: #F1A36B;
@@ -1056,5 +1074,157 @@ body {
     .edu-card:hover, .exp-card:hover, .skill-row:hover {
         padding-left: 1.5rem;
         border-left: 2px solid var(--color-accent);
+    }
+}
+
+/* Slide 9: Client Reviews Grid */
+@media (min-width: 769px) {
+    .grid-split-reviews {
+        grid-template-columns: 1fr 1fr;
+        grid-gap: 5rem;
+    }
+}
+
+.review-box {
+    border-left: 2px solid var(--color-accent);
+    padding-left: 1.5rem;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.review-box:hover {
+    padding-left: 2rem;
+    border-left-width: 4px;
+}
+
+.review-text {
+    font-family: var(--font-sans);
+    font-size: clamp(0.9rem, 1.5vw, 1.15rem);
+    font-style: italic;
+    line-height: 1.6;
+    margin-bottom: 0.8rem;
+    opacity: 0.9;
+}
+
+.review-author {
+    font-family: monospace;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    color: var(--color-accent);
+}
+
+/* Slide 10: Strategic Workflow Grid */
+@media (min-width: 769px) {
+    .grid-split-workflow {
+        grid-template-columns: 0.85fr 1.15fr;
+        grid-gap: 4rem;
+    }
+    
+    .workflow-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-gap: 3rem 2.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .workflow-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+    }
+}
+
+.workflow-step {
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.workflow-step:hover {
+    transform: translate3d(8px, 0, 0);
+}
+
+.step-num {
+    font-family: monospace;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--color-accent);
+    opacity: 0.35;
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.step-title {
+    font-family: var(--font-sans);
+    font-size: 0.82rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 0.4rem;
+}
+
+.step-desc {
+    font-size: 0.72rem;
+    line-height: 1.5;
+    opacity: 0.7;
+}
+
+/* Slide 11: Editorial Collage Gallery */
+@media (min-width: 769px) {
+    .grid-split-gallery {
+        grid-template-columns: 0.9fr 1.1fr;
+        grid-gap: 2rem;
+    }
+}
+
+.editorial-collage {
+    position: relative;
+    width: 100%;
+    height: 480px;
+}
+
+.collage-img-1 {
+    position: absolute;
+    top: 5%;
+    left: 5%;
+    width: 55%;
+    z-index: 5;
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.collage-img-2 {
+    position: absolute;
+    bottom: 5%;
+    right: 5%;
+    width: 45%;
+    z-index: 10;
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.collage-img-3 {
+    position: absolute;
+    top: 25%;
+    right: 40%;
+    width: 35%;
+    z-index: 3;
+    opacity: 0.65;
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.collage-img-1:hover { transform: scale(1.03) translate3d(-5px, -5px, 0); z-index: 15; }
+.collage-img-2:hover { transform: scale(1.03) translate3d(5px, 5px, 0); z-index: 15; }
+.collage-img-3:hover { transform: scale(1.03); opacity: 1; z-index: 15; }
+
+@media (max-width: 768px) {
+    .editorial-collage {
+        height: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+    
+    .collage-img-1, .collage-img-2, .collage-img-3 {
+        position: static;
+        width: 100%;
+        opacity: 1;
     }
 }

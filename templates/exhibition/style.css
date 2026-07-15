@@ -1,0 +1,884 @@
+/* ==========================================================================
+   3D Virtual Exhibition Portfolio Stylesheet - Template 11
+   Bespoke Cyberpunk-adjacent Dark Luxury Aesthetic
+   ========================================================================== */
+
+:root {
+    --bg-dark: #08080a;
+    --text-light: #f5f6f8;
+    --text-muted: #8e94a0;
+    --accent-glow: rgba(142, 148, 160, 0.3);
+    --border-color: rgba(255, 255, 255, 0.08);
+    --hud-bg: rgba(14, 14, 18, 0.45);
+    
+    --font-sans: 'Plus Jakarta Sans', sans-serif;
+    --font-mono: 'Space Grotesk', sans-serif;
+    --transition-fast: 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    --transition-slow: 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-light);
+    font-family: var(--font-sans);
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+/* ==========================================================================
+   Background Scenery & Ambience Orbs
+   ========================================================================== */
+.bg-scene {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.perspective-grid {
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background-image: 
+        linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+    background-size: 50px 50px;
+    transform: perspective(600px) rotateX(60deg) translate3d(0, 0, 0);
+    opacity: 0.6;
+    animation: gridScroll 120s linear infinite;
+}
+
+@keyframes gridScroll {
+    0% { background-position: 0 0; }
+    100% { background-position: 0 1000px; }
+}
+
+.bg-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(120px);
+    -webkit-filter: blur(120px);
+    opacity: 0.06;
+    mix-blend-mode: screen;
+}
+
+.orb-1 {
+    width: 500px;
+    height: 500px;
+    top: -10%;
+    left: 10%;
+    background: radial-gradient(circle, #5D1921 0%, transparent 70%);
+    animation: floatOrb 25s infinite alternate ease-in-out;
+}
+
+.orb-2 {
+    width: 600px;
+    height: 600px;
+    bottom: -10%;
+    right: 10%;
+    background: radial-gradient(circle, #3F6F58 0%, transparent 70%);
+    animation: floatOrb 30s infinite alternate-reverse ease-in-out;
+}
+
+.orb-3 {
+    width: 400px;
+    height: 400px;
+    top: 30%;
+    left: 50%;
+    background: radial-gradient(circle, #E5A35E 0%, transparent 70%);
+    opacity: 0.04;
+}
+
+@keyframes floatOrb {
+    0% { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(60px, -40px) scale(1.15); }
+}
+
+/* ==========================================================================
+   Back button to Hub
+   ========================================================================== */
+.back-to-hub-btn {
+    position: fixed;
+    top: 2rem;
+    left: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    padding: 0.8rem 1.4rem;
+    border: 1px solid var(--border-color);
+    background-color: var(--hud-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 4px;
+    z-index: 1000;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    transition: var(--transition-fast);
+}
+
+.back-to-hub-btn svg {
+    width: 14px;
+    height: 14px;
+    transition: transform var(--transition-fast);
+}
+
+.back-to-hub-btn:hover {
+    color: var(--text-light);
+    border-color: rgba(255, 255, 255, 0.35);
+    box-shadow: 0 8px 30px rgba(255,255,255,0.05);
+}
+
+.back-to-hub-btn:hover svg {
+    transform: translateX(-4px);
+}
+
+/* ==========================================================================
+   Holographic HUD Panel Styling
+   ========================================================================== */
+.hud-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 10;
+    pointer-events: none;
+}
+
+/* Top Header */
+.hud-header {
+    position: absolute;
+    top: 2rem;
+    left: 14rem;
+    right: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.8rem;
+    pointer-events: auto;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+}
+
+.hud-tag {
+    color: var(--text-light);
+}
+
+.hud-separator {
+    opacity: 0.3;
+}
+
+.hud-status {
+    color: #58c082;
+    text-shadow: 0 0 10px rgba(88, 192, 130, 0.3);
+}
+
+.hud-time {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    opacity: 0.7;
+}
+
+/* Common HUD Panel Blocks */
+.hud-panel {
+    position: absolute;
+    background-color: var(--hud-bg);
+    border: 1px solid var(--border-color);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 4px;
+    z-index: 20;
+    pointer-events: auto;
+    box-shadow: 0 10px 35px rgba(0,0,0,0.15);
+    transition: var(--transition-fast);
+}
+
+.hud-panel:hover {
+    border-color: rgba(255, 255, 255, 0.15);
+}
+
+.panel-header {
+    border-bottom: 1px solid var(--border-color);
+    padding: 0.6rem 1rem;
+    font-family: var(--font-mono);
+    font-size: 0.55rem;
+    font-weight: 700;
+    letter-spacing: 0.25em;
+    color: var(--text-muted);
+}
+
+.panel-body {
+    padding: 1rem;
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    line-height: 1.6;
+}
+
+/* Left Panel */
+.hud-left {
+    top: 7rem;
+    left: 2rem;
+    width: 260px;
+}
+
+.log-row {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.05);
+    padding: 0.3rem 0;
+}
+
+.log-row span:first-child {
+    color: var(--text-muted);
+}
+
+.log-row span:last-child {
+    color: var(--text-light);
+    font-weight: 500;
+}
+
+.log-desc {
+    margin-top: 1rem;
+    font-size: 0.52rem;
+    line-height: 1.5;
+    opacity: 0.45;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Right Panel & Compass */
+.hud-right {
+    top: 7rem;
+    right: 2rem;
+    width: 240px;
+}
+
+.flex-column { display: flex; flex-direction: column; }
+.align-center { align-items: center; }
+
+.compass-circle {
+    position: relative;
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.compass-circle::before {
+    content: '';
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 1px dashed rgba(255, 255, 255, 0.05);
+}
+
+.compass-needle {
+    position: absolute;
+    width: 1.5px;
+    height: 60px;
+    background-image: linear-gradient(to bottom, #d53f49 50%, rgba(255,255,255,0.2) 50%);
+    transform: rotate(0deg);
+    will-change: transform;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.compass-marker {
+    position: absolute;
+    font-size: 0.5rem;
+    font-weight: 700;
+    opacity: 0.6;
+}
+
+.compass-marker.n { top: 4px; }
+.compass-marker.s { bottom: 4px; }
+.compass-marker.e { right: 8px; }
+.compass-marker.w { left: 8px; }
+
+.metric-row {
+    display: flex;
+    gap: 1.5rem;
+    width: 100%;
+    border-top: 1px solid var(--border-color);
+    padding-top: 0.8rem;
+}
+
+.metric-box {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.metric-val {
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: var(--text-light);
+}
+
+.metric-lbl {
+    font-size: 0.48rem;
+    color: var(--text-muted);
+    letter-spacing: 0.1em;
+}
+
+/* Footer Hint */
+.hud-footer {
+    position: absolute;
+    bottom: 2rem;
+    left: 2rem;
+    right: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid var(--border-color);
+    padding-top: 0.8rem;
+    pointer-events: auto;
+}
+
+.nav-hint {
+    font-family: var(--font-mono);
+    font-size: 0.55rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    opacity: 0.4;
+}
+
+.view-modes {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.view-mode-btn {
+    font-family: var(--font-mono);
+    font-size: 0.52rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    background: transparent;
+    border: 1px solid var(--border-color);
+    padding: 0.4rem 0.8rem;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: var(--transition-fast);
+}
+
+.view-mode-btn:hover {
+    color: var(--text-light);
+    border-color: rgba(255, 255, 255, 0.25);
+}
+
+.view-mode-btn.active {
+    color: var(--bg-dark);
+    background-color: var(--text-light);
+    border-color: var(--text-light);
+}
+
+/* ==========================================================================
+   The 3D Exhibition Room Viewport
+   ========================================================================== */
+.viewport-3d {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    z-index: 5;
+    overflow: hidden;
+    perspective: 1200px;
+    perspective-origin: 50% 50%;
+}
+
+.stage-3d {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    will-change: transform;
+    transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.gallery-grid-3d {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate3d(-50%, -50%, 0);
+    width: 1050px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 3.5rem;
+    transform-style: preserve-3d;
+    will-change: transform;
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ==========================================================================
+   3D Cards
+   ========================================================================== */
+.exhibition-card-3d {
+    perspective: 800px;
+    transform-style: preserve-3d;
+    cursor: pointer;
+    aspect-ratio: 4/5;
+    position: relative;
+    will-change: transform;
+}
+
+.card-inner {
+    width: 100%;
+    height: 100%;
+    background-color: rgba(14, 14, 18, 0.65);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 0.8rem;
+    transform-style: preserve-3d;
+    will-change: transform;
+    transition: 
+        transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), 
+        border-color 0.4s, 
+        box-shadow 0.4s;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.exhibition-card-3d:hover .card-inner {
+    transform: translate3d(0, 0, 60px) rotateY(-5deg) rotateX(5deg);
+    border-color: rgba(255, 255, 255, 0.28);
+    box-shadow: 
+        0 15px 40px rgba(0, 0, 0, 0.5),
+        0 0 30px rgba(255, 255, 255, 0.03);
+}
+
+.card-glow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 4px;
+    background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 255, 255, 0.08) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 10;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.exhibition-card-3d:hover .card-glow {
+    opacity: 1;
+}
+
+.card-frame {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+    background-color: #0c0b0d;
+    border-radius: 2px;
+}
+
+.card-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.8;
+    filter: grayscale(20%);
+    transition: transform 10s cubic-bezier(0.1, 0.8, 0.2, 1), opacity 0.5s ease;
+}
+
+.exhibition-card-3d:hover .card-frame img {
+    transform: scale(1.08);
+    opacity: 1;
+    filter: grayscale(0%);
+}
+
+/* HUD Overlay on each card */
+.card-header-overlay {
+    position: absolute;
+    top: 1.5rem;
+    left: 1.5rem;
+    right: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    font-weight: 700;
+    color: #ffffff;
+    opacity: 0.6;
+    z-index: 5;
+    transform: translateZ(25px);
+    transition: var(--transition-fast);
+}
+
+.card-footer-overlay {
+    position: absolute;
+    bottom: 1.5rem;
+    left: 1.5rem;
+    right: 1.5rem;
+    z-index: 5;
+    transform: translateZ(30px);
+    transition: var(--transition-fast);
+}
+
+.card-name {
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    color: #ffffff;
+    text-transform: uppercase;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    margin-bottom: 0.15rem;
+}
+
+.card-category {
+    font-family: var(--font-mono);
+    font-size: 0.48rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    color: var(--text-muted);
+}
+
+.exhibition-card-3d:hover .card-header-overlay {
+    opacity: 0.95;
+    transform: translateZ(35px);
+}
+
+.exhibition-card-3d:hover .card-footer-overlay {
+    transform: translateZ(45px);
+}
+
+/* Dynamic Glitch layers in stage */
+.viewport-3d.zoomed .stage-3d {
+    pointer-events: none; /* Block grid clicks when zoomed */
+}
+
+/* ==========================================================================
+   Besoke Fullscreen details overlay Panel
+   ========================================================================== */
+.details-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(8, 8, 10, 0.95);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    z-index: 10000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.8s;
+}
+
+.details-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Close Button */
+.close-overlay-btn {
+    position: fixed;
+    top: 2rem;
+    right: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: var(--text-muted);
+    background: transparent;
+    border: 1px solid var(--border-color);
+    padding: 0.8rem 1.4rem;
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    border-radius: 4px;
+    cursor: pointer;
+    z-index: 10010;
+    transition: var(--transition-fast);
+}
+
+.close-overlay-btn svg {
+    width: 14px;
+    height: 14px;
+    transition: transform var(--transition-fast);
+}
+
+.close-overlay-btn:hover {
+    color: var(--text-light);
+    border-color: rgba(255, 255, 255, 0.35);
+    box-shadow: 0 8px 30px rgba(255,255,255,0.03);
+}
+
+.close-overlay-btn:hover svg {
+    transform: rotate(90deg);
+}
+
+/* Grid Layout */
+.overlay-scroll-container {
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6rem 4rem 4rem;
+}
+
+.overlay-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    grid-gap: 5rem;
+    width: 100%;
+    max-width: 1150px;
+    align-items: center;
+}
+
+/* Left content Panel */
+.overlay-content {
+    opacity: 0;
+    transform: translate3d(-30px, 0, 0);
+    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s;
+}
+
+.details-overlay.active .overlay-content {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+}
+
+.overlay-meta {
+    display: flex;
+    gap: 1.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    margin-bottom: 1.5rem;
+}
+
+.overlay-project-num {
+    color: #ffffff;
+    border-right: 1px solid var(--border-color);
+    padding-right: 1.5rem;
+}
+
+.overlay-title {
+    font-family: var(--font-sans);
+    font-size: clamp(2rem, 5vw, 4rem);
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    line-height: 1.05;
+    margin-bottom: 2rem;
+    color: #ffffff;
+}
+
+.overlay-desc {
+    font-family: var(--font-sans);
+    font-size: 0.92rem;
+    line-height: 1.7;
+    color: var(--text-muted);
+    margin-bottom: 2.5rem;
+}
+
+.project-specs {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    border-top: 1px solid var(--border-color);
+    padding-top: 2rem;
+    margin-bottom: 3rem;
+}
+
+.spec-item {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px dashed rgba(255,255,255,0.05);
+    padding-bottom: 0.5rem;
+}
+
+.spec-lbl {
+    font-family: var(--font-mono);
+    font-size: 0.55rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    color: var(--text-muted);
+}
+
+.spec-val {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.spec-btn {
+    display: inline-flex;
+    align-items: center;
+    background-color: #ffffff;
+    color: var(--bg-dark);
+    padding: 1rem 2rem;
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-decoration: none;
+    border-radius: 4px;
+    box-shadow: 0 10px 25px rgba(255,255,255,0.1);
+    transition: var(--transition-fast);
+}
+
+.spec-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 35px rgba(255,255,255,0.25);
+    background-color: #f0f0f5;
+}
+
+/* Right Visual Panel */
+.overlay-visual {
+    opacity: 0;
+    transform: translate3d(30px, 0, 0);
+    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s;
+}
+
+.details-overlay.active .overlay-visual {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+}
+
+.overlay-img-frame {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4/5;
+    border: 1px solid var(--border-color);
+    background-color: #0c0b0d;
+    padding: 10px;
+    border-radius: 4px;
+}
+
+.overlay-img-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 2px;
+}
+
+/* ==========================================================================
+   Mobile/Tablet Responsive Layouts
+   ========================================================================== */
+@media (max-width: 1024px) {
+    .gallery-grid-3d {
+        width: 820px;
+        grid-gap: 2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    body {
+        overflow-y: auto;
+        height: auto;
+    }
+    
+    /* Flatten the 3D Stage completely for mobile performance */
+    .viewport-3d {
+        height: auto;
+        overflow: visible;
+        perspective: none;
+    }
+    
+    .stage-3d {
+        position: static;
+        width: 100%;
+        height: auto;
+        transform: none !important;
+    }
+    
+    .gallery-grid-3d {
+        position: static;
+        transform: none !important;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 2.5rem;
+        padding: 6rem 1.5rem 4rem;
+    }
+    
+    .exhibition-card-3d {
+        perspective: none;
+        transform: none !important;
+        max-width: 420px;
+        margin: 0 auto;
+        width: 100%;
+    }
+    
+    .card-inner {
+        transform: none !important;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.3) !important;
+    }
+    
+    /* Hide desktop-specific HUD readouts on touch viewports */
+    .hud-panel {
+        display: none !important;
+    }
+    
+    .hud-header {
+        left: 2rem;
+    }
+    
+    .back-to-hub-btn {
+        top: 1rem;
+        left: 1rem;
+        padding: 0.6rem 1rem;
+        font-size: 0.55rem;
+    }
+    
+    /* Overlay modifications */
+    .overlay-scroll-container {
+        padding: 6rem 1.5rem 3rem;
+    }
+    
+    .overlay-grid {
+        grid-template-columns: 1fr;
+        grid-gap: 3rem;
+    }
+    
+    .overlay-visual {
+        order: -1; /* Image first on mobile details */
+    }
+    
+    .overlay-title {
+        font-size: 2.2rem;
+    }
+}

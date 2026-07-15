@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="style.css?v=1.1">
+    <link rel="stylesheet" href="style.css?v=1.2">
 </head>
 <body>
     <!-- futuristic HUD Preloader -->
@@ -304,62 +304,29 @@
                     
                     <h2 class="overlay-title" id="overlay-title">PROJECT TITLE</h2>
                     
-                    <!-- View A: Standard Project Specs (Default) -->
-                    <div id="view-project-specs">
+                    <div class="overlay-slides-container" id="overlay-slides-container">
                         <p class="overlay-desc" id="overlay-desc">Project description readout stream logs data.</p>
-                        <div class="project-specs">
-                            <div class="spec-item">
-                                <span class="spec-lbl">PROJECT CATEGORY</span>
-                                <span class="spec-val" id="overlay-category">CREATIVE DIRECTION</span>
-                            </div>
-                            <div class="spec-item">
-                                <span class="spec-lbl">METRICS DELIVERED</span>
-                                <span class="spec-val">+150% ORGANIC GROWTH</span>
-                            </div>
-                            <div class="spec-item">
-                                <span class="spec-lbl">TIMELINE LOGS</span>
-                                <span class="spec-val">6 MONTH EXECUTIONS</span>
-                            </div>
+                        
+                        <div class="project-specs" id="overlay-specs-list">
+                            <!-- Populated dynamically via JS -->
                         </div>
                     </div>
 
-                    <!-- View B: Profile Specs -->
-                    <div id="view-profile-specs" style="display: none;">
-                        <p class="overlay-desc">I am Bui Linh Chi, a Growth Marketer and Content Creator with over 4 years of experience working in digital media. I focus on revenue-oriented content planning, brand campaign development, and optimization of outreach channels to bring sustainable growth to businesses.</p>
-                        <div class="project-specs">
-                            <div class="spec-item">
-                                <span class="spec-lbl">UNIVERSITY</span>
-                                <span class="spec-val">NATIONAL ECONOMICS UNIVERSITY (NEU)</span>
-                            </div>
-                            <div class="spec-item">
-                                <span class="spec-lbl">DEGREE</span>
-                                <span class="spec-val">Bachelor of Marketing (Graduated with Honors)</span>
-                            </div>
-                            <div class="spec-item">
-                                <span class="spec-lbl">EMAIL</span>
-                                <span class="spec-val">linhchi.growth@gmail.com</span>
-                            </div>
-                            <div class="spec-item">
-                                <span class="spec-lbl">PHONE</span>
-                                <span class="spec-val">098xxxxx43</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- View C: Experience Specs -->
-                    <div id="view-experience-specs" style="display: none;">
-                        <div class="project-specs" style="border-top: none; padding-top: 0; margin-bottom: 2rem;">
-                            <div style="margin-bottom: 1.5rem;">
-                                <h4 style="font-family: var(--font-sans); font-size: 0.75rem; color: #ffffff; text-transform: uppercase; margin-bottom: 0.2rem;">SEO & LEAD GENERATION MANAGER - ABC CORPORATION</h4>
-                                <span style="font-family: var(--font-mono); font-size: 0.52rem; color: var(--text-muted);">2024 - PRESENT</span>
-                                <p style="font-family: var(--font-sans); font-size: 0.72rem; color: var(--text-muted); margin-top: 0.4rem; line-height: 1.5;">Managed content strategy, organic search traffic channels, conversion form funnel paths, and led content squads to execute digital marketing campaigns.</p>
-                            </div>
-                            <div style="margin-bottom: 1.5rem;">
-                                <h4 style="font-family: var(--font-sans); font-size: 0.75rem; color: #ffffff; text-transform: uppercase; margin-bottom: 0.2rem;">CONTENT MARKETING SPECIALIST - DEF DIGITAL AGENCY</h4>
-                                <span style="font-family: var(--font-mono); font-size: 0.52rem; color: var(--text-muted);">2022 - 2024</span>
-                                <p style="font-family: var(--font-sans); font-size: 0.72rem; color: var(--text-muted); margin-top: 0.4rem; line-height: 1.5;">Designed brand identity guidelines, ad copy scripting, social calendar streams, and coordinated creative designs with ad production teams.</p>
-                            </div>
-                        </div>
+                    <!-- Slide Navigation Sub-controls -->
+                    <div class="overlay-page-nav">
+                        <button class="overlay-page-btn" id="overlay-page-prev-btn" aria-label="Previous subpage">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="15 18 9 12 15 6"></polyline>
+                            </svg>
+                            <span>PREV</span>
+                        </button>
+                        <span class="overlay-page-indicator" id="overlay-page-indicator">PAGE 01 / 03</span>
+                        <button class="overlay-page-btn" id="overlay-page-next-btn" aria-label="Next subpage">
+                            <span>NEXT</span>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="9 18 15 12 9 6"></polyline>
+                            </svg>
+                        </button>
                     </div>
 
                     <div class="spec-action">
@@ -380,7 +347,7 @@
     </div>
 
     <!-- Custom JS -->
-    <script src="script.js?v=1.1"></script>
+    <script src="script.js?v=1.2"></script>
     <script>
         // Preloader self-destruct
         window.addEventListener('load', function() {

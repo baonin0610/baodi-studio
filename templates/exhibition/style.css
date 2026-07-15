@@ -437,9 +437,9 @@ body {
     top: 50%;
     left: 50%;
     transform: translate3d(-50%, -50%, 0);
-    width: 1050px;
+    width: 1400px;
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     grid-gap: 3.5rem;
     transform-style: preserve-3d;
     will-change: transform;
@@ -923,4 +923,64 @@ body {
 .exhibition-card-3d.filtered-out .card-inner {
     border-color: rgba(255, 255, 255, 0.01) !important;
     box-shadow: none !important;
+}
+
+/* Subpage Navigation inside Overlay */
+.overlay-page-nav {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    margin-top: 1.8rem;
+    margin-bottom: 2rem;
+    padding-top: 1rem;
+    border-top: 1px dashed rgba(255, 255, 255, 0.08);
+}
+
+.overlay-page-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+    font-size: 0.52rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    transition: var(--transition-fast);
+    padding: 0.4rem 0.6rem;
+}
+
+.overlay-page-btn svg {
+    width: 0.65rem;
+    height: 0.65rem;
+    stroke: currentColor;
+}
+
+.overlay-page-btn:hover:not(:disabled) {
+    color: var(--text-light);
+}
+
+.overlay-page-btn:disabled {
+    opacity: 0.22;
+    cursor: not-allowed;
+}
+
+.overlay-page-indicator {
+    font-family: var(--font-mono);
+    font-size: 0.52rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    color: #e5a35e;
+}
+
+/* Animations for sub-slides shifting */
+.overlay-slides-container {
+    transition: opacity 0.3s ease, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.overlay-slides-container.slide-fade-out {
+    opacity: 0;
+    transform: translateY(12px);
 }

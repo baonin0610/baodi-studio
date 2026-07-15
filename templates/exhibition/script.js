@@ -81,7 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // ==========================================================================
-    // Card Hover Gloss Coordinate Mapping
+    // Card Hover Gloss Coordinate Mapping & Text Scrambler
     // ==========================================================================
     cards.forEach((card) => {
         card.addEventListener('mousemove', (e) => {
@@ -92,6 +92,19 @@ document.addEventListener('DOMContentLoaded', () => {
             // Map as custom CSS variables
             card.style.setProperty('--mouse-x', `${(mouseX / rect.width) * 100}%`);
             card.style.setProperty('--mouse-y', `${(mouseY / rect.height) * 100}%`);
+        });
+
+        // Trigger holographic title scramble on entry
+        let scrambleLock = false;
+        card.addEventListener('mouseenter', () => {
+            if (scrambleLock) return;
+            scrambleLock = true;
+            const nameEl = card.querySelector('.card-name');
+            if (nameEl) {
+                const originalText = card.getAttribute('data-title');
+                scrambleText(nameEl, originalText, 450);
+            }
+            setTimeout(() => { scrambleLock = false; }, 600);
         });
     });
 
@@ -170,6 +183,9 @@ document.addEventListener('DOMContentLoaded', () => {
             if (overlayProjNum) overlayProjNum.textContent = String(idx).padStart(2, '0');
             if (overlayProjYear) overlayProjYear.textContent = date;
             if (overlayImg) overlayImg.src = img;
+
+            // Trigger text scramble decoder
+            scrambleText(overlayTitle, title, 600);
 
             // Camera Zoom In Animation
             if (window.innerWidth > 768 && !isFlatMode) {
@@ -263,5 +279,151 @@ document.addEventListener('DOMContentLoaded', () => {
                 targetZoomZ = 0;
             }
         }
+    });
+
+    // ==========================================================================
+    // Holographic Scramble Text Decoder
+    // ==========================================================================
+    function scrambleText(element, finalString, duration = 650) {
+        if (!element) return;
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#@$%&';
+        let iterations = 0;
+        const intervalTime = 25;
+        const steps = duration / intervalTime;
+        
+        const interval = setInterval(() => {
+            element.innerText = finalString
+                .split("")
+                .map((char, index) => {
+                    if (char === " ") return " ";
+                    if (index < (iterations / steps) * finalString.length) {
+                        return finalString[index];
+                    }
+                    return chars[Math.floor(Math.random() * chars.length)];
+                })
+                .join("");
+            
+            if (iterations >= steps) {
+                clearInterval(interval);
+                element.innerText = finalString;
+            }
+            iterations++;
+        }, intervalTime);
+    }
+
+    // ==========================================================================
+    // Interactive HTML5 Canvas Particles Background
+    // ==========================================================================
+    const canvas = document.getElementById('particle-canvas');
+    if (canvas) {
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        const particleCount = 65;
+        let mousePos = { x: -1000, y: -1000 };
+
+        const resizeCanvas = () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        };
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        window.addEventListener('mousemove', (e) => {
+            mousePos.x = e.clientX;
+            mousePos.y = e.clientY;
+        });
+
+        class Particle {
+            constructor() {
+                this.reset();
+            }
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.vx = (Math.random() - 0.5) * 0.3;
+                this.vy = (Math.random() - 0.5) * 0.3;
+                this.size = Math.random() * 1.5 + 0.5;
+                this.alpha = Math.random() * 0.4 + 0.15;
+                this.baseAlpha = this.alpha;
+            }
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+
+                // Wrap around boundaries
+                if (this.x < 0) this.x = canvas.width;
+                if (this.x > canvas.width) this.x = 0;
+                if (this.y < 0) this.y = canvas.height;
+                if (this.y > canvas.height) this.y = 0;
+
+                // Mouse magnetic push
+                const dx = this.x - mousePos.x;
+                const dy = this.y - mousePos.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < 130) {
+                    const force = (130 - dist) / 130;
+                    this.x += (dx / dist) * force * 1.6;
+                    this.y += (dy / dist) * force * 1.6;
+                    this.alpha = Math.min(0.85, this.baseAlpha + force * 0.55);
+                } else {
+                    this.alpha += (this.baseAlpha - this.alpha) * 0.05;
+                }
+            }
+            draw() {
+                ctx.fillStyle = `rgba(142, 148, 160, ${this.alpha})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        for (let i = 0; i < particleCount; i++) {
+            particles.push(new Particle());
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animateParticles);
+        }
+        animateParticles();
+    }
+
+    // ==========================================================================
+    // 3D Sorter Category Filter Toggler
+    // ==========================================================================
+    const filterTags = document.querySelectorAll('.filter-tag');
+    filterTags.forEach(tag => {
+        tag.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (isZoomedIn) return;
+
+            // Toggle active state
+            filterTags.forEach(t => t.classList.remove('active'));
+            tag.classList.add('active');
+
+            const filterVal = tag.getAttribute('data-filter');
+
+            cards.forEach(card => {
+                const category = card.querySelector('.card-category').textContent.toLowerCase();
+                
+                // Check if matched
+                const isMatched = filterVal === 'all' || category.includes(filterVal);
+                
+                if (isMatched) {
+                    card.classList.remove('filtered-out');
+                } else {
+                    card.classList.add('filtered-out');
+                }
+            });
+            
+            // Trigger coordinate stage update
+            if (logFocusStage) {
+                logFocusStage.textContent = filterVal === 'all' ? 'GRID_ROOM' : `FLTR:${filterVal.toUpperCase()}`;
+            }
+        });
     });
 });

@@ -882,3 +882,45 @@ body {
         font-size: 2.2rem;
     }
 }
+
+/* HUD Category Filters */
+.hud-filters {
+    display: flex;
+    gap: 0.8rem;
+    pointer-events: auto;
+}
+
+.filter-tag {
+    font-family: var(--font-mono);
+    font-size: 0.52rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    color: var(--text-muted);
+    background: transparent;
+    border: 1px solid transparent;
+    padding: 0.4rem 0.8rem;
+    cursor: pointer;
+    transition: var(--transition-fast);
+}
+
+.filter-tag:hover {
+    color: var(--text-light);
+}
+
+.filter-tag.active {
+    color: var(--text-light);
+    border-bottom: 2px solid var(--text-light);
+}
+
+/* 3D Filter Dissolve States */
+.exhibition-card-3d.filtered-out {
+    opacity: 0.04 !important;
+    pointer-events: none;
+    transform: translateZ(-800px) rotateY(185deg) !important;
+    transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s ease !important;
+}
+
+.exhibition-card-3d.filtered-out .card-inner {
+    border-color: rgba(255, 255, 255, 0.01) !important;
+    box-shadow: none !important;
+}

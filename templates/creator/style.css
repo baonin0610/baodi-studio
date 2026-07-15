@@ -147,20 +147,60 @@ body {
     }
 }
 
-/* Themes */
-.theme-burgundy {
-    background-color: var(--bg-burgundy);
-    color: var(--text-light);
+/* Themes: Slide-specific Bespoke Color Variables */
+.slide[data-slide="1"] {
+    background-color: #5D1921;
+    color: #FDFBF7;
+    --color-accent: #E5A35E;
+    --border-color: rgba(253, 251, 247, 0.15);
 }
-
-.theme-cream {
-    background-color: var(--bg-cream);
-    color: var(--text-dark);
+.slide[data-slide="2"] {
+    background-color: #EFECE6;
+    color: #1B1A18;
+    --color-accent: #802C34;
+    --border-color: rgba(27, 26, 24, 0.12);
 }
-
-.theme-green {
-    background-color: var(--bg-green);
-    color: var(--text-light);
+.slide[data-slide="3"] {
+    background-color: #131211;
+    color: #F5EFEB;
+    --color-accent: #D77B5C;
+    --border-color: rgba(245, 239, 235, 0.12);
+}
+.slide[data-slide="4"] {
+    background-color: #FAF9F6;
+    color: #2C2925;
+    --color-accent: #8A2D37;
+    --border-color: rgba(44, 41, 37, 0.12);
+}
+.slide[data-slide="5"] {
+    background-color: #22372D;
+    color: #EBF2ED;
+    --color-accent: #E9935B;
+    --border-color: rgba(235, 242, 237, 0.15);
+}
+.slide[data-slide="6"] {
+    background-color: #1B1714;
+    color: #FAF6F2;
+    --color-accent: #D3B074;
+    --border-color: rgba(250, 246, 242, 0.12);
+}
+.slide[data-slide="7"] {
+    background-color: #162432;
+    color: #F0F4F8;
+    --color-accent: #E98E63;
+    --border-color: rgba(240, 244, 248, 0.12);
+}
+.slide[data-slide="8"] {
+    background-color: #E1E8E4;
+    color: #1A2822;
+    --color-accent: #3F6F58;
+    --border-color: rgba(26, 40, 34, 0.12);
+}
+.slide[data-slide="9"] {
+    background-color: #6E222A;
+    color: #FDFBF9;
+    --color-accent: #F1A36B;
+    --border-color: rgba(253, 251, 249, 0.15);
 }
 
 /* Common Layout Elements */
@@ -180,13 +220,10 @@ body {
     font-size: 0.7rem;
     text-transform: uppercase;
     letter-spacing: 0.2em;
-    opacity: 0.7;
+    color: var(--color-accent);
+    opacity: 0.85;
     margin-bottom: 1.2rem;
     display: block;
-}
-
-.color-light-green {
-    color: #A3C9A8 !important;
 }
 
 .slide-title {
@@ -194,14 +231,7 @@ body {
     line-height: 1.1;
     text-transform: uppercase;
     letter-spacing: -0.02em;
-}
-
-.color-burgundy {
-    color: var(--bg-burgundy);
-}
-
-.color-green {
-    color: var(--bg-green);
+    color: var(--color-accent);
 }
 
 .title-huge {
@@ -211,7 +241,7 @@ body {
 
 .text-hollow {
     color: transparent;
-    -webkit-text-stroke: 1.5px var(--bg-burgundy);
+    -webkit-text-stroke: 1.5px var(--color-accent);
     opacity: 0.8;
 }
 
@@ -872,35 +902,15 @@ body {
     animation: floatBlob2 34s infinite alternate ease-in-out;
 }
 
-/* Theme variations for ambient colors */
-.theme-burgundy .glow-1 {
-    background: radial-gradient(circle, #D96B43 0%, transparent 70%);
-    opacity: 0.22;
+/* Theme variations for ambient colors - dynamic based on slide variables */
+.glow-1 {
+    background: radial-gradient(circle, var(--color-accent) 0%, transparent 70%);
+    opacity: 0.24;
 }
 
-.theme-burgundy .glow-2 {
-    background: radial-gradient(circle, #E87A5D 0%, transparent 70%);
-    opacity: 0.25;
-}
-
-.theme-cream .glow-1 {
-    background: radial-gradient(circle, #E8DCC4 0%, transparent 70%);
-    opacity: 0.45;
-}
-
-.theme-cream .glow-2 {
-    background: radial-gradient(circle, #D3C2A3 0%, transparent 70%);
-    opacity: 0.45;
-}
-
-.theme-green .glow-1 {
-    background: radial-gradient(circle, #A3C9A8 0%, transparent 70%);
-    opacity: 0.18;
-}
-
-.theme-green .glow-2 {
-    background: radial-gradient(circle, #8EA8BD 0%, transparent 70%);
-    opacity: 0.18;
+.glow-2 {
+    background: radial-gradient(circle, var(--color-accent) 0%, transparent 70%);
+    opacity: 0.24;
 }
 
 @keyframes floatBlob1 {
@@ -984,5 +994,67 @@ body {
     .title-line-content {
         transform: none !important;
         transition: none !important;
+    }
+}
+
+/* Kinetic Scrolling Marquee Band */
+.marquee-wrap {
+    overflow: hidden;
+    white-space: nowrap;
+    width: 100%;
+    position: absolute;
+    bottom: 5%;
+    left: 0;
+    padding: 0.8rem 0;
+    background-color: rgba(255, 255, 255, 0.015);
+    border-top: 1px dashed var(--border-color);
+    border-bottom: 1px dashed var(--border-color);
+    z-index: 1;
+    pointer-events: none;
+}
+
+.marquee-content {
+    display: inline-block;
+    animation: marqueeScroll 25s linear infinite;
+}
+
+.marquee-content span {
+    font-family: monospace;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    opacity: 0.35;
+    padding-right: 3rem;
+}
+
+@keyframes marqueeScroll {
+    0% { transform: translate3d(0, 0, 0); }
+    100% { transform: translate3d(-50%, 0, 0); }
+}
+
+/* Bespoke Tactile Typography Hover Shifts (Desktop Only) */
+@media (min-width: 769px) {
+    .toc-list li {
+        transition: all 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+        cursor: pointer;
+    }
+    
+    .toc-list li:hover {
+        padding-left: 1.2rem;
+        color: var(--color-accent);
+        border-bottom-color: var(--color-accent);
+    }
+    
+    .edu-card, .exp-card, .skill-row {
+        transition: all 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+        border-left: 2px solid transparent;
+        padding-left: 0;
+    }
+    
+    .edu-card:hover, .exp-card:hover, .skill-row:hover {
+        padding-left: 1.5rem;
+        border-left: 2px solid var(--color-accent);
     }
 }

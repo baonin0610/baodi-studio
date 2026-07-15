@@ -55,7 +55,17 @@ document.addEventListener('DOMContentLoaded', () => {
             resetAutoplay();
         });
     });
-
+    // Index / TOC Click Links
+    const tocItems = document.querySelectorAll('.toc-list li');
+    const tocMapping = [2, 3, 5, 4, 6]; // Map Index positions to slide coordinates
+    tocItems.forEach((item, idx) => {
+        item.addEventListener('click', () => {
+            if (tocMapping[idx] !== undefined) {
+                scrollToSlide(tocMapping[idx]);
+                resetAutoplay();
+            }
+        });
+    });
     // Scroll to Specific Slide Index
     function scrollToSlide(index) {
         if (window.innerWidth <= 768) return;

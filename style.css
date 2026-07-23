@@ -2587,6 +2587,15 @@ body {
     opacity: 1;
 }
 
+.spinner-subtext {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 400;
+    text-transform: none;
+    letter-spacing: 0.02em;
+    margin-top: -0.4rem;
+}
+
 .spinner-ring {
     width: 32px;
     height: 32px;

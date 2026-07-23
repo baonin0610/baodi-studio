@@ -888,3 +888,48 @@ function initMobileTouchSwiper() {
         setTimeout(updateNavButtons, 200);
     }
 }
+
+// Instant Launch Prefetch Engine (Pre-caches client website on mouse hover / touch start)
+function initInstantLaunchPrefetch() {
+    const prefetchedUrls = new Set();
+
+    function prefetchUrl(url) {
+        if (!url || prefetchedUrls.has(url)) return;
+        prefetchedUrls.add(url);
+
+        const linkPrefetch = document.createElement('link');
+        linkPrefetch.rel = 'prefetch';
+        linkPrefetch.href = url;
+        document.head.appendChild(linkPrefetch);
+
+        const linkPrerender = document.createElement('link');
+        linkPrerender.rel = 'prerender';
+        linkPrerender.href = url;
+        document.head.appendChild(linkPrerender);
+    }
+
+    document.addEventListener('mouseover', (e) => {
+        const target = e.target.closest('a[target="_blank"], .showcase-card');
+        if (target) {
+            const link = target.tagName === 'A' ? target : target.querySelector('a[target="_blank"]');
+            if (link && link.href) {
+                prefetchUrl(link.href);
+            }
+        }
+    }, { passive: true });
+
+    document.addEventListener('touchstart', (e) => {
+        const target = e.target.closest('a[target="_blank"], .showcase-card');
+        if (target) {
+            const link = target.tagName === 'A' ? target : target.querySelector('a[target="_blank"]');
+            if (link && link.href) {
+                prefetchUrl(link.href);
+            }
+        }
+    }, { passive: true });
+}
+
+// Ensure instant launch prefetch initializes
+document.addEventListener('DOMContentLoaded', () => {
+    initInstantLaunchPrefetch();
+});

@@ -387,8 +387,29 @@ function initLivePreviewModal() {
             }
 
             modal.classList.add('show');
+
+            // Trigger Security Notification Toast inside Preview Modal
+            const modalSecToast = document.getElementById('modal-security-toast');
+            if (modalSecToast) {
+                setTimeout(() => {
+                    modalSecToast.classList.add('show');
+                }, 400);
+
+                // Auto dismiss toast after 9 seconds
+                setTimeout(() => {
+                    modalSecToast.classList.remove('show');
+                }, 9400);
+            }
         });
     });
+
+    const closeSecToastBtn = document.getElementById('close-modal-security-toast');
+    const modalSecToast = document.getElementById('modal-security-toast');
+    if (closeSecToastBtn && modalSecToast) {
+        closeSecToastBtn.addEventListener('click', () => {
+            modalSecToast.classList.remove('show');
+        });
+    }
 
     // Hide loading spinner and fade in iframe when loaded
     iframe.addEventListener('load', () => {
@@ -402,6 +423,7 @@ function initLivePreviewModal() {
         if (loader) loader.classList.remove('show');
         iframe.style.opacity = '0';
         iframe.src = '';
+        if (modalSecToast) modalSecToast.classList.remove('show');
     }
 
     closeBtn.addEventListener('click', closePreview);

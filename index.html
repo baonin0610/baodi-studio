@@ -572,6 +572,22 @@
                 <span>Loading Template...</span>
             </div>
 
+            <!-- Security Warning Toast Overlay inside Live Preview -->
+            <div id="modal-security-toast" class="modal-security-toast">
+                <div class="modal-sec-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                        <line x1="12" y1="8" x2="12" y2="12"></line>
+                        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                    </svg>
+                </div>
+                <div class="modal-sec-content">
+                    <div class="modal-sec-title">🛡️ CẢNH BÁO BẢO MẬT & BẢO VỆ DỮ LIỆU KHÁCH HÀNG</div>
+                    <div class="modal-sec-desc">KHÔNG SỬ DỤNG CÁC THÔNG TIN CỦA KHÁCH HÀNG BÊN MÌNH LÀM MỤC ĐÍCH XẤU, MÌNH ĐÃ LƯU LẠI IP TRUY CẬP. NẾU SỬ DỤNG VÀO MỤC ĐÍCH XẤU SẼ BỊ ĐƯA LÊN CÔNG AN!</div>
+                </div>
+                <button class="modal-sec-close" id="close-modal-security-toast" aria-label="Close Security Notice">&times;</button>
+            </div>
+
             <div class="preview-iframe-wrapper desktop" id="preview-iframe-wrapper">
                 <iframe id="preview-iframe" src="" title="Live Template Preview"></iframe>
             </div>

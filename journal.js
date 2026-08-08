@@ -129,31 +129,25 @@ function renderPostsList(posts) {
         const card = document.createElement('div');
         card.className = `journal-card filter-item ${post.category}`;
         card.setAttribute('data-category', post.category);
-        card.addEventListener('click', () => openArticle(card));
+
+        // Check if image is provided and valid, bind onerror fallback
+        const imageHTML = post.image ? `<img src="${post.image}" class="journal-card-image" alt="${post.title} Cover" onerror="this.style.display='none'" loading="lazy">` : '';
 
         card.innerHTML = `
-            <img src="${post.image}" class="journal-card-image" alt="${post.title} Cover" loading="lazy">
+            ${imageHTML}
             <div class="journal-card-body">
                 <div class="journal-card-meta">
                     <span class="journal-card-category">${post.categoryLabel}</span>
                     <span>${post.date}</span>
                 </div>
                 <h3 class="journal-card-title">${post.title}</h3>
-                <p class="journal-card-excerpt">${post.excerpt}</p>
+                <div class="journal-card-content">
+                    ${post.content}
+                </div>
                 <div class="journal-card-footer">
                     <span>${post.readTime} phút đọc</span>
-                    <span class="journal-read-more">
-                        Đọc bài viết
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                            <polyline points="12 5 19 12 12 19"></polyline>
-                        </svg>
-                    </span>
+                    <span>Bao Duy's Journal</span>
                 </div>
-            </div>
-            <!-- Full article content template -->
-            <div class="journal-article-template" style="display: none;">
-                ${post.content}
             </div>
         `;
         grid.appendChild(card);
@@ -430,41 +424,38 @@ function initPostCreator() {
             const category = categorySelect.value;
             const categoryLabel = categorySelect.options[categorySelect.selectedIndex].text;
             const date = document.getElementById('post-date').value.trim();
-            const image = document.getElementById('post-image').value.trim() || 'assets/blog_default.jpg';
+            const image = document.getElementById('post-image').value.trim();
             const readTime = document.getElementById('post-read-time').value.trim() || '3';
             const excerpt = document.getElementById('post-excerpt').value.trim();
             const content = document.getElementById('post-content').value.trim();
 
-            if (!title || !excerpt || !content) {
-                alert('Vui lòng điền đầy đủ: Tiêu đề, Mô tả ngắn và Nội dung.');
+            if (!title || !content) {
+                alert('Vui lòng điền đầy đủ: Tiêu đề và Nội dung bài viết.');
                 return;
             }
 
             const parsedContentHTML = parseHTMLContent(content);
+            const finalExcerpt = excerpt ? excerpt : (content.replace(/<[^>]*>/g, '').substring(0, 150) + '...');
+            
+            // If image is blank, do not include the img block in the generated HTML
+            const imageHTML = image ? `\n                        <img src="${image}" class="journal-card-image" alt="${title} Cover" onerror="this.style.display='none'" loading="lazy">` : '';
 
             const cardHTML = `                    <!-- Journal Entry: ${title} -->
-                    <div class="journal-card filter-item ${category}" data-category="${category}" onclick="openArticle(this)">
-                        <img src="${image}" class="journal-card-image" alt="${title} Cover" loading="lazy">
+                    <div class="journal-card filter-item ${category}" data-category="${category}">
+                        ${imageHTML}
                         <div class="journal-card-body">
                             <div class="journal-card-meta">
                                 <span class="journal-card-category">${categoryLabel}</span>
                                 <span>${date}</span>
                             </div>
                             <h3 class="journal-card-title">${title}</h3>
-                            <p class="journal-card-excerpt">${excerpt}</p>
+                            <div class="journal-card-content">
+                                ${parsedContentHTML}
+                            </div>
                             <div class="journal-card-footer">
                                 <span>${readTime} phút đọc</span>
-                                <span class="journal-read-more">
-                                    Đọc bài viết
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <line x1="5" y1="12" x2="19" y2="12"></line>
-                                        <polyline points="12 5 19 12 12 19"></polyline>
-                                    </svg>
-                                </span>
+                                <span>Bao Duy's Journal</span>
                             </div>
-                        </div>
-                        <div class="journal-article-template" style="display: none;">
-${parsedContentHTML}
                         </div>
                     </div>`;
 
@@ -480,13 +471,13 @@ ${parsedContentHTML}
             const category = categorySelect.value;
             const categoryLabel = categorySelect.options[categorySelect.selectedIndex].text;
             const date = document.getElementById('post-date').value.trim();
-            const image = document.getElementById('post-image').value.trim() || 'assets/blog_default.jpg';
+            const image = document.getElementById('post-image').value.trim();
             const readTime = document.getElementById('post-read-time').value.trim() || '3';
             const excerpt = document.getElementById('post-excerpt').value.trim();
             const content = document.getElementById('post-content').value.trim();
 
-            if (!title || !excerpt || !content || !date) {
-                alert('Vui lòng nhập đầy đủ các thông tin bài viết (Tiêu đề, Ngày, Mô tả, Nội dung).');
+            if (!title || !content || !date) {
+                alert('Vui lòng nhập đầy đủ các thông tin cốt lõi (Tiêu đề, Ngày, Nội dung).');
                 return;
             }
 
@@ -536,6 +527,7 @@ ${parsedContentHTML}
                 }
 
                 // Compile post object
+                const finalExcerpt = excerpt ? excerpt : (content.replace(/<[^>]*>/g, '').substring(0, 150) + '...');
                 const newPost = {
                     id: "post-" + Date.now(),
                     title: title,
@@ -544,7 +536,7 @@ ${parsedContentHTML}
                     date: date,
                     image: image,
                     readTime: readTime,
-                    excerpt: excerpt,
+                    excerpt: finalExcerpt,
                     content: parseHTMLContent(content)
                 };
 

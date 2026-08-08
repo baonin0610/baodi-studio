@@ -607,3 +607,68 @@
         grid-template-columns: 1fr;
     }
 }
+
+/* Password Protection Modal */
+.password-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(26, 26, 26, 0.45);
+    backdrop-filter: blur(8px);
+    z-index: 5000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+}
+
+.password-modal.show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.password-modal-content {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    padding: 2.5rem 2rem;
+    max-width: 420px;
+    width: calc(100% - 2.5rem);
+    text-align: center;
+    border-radius: 12px;
+    box-shadow: 0 24px 70px rgba(26, 26, 26, 0.08);
+    transform: translateY(20px);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.password-modal.show .password-modal-content {
+    transform: translateY(0);
+}
+
+.password-modal-title {
+    font-family: var(--font-heading);
+    font-size: 1.55rem;
+    font-weight: 600;
+    color: var(--text-color);
+    margin-bottom: 0.5rem;
+}
+
+.password-modal-desc {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
+}
+
+.password-shake {
+    animation: passwordShake 0.4s ease-in-out;
+}
+
+@keyframes passwordShake {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-8px); }
+    40%, 80% { transform: translateX(8px); }
+}

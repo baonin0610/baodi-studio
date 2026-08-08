@@ -105,6 +105,22 @@
     <!-- Backdrop Overlay -->
     <div id="journal-backdrop" class="journal-backdrop"></div>
 
+    <!-- Password Protection Modal -->
+    <div id="password-modal" class="password-modal">
+        <div class="password-modal-content">
+            <h3 class="password-modal-title">🔐 Xác thực Quản trị</h3>
+            <p class="password-modal-desc">Vui lòng nhập mật khẩu quản trị viên để mở khóa các tính năng sáng tác bài viết.</p>
+            <div class="password-field">
+                <input type="password" id="admin-password" class="creator-input" placeholder="Nhập mật khẩu..." style="width: 100%; text-align: center; font-size: 0.95rem; padding: 0.8rem; background-color: var(--bg-color); color: var(--text-color); border: 1px solid var(--border-color);" required>
+                <div id="password-error" style="color: #ef4444; font-size: 0.72rem; margin-top: 0.5rem; font-family: var(--font-mono); font-weight: 600; display: none;">❌ Mật khẩu chưa chính xác!</div>
+            </div>
+            <div style="display: flex; gap: 0.8rem; margin-top: 1.5rem; width: 100%;">
+                <button id="cancel-password-btn" class="creator-submit-btn" style="background: none; border: 1px solid var(--border-color); color: var(--text-color); flex: 1;">Hủy</button>
+                <button id="submit-password-btn" class="creator-submit-btn" style="flex: 1;">Xác nhận</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Footer -->
     <footer class="site-footer" style="border-top: 1px solid var(--border-color); background-color: var(--bg-color);">
         <div class="footer-container" style="max-width: 1200px; margin: 0 auto; padding: 3rem 4%; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem;">

@@ -299,7 +299,63 @@ function initPostCreator() {
     const ownerInput = document.getElementById('post-github-owner');
     const repoInput = document.getElementById('post-github-repo');
 
+    // Password Modal elements
+    const pwdModal = document.getElementById('password-modal');
+    const pwdInput = document.getElementById('admin-password');
+    const pwdError = document.getElementById('password-error');
+    const pwdSubmit = document.getElementById('submit-password-btn');
+    const pwdCancel = document.getElementById('cancel-password-btn');
+
     if (!panel || !trigger) return;
+
+    // Helper: SHA-256 hashing using Web Crypto API
+    async function getSHA256Hash(string) {
+        const utf8 = new TextEncoder().encode(string);
+        const hashBuffer = await crypto.subtle.digest('SHA-256', utf8);
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        const hashHex = hashArray.map(bytes => bytes.toString(16).padStart(2, '0')).join('');
+        return hashHex;
+    }
+
+    const TARGET_HASH = "23f3f276f9844a958dcc12befe076b9d8bf6a9099e9fbd7a823e30e69832a543"; // hash for 'baoduy2026'
+
+    async function verifyPassword() {
+        const val = pwdInput.value;
+        const hashed = await getSHA256Hash(val);
+        if (hashed === TARGET_HASH) {
+            sessionStorage.setItem('baodi_admin_authenticated', 'true');
+            if (pwdModal) pwdModal.classList.remove('show');
+            pwdInput.value = '';
+            if (pwdError) pwdError.style.display = 'none';
+            openPanel();
+        } else {
+            if (pwdError) pwdError.style.display = 'block';
+            pwdInput.classList.add('password-shake');
+            setTimeout(() => {
+                pwdInput.classList.remove('password-shake');
+            }, 400);
+        }
+    }
+
+    if (pwdSubmit) {
+        pwdSubmit.addEventListener('click', verifyPassword);
+    }
+    if (pwdInput) {
+        pwdInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                verifyPassword();
+            }
+        });
+    }
+    if (pwdCancel) {
+        pwdCancel.addEventListener('click', () => {
+            if (pwdModal) pwdModal.classList.remove('show');
+            if (backdrop) backdrop.classList.remove('show');
+            if (pwdError) pwdError.style.display = 'none';
+            pwdInput.value = '';
+        });
+    }
 
     // Pre-fill fields from LocalStorage
     if (tokenInput) tokenInput.value = localStorage.getItem('baodi_gh_token') || '';
@@ -322,12 +378,34 @@ function initPostCreator() {
         if (statusDiv) statusDiv.style.display = 'none';
     }
 
-    trigger.addEventListener('click', openPanel);
+    trigger.addEventListener('click', () => {
+        if (sessionStorage.getItem('baodi_admin_authenticated') === 'true') {
+            openPanel();
+        } else {
+            if (pwdModal) {
+                pwdModal.classList.add('show');
+                if (backdrop) backdrop.classList.add('show');
+                if (pwdInput) {
+                    pwdInput.value = '';
+                    pwdInput.focus();
+                }
+            }
+        }
+    });
+
     if (closeBtn) closeBtn.addEventListener('click', closePanel);
 
     window.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && panel.classList.contains('show')) {
-            closePanel();
+        if (e.key === 'Escape') {
+            if (panel.classList.contains('show')) {
+                closePanel();
+            }
+            if (pwdModal && pwdModal.classList.contains('show')) {
+                pwdModal.classList.remove('show');
+                if (backdrop) backdrop.classList.remove('show');
+                pwdInput.value = '';
+                if (pwdError) pwdError.style.display = 'none';
+            }
         }
     });
 

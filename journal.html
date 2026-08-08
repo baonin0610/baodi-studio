@@ -117,19 +117,41 @@
     </footer>
 
     <!-- Hidden Developer Post Creator Dashboard -->
-    <div id="creator-dashboard" class="creator-dashboard">
+    <div id="creator-dashboard" class="creator-dashboard" style="height: 80vh;">
         <div class="creator-header">
             <div class="creator-title">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M12 20h9"></path>
                     <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
                 </svg>
-                <span>Báo Di's Creator Panel (Sinh mã HTML cho bài viết mới)</span>
+                <span>Báo Di's Creator Panel (Soạn thảo & Đăng bài tự động)</span>
             </div>
             <button class="creator-close" id="close-creator-panel" aria-label="Close Dashboard">&times;</button>
         </div>
         <div class="creator-content-wrapper">
             <form class="creator-form" id="creator-form">
+                <!-- GitHub Configurations (Safe LocalStorage Storage) -->
+                <div style="background-color: #1A1A1E; border: 1px solid #2D2D35; padding: 1.2rem; border-radius: 8px; display: flex; flex-direction: column; gap: 0.8rem;">
+                    <div style="font-family: var(--font-mono); font-size: 0.72rem; text-transform: uppercase; color: var(--accent-color); font-weight: 700; margin-bottom: 0.2rem;">⚡ Cấu hình Tự động Đăng bài (Lưu cục bộ)</div>
+                    <div style="display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 1rem;">
+                        <div class="creator-field">
+                            <label for="post-github-token">GitHub Access Token (PAT)</label>
+                            <input type="password" id="post-github-token" class="creator-input" placeholder="ghp_..." style="font-size: 0.75rem;">
+                        </div>
+                        <div class="creator-field">
+                            <label for="post-github-owner">GitHub Owner (User)</label>
+                            <input type="text" id="post-github-owner" class="creator-input" value="baonin0610" style="font-size: 0.75rem;">
+                        </div>
+                        <div class="creator-field">
+                            <label for="post-github-repo">GitHub Repository</label>
+                            <input type="text" id="post-github-repo" class="creator-input" value="baodi-studio" style="font-size: 0.75rem;">
+                        </div>
+                    </div>
+                    <p style="font-size: 0.65rem; color: #94A3B8; margin: 0; line-height: 1.5;">
+                        * Hướng dẫn: Đăng nhập GitHub > Settings > Developer settings > Personal access tokens (classic) > Generate new token (tích chọn quyền <strong>repo</strong>). Token này được lưu an toàn trong máy bạn, không lo bị lộ.
+                    </p>
+                </div>
+
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
                     <div class="creator-field">
                         <label for="post-title">Tiêu đề bài viết</label>
@@ -171,17 +193,19 @@
                     <textarea id="post-content" class="creator-textarea" placeholder="Nhập nội dung bài viết của bạn tại đây... Mỗi đoạn văn cách nhau bằng 2 lần xuống dòng (Enter)." required></textarea>
                 </div>
 
-                <div class="creator-actions">
+                <div class="creator-actions" style="align-items: center;">
                     <button type="submit" id="creator-generate-btn" class="creator-submit-btn">Tạo Mã HTML</button>
+                    <button type="button" id="creator-publish-btn" class="creator-submit-btn" style="background-color: #22c55e; color: #000000;">Đăng Bài Trực Tiếp ⚡</button>
+                    <div id="publish-status" style="font-family: var(--font-mono); font-size: 0.72rem; color: #34d399; font-weight: 600; display: none;"></div>
                 </div>
             </form>
 
             <div class="creator-output-section">
                 <div class="creator-output-label">
-                    <span>Mã HTML được tạo ra (Copy mã này và paste vào file journal.html):</span>
+                    <span>Mã HTML (Dành cho việc chỉnh sửa thủ công nếu cần):</span>
                     <button id="creator-copy-btn" class="creator-copy-btn">Sao chép mã</button>
                 </div>
-                <div id="creator-output-code" class="creator-output-code" readonly placeholder="Mã HTML bài viết sẽ được xuất hiện tại đây sau khi bạn bấm nút 'Tạo Mã HTML'..."></div>
+                <div id="creator-output-code" class="creator-output-code" readonly placeholder="Mã HTML bài viết sẽ được xuất hiện tại đây sau khi bạn bấm nút 'Tạo Mã HTML'..." style="height: 480px;"></div>
             </div>
         </div>
     </div>

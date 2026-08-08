@@ -1,17 +1,35 @@
 /* ==========================================================================
    BaoDi Studio Journal Engine (journal.js)
-   Category Filtering, Reading Drawer, Scroll Progress & HTML Post Generator
+   Dynamic JSON Fetching, LocalStorage Sync, and Browser GitHub API Autocommit
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
     initCustomCursor();
-    initJournalFilters();
     initJournalReader();
     initPostCreator();
+    loadAndSyncPosts();
 });
 
+// Global state for posts
+let allPosts = [];
+
 /**
- * 1. Custom Cursor Sync (Reusing styles from main hub)
+ * Unicode-safe Base64 Helpers for Vietnamese Tones
+ */
+function b64EncodeUnicode(str) {
+    return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, (match, p1) => {
+        return String.fromCharCode(parseInt(p1, 16));
+    }));
+}
+
+function b64DecodeUnicode(str) {
+    return decodeURIComponent(atob(str).split('').map((c) => {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+}
+
+/**
+ * 1. Custom Cursor Sync
  */
 function initCustomCursor() {
     const cursor = document.getElementById('custom-cursor');
@@ -35,11 +53,9 @@ function initCustomCursor() {
     }
     requestAnimationFrame(updateCursor);
 
-    // Sync scaling on hover
     function bindHoverEvents() {
         const interactives = document.querySelectorAll('a, button, select, input, textarea, .journal-card');
         interactives.forEach(item => {
-            // Avoid duplicate listeners
             if (item.classList.contains('cursor-bound')) return;
             item.classList.add('cursor-bound');
 
@@ -57,30 +73,120 @@ function initCustomCursor() {
     }
 
     bindHoverEvents();
-    // Re-bind when grid is dynamically updated
     window.bindCursorHover = bindHoverEvents;
 }
 
 /**
- * 2. Category Filtering Logic
+ * 2. Dynamic Fetching & LocalStorage Merging
+ */
+function loadAndSyncPosts() {
+    // 1. Fetch from posts.json (committed static list)
+    fetch('posts.json?t=' + Date.now())
+        .then(res => res.json())
+        .then(staticPosts => {
+            // 2. Load uncommitted posts saved in user's browser (LocalStorage)
+            const localPosts = JSON.parse(localStorage.getItem('baodi_local_posts') || '[]');
+            
+            // Clean up LocalStorage duplicates if they have already been merged into posts.json on server
+            const serverIds = new Set(staticPosts.map(p => p.id));
+            const filteredLocal = localPosts.filter(p => !serverIds.has(p.id));
+            localStorage.setItem('baodi_local_posts', JSON.stringify(filteredLocal));
+
+            // Merge unpushed local posts to show them instantly to the writer
+            allPosts = [...filteredLocal, ...staticPosts];
+            renderPostsList(allPosts);
+        })
+        .catch(err => {
+            console.error('Không thể tải bài viết từ server, dùng dữ liệu dự phòng:', err);
+            // Fallback to local posts if offline or fetch fails
+            allPosts = JSON.parse(localStorage.getItem('baodi_local_posts') || '[]');
+            renderPostsList(allPosts);
+        });
+}
+
+/**
+ * 3. Render Grid Cards dynamically
+ */
+function renderPostsList(posts) {
+    const grid = document.getElementById('journal-grid');
+    if (!grid) return;
+
+    // Clear old cards, keep only empty state
+    const emptyState = grid.querySelector('.journal-empty-state');
+    const cards = grid.querySelectorAll('.journal-card');
+    cards.forEach(c => c.remove());
+
+    if (posts.length === 0) {
+        if (emptyState) emptyState.style.display = 'flex';
+        document.getElementById('total-posts-count').textContent = '0';
+        document.getElementById('visible-posts-count').textContent = '0';
+        return;
+    }
+
+    if (emptyState) emptyState.style.display = 'none';
+
+    posts.forEach(post => {
+        const card = document.createElement('div');
+        card.className = `journal-card filter-item ${post.category}`;
+        card.setAttribute('data-category', post.category);
+        card.addEventListener('click', () => openArticle(card));
+
+        card.innerHTML = `
+            <img src="${post.image}" class="journal-card-image" alt="${post.title} Cover" loading="lazy">
+            <div class="journal-card-body">
+                <div class="journal-card-meta">
+                    <span class="journal-card-category">${post.categoryLabel}</span>
+                    <span>${post.date}</span>
+                </div>
+                <h3 class="journal-card-title">${post.title}</h3>
+                <p class="journal-card-excerpt">${post.excerpt}</p>
+                <div class="journal-card-footer">
+                    <span>${post.readTime} phút đọc</span>
+                    <span class="journal-read-more">
+                        Đọc bài viết
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </span>
+                </div>
+            </div>
+            <!-- Full article content template -->
+            <div class="journal-article-template" style="display: none;">
+                ${post.content}
+            </div>
+        `;
+        grid.appendChild(card);
+    });
+
+    document.getElementById('total-posts-count').textContent = posts.length;
+    document.getElementById('visible-posts-count').textContent = posts.length;
+
+    // Bind cursor interactions on new elements
+    if (window.bindCursorHover) window.bindCursorHover();
+    
+    // Reset filters
+    initJournalFilters();
+}
+
+/**
+ * 4. Dynamic Filtering
  */
 function initJournalFilters() {
     const filterBtns = document.querySelectorAll('.journal-filter-btn');
     const cards = document.querySelectorAll('.journal-card');
-    const totalCountSpan = document.getElementById('total-posts-count');
     const visibleCountSpan = document.getElementById('visible-posts-count');
 
-    if (totalCountSpan && cards.length) {
-        totalCountSpan.textContent = cards.length;
-        if (visibleCountSpan) visibleCountSpan.textContent = cards.length;
-    }
-
     filterBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            filterBtns.forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
+        // Clear previous listeners by replacing button to prevent multiple alerts
+        const newBtn = btn.cloneNode(true);
+        btn.parentNode.replaceChild(newBtn, btn);
 
-            const filterValue = btn.getAttribute('data-filter');
+        newBtn.addEventListener('click', () => {
+            document.querySelectorAll('.journal-filter-btn').forEach(b => b.classList.remove('active'));
+            newBtn.classList.add('active');
+
+            const filterValue = newBtn.getAttribute('data-filter');
             let visibleCount = 0;
 
             cards.forEach(card => {
@@ -110,9 +216,9 @@ function initJournalFilters() {
 }
 
 /**
- * 3. Reading Drawer Management (Slide-in Reader)
+ * 5. Reading Slide-in Drawer Logic
  */
-let openArticle; // Expose globally so inline onclick works
+let openArticle;
 
 function initJournalReader() {
     const reader = document.getElementById('journal-reader');
@@ -121,7 +227,6 @@ function initJournalReader() {
     const contentWrapper = document.getElementById('journal-reader-content-wrapper');
     const progressBar = document.getElementById('journal-reader-progress');
 
-    // Title / Meta nodes
     const readerTitle = document.getElementById('reader-title');
     const readerCategory = document.getElementById('reader-category');
     const readerDate = document.getElementById('reader-date');
@@ -133,44 +238,37 @@ function initJournalReader() {
         const title = cardElement.querySelector('.journal-card-title').textContent;
         const category = cardElement.querySelector('.journal-card-category').textContent;
         const date = cardElement.querySelector('.journal-card-meta span:last-child').textContent;
-        
-        // Load static HTML template stored in card
         const template = cardElement.querySelector('.journal-article-template');
-        const contentHTML = template ? template.innerHTML : '<p>No content provided.</p>';
+        const contentHTML = template ? template.innerHTML : '<p>No content.</p>';
 
-        // Set contents
         readerTitle.textContent = title;
         readerCategory.textContent = category;
         readerDate.textContent = date;
         readerBody.innerHTML = contentHTML;
 
-        // Reset scroll position and progress bar
         contentWrapper.scrollTop = 0;
         if (progressBar) progressBar.style.width = '0%';
 
-        // Display reader
         reader.classList.add('show');
         if (backdrop) backdrop.classList.add('show');
-        document.body.style.overflow = 'hidden'; // Lock main scroll
+        document.body.style.overflow = 'hidden';
     };
 
     function closeReader() {
         reader.classList.remove('show');
         if (backdrop) backdrop.classList.remove('show');
-        document.body.style.overflow = ''; // Unlock main scroll
+        document.body.style.overflow = '';
     }
 
     closeBtn.addEventListener('click', closeReader);
     if (backdrop) backdrop.addEventListener('click', closeReader);
 
-    // Escape Key listener
     window.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && reader.classList.contains('show')) {
             closeReader();
         }
     });
 
-    // Scroll depth indicator progress
     contentWrapper.addEventListener('scroll', () => {
         const scrollHeight = contentWrapper.scrollHeight - contentWrapper.clientHeight;
         if (scrollHeight > 0) {
@@ -181,7 +279,7 @@ function initJournalReader() {
 }
 
 /**
- * 4. Post Creator Tool (Hidden Admin Panel)
+ * 6. Post Creator Dashboard (GitHub API Autocommit & Offline Fallback)
  */
 function initPostCreator() {
     const trigger = document.getElementById('open-creator-panel');
@@ -191,10 +289,22 @@ function initPostCreator() {
     
     const form = document.getElementById('creator-form');
     const generateBtn = document.getElementById('creator-generate-btn');
+    const publishBtn = document.getElementById('creator-publish-btn');
     const copyBtn = document.getElementById('creator-copy-btn');
     const codeOutput = document.getElementById('creator-output-code');
+    const statusDiv = document.getElementById('publish-status');
+
+    // GitHub inputs
+    const tokenInput = document.getElementById('post-github-token');
+    const ownerInput = document.getElementById('post-github-owner');
+    const repoInput = document.getElementById('post-github-repo');
 
     if (!panel || !trigger) return;
+
+    // Pre-fill fields from LocalStorage
+    if (tokenInput) tokenInput.value = localStorage.getItem('baodi_gh_token') || '';
+    if (ownerInput) ownerInput.value = localStorage.getItem('baodi_gh_owner') || 'baonin0610';
+    if (repoInput) repoInput.value = localStorage.getItem('baodi_gh_repo') || 'baodi-studio';
 
     function openPanel() {
         panel.classList.add('show');
@@ -204,25 +314,35 @@ function initPostCreator() {
 
     function closePanel() {
         panel.classList.remove('show');
-        // Only hide backdrop if reading drawer is also closed
         const reader = document.getElementById('journal-reader');
         if (backdrop && (!reader || !reader.classList.contains('show'))) {
             backdrop.classList.remove('show');
         }
         document.body.style.overflow = '';
+        if (statusDiv) statusDiv.style.display = 'none';
     }
 
     trigger.addEventListener('click', openPanel);
     if (closeBtn) closeBtn.addEventListener('click', closePanel);
 
-    // Escape closes panel too
     window.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && panel.classList.contains('show')) {
             closePanel();
         }
     });
 
-    // HTML Generator logic
+    // Helper: format content to HTML paragraphs
+    function parseHTMLContent(content) {
+        if (content.includes('<p>') || content.includes('<div>')) {
+            return content;
+        }
+        return content
+            .split('\n\n')
+            .map(paragraph => paragraph.trim() ? `<p>${paragraph.trim()}</p>` : '')
+            .join('\n');
+    }
+
+    // HTML Generator
     if (form && generateBtn && codeOutput) {
         generateBtn.addEventListener('click', (e) => {
             e.preventDefault();
@@ -238,20 +358,12 @@ function initPostCreator() {
             const content = document.getElementById('post-content').value.trim();
 
             if (!title || !excerpt || !content) {
-                alert('Vui lòng điền đầy đủ các thông tin cốt lõi (Tiêu đề, Mô tả ngắn, Nội dung bài viết).');
+                alert('Vui lòng điền đầy đủ: Tiêu đề, Mô tả ngắn và Nội dung.');
                 return;
             }
 
-            // Parse text content into HTML paragraphs if raw text is supplied without HTML tags
-            let parsedContentHTML = content;
-            if (!content.includes('<p>') && !content.includes('<div>')) {
-                parsedContentHTML = content
-                    .split('\n\n')
-                    .map(paragraph => paragraph.trim() ? `<p>${paragraph.trim()}</p>` : '')
-                    .join('\n');
-            }
+            const parsedContentHTML = parseHTMLContent(content);
 
-            // Generate HTML structure
             const cardHTML = `                    <!-- Journal Entry: ${title} -->
                     <div class="journal-card filter-item ${category}" data-category="${category}" onclick="openArticle(this)">
                         <img src="${image}" class="journal-card-image" alt="${title} Cover" loading="lazy">
@@ -273,7 +385,6 @@ function initPostCreator() {
                                 </span>
                             </div>
                         </div>
-                        <!-- Article Content Template -->
                         <div class="journal-article-template" style="display: none;">
 ${parsedContentHTML}
                         </div>
@@ -283,7 +394,140 @@ ${parsedContentHTML}
         });
     }
 
-    // Copy to clipboard
+    // Direct Browser GitHub API Publisher
+    if (publishBtn) {
+        publishBtn.addEventListener('click', () => {
+            const title = document.getElementById('post-title').value.trim();
+            const categorySelect = document.getElementById('post-category');
+            const category = categorySelect.value;
+            const categoryLabel = categorySelect.options[categorySelect.selectedIndex].text;
+            const date = document.getElementById('post-date').value.trim();
+            const image = document.getElementById('post-image').value.trim() || 'assets/blog_default.jpg';
+            const readTime = document.getElementById('post-read-time').value.trim() || '3';
+            const excerpt = document.getElementById('post-excerpt').value.trim();
+            const content = document.getElementById('post-content').value.trim();
+
+            if (!title || !excerpt || !content || !date) {
+                alert('Vui lòng nhập đầy đủ các thông tin bài viết (Tiêu đề, Ngày, Mô tả, Nội dung).');
+                return;
+            }
+
+            const token = tokenInput.value.trim();
+            const owner = ownerInput.value.trim();
+            const repo = repoInput.value.trim();
+
+            if (!token) {
+                alert('Vui lòng cung cấp GitHub Access Token (PAT) để đăng bài trực tiếp lên Web.');
+                tokenInput.focus();
+                return;
+            }
+
+            // Save settings locally
+            localStorage.setItem('baodi_gh_token', token);
+            localStorage.setItem('baodi_gh_owner', owner);
+            localStorage.setItem('baodi_gh_repo', repo);
+
+            if (statusDiv) {
+                statusDiv.style.display = 'block';
+                statusDiv.style.color = '#34d399';
+                statusDiv.textContent = '⏳ Đang đọc cơ sở dữ liệu posts.json từ GitHub...';
+            }
+
+            // 1. Fetch current posts.json from Repo to get current contents and SHA code
+            fetch(`https://api.github.com/repos/${owner}/${repo}/contents/posts.json`, {
+                headers: {
+                    'Authorization': `token ${token}`,
+                    'Accept': 'application/vnd.github.v3+json'
+                }
+            })
+            .then(res => {
+                if (res.status === 401) throw new Error('Token không hợp lệ (Unauthorized). Hãy kiểm tra lại PAT.');
+                if (res.status === 404) throw new Error('Không tìm thấy tệp posts.json hoặc sai đường dẫn Repo.');
+                if (!res.ok) throw new Error('Không thể kết nối API của GitHub.');
+                return res.json();
+            })
+            .then(data => {
+                const sha = data.sha;
+                const decodedText = b64DecodeUnicode(data.content.replace(/\s/g, ''));
+                
+                let currentPosts = [];
+                try {
+                    currentPosts = JSON.parse(decodedText);
+                } catch(e) {
+                    currentPosts = [];
+                }
+
+                // Compile post object
+                const newPost = {
+                    id: "post-" + Date.now(),
+                    title: title,
+                    category: category,
+                    categoryLabel: categoryLabel,
+                    date: date,
+                    image: image,
+                    readTime: readTime,
+                    excerpt: excerpt,
+                    content: parseHTMLContent(content)
+                };
+
+                // Add to local preview list instantly so owner sees it
+                let localPosts = JSON.parse(localStorage.getItem('baodi_local_posts') || '[]');
+                localPosts.unshift(newPost);
+                localStorage.setItem('baodi_local_posts', JSON.stringify(localPosts));
+
+                // 2. Prepend to database list
+                currentPosts.unshift(newPost);
+
+                // 3. Write back to GitHub
+                const updatedJSON = JSON.stringify(currentPosts, null, 4);
+                const encodedContent = b64EncodeUnicode(updatedJSON);
+
+                if (statusDiv) statusDiv.textContent = '⏳ Đang ghi bài viết mới lên kho lưu trữ...';
+
+                return fetch(`https://api.github.com/repos/${owner}/${repo}/contents/posts.json`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `token ${token}`,
+                        'Accept': 'application/vnd.github.v3+json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        message: `feat: publish new journal entry "${title}" via Creator Panel`,
+                        content: encodedContent,
+                        sha: sha
+                    })
+                });
+            })
+            .then(res => {
+                if (!res.ok) throw new Error('Không thể commit đè tệp posts.json mới lên repository.');
+                return res.json();
+            })
+            .then(data => {
+                if (statusDiv) {
+                    statusDiv.textContent = '✅ Đăng thành công! Đang đồng bộ...';
+                }
+                
+                // Clear input form
+                document.getElementById('post-title').value = '';
+                document.getElementById('post-excerpt').value = '';
+                document.getElementById('post-content').value = '';
+                
+                alert('⚡ ĐĂNG BÀI THÀNH CÔNG!\nBài viết đã được đẩy lên GitHub. GitHub Pages đang tự động dựng trang (khoảng 1 phút). Bài viết sẽ xuất hiện trên màn hình của bạn ngay bây giờ!');
+                
+                closePanel();
+                loadAndSyncPosts(); // Refresh dynamic list
+            })
+            .catch(err => {
+                console.error(err);
+                if (statusDiv) {
+                    statusDiv.style.color = '#ef4444';
+                    statusDiv.textContent = `❌ Lỗi: ${err.message}`;
+                }
+            });
+        });
+    }
+
+    // Clipboard copy
     if (copyBtn && codeOutput) {
         copyBtn.addEventListener('click', () => {
             const codeText = codeOutput.textContent;
@@ -298,8 +542,8 @@ ${parsedContentHTML}
                     }, 2000);
                 })
                 .catch(err => {
-                    console.error('Không thể sao chép: ', err);
-                    alert('Lỗi sao chép, bạn vui lòng tự bôi đen và copy.');
+                    console.error('Lỗi copy: ', err);
+                    alert('Bạn vui lòng bôi đen mã bên cạnh và tự sao chép.');
                 });
         });
     }

@@ -3788,8 +3788,8 @@ body {
     max-width: 1240px;
     margin: 3.5rem auto 0;
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2rem;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2.2rem;
 }
 
 .fb-card {
@@ -3936,7 +3936,7 @@ body {
 .fb-card-media {
     position: relative;
     width: 100%;
-    height: 220px;
+    height: 280px;
     background-color: #000000;
     overflow: hidden;
 }
@@ -4248,6 +4248,10 @@ body {
     .fb-posts-grid {
         grid-template-columns: 1fr;
         gap: 1.8rem;
+    }
+
+    .fb-card-media {
+        height: 230px;
     }
 
     .brand-gallery-container {

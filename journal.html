@@ -29,7 +29,7 @@
         <nav class="nav-container">
             <a href="journal.html" class="logo" style="font-family: var(--font-heading); font-size: 1.8rem; letter-spacing: 0;">Bao Duy.<span>Journal</span></a>
             <div class="nav-links">
-                <a href="index.html" class="nav-link" style="font-weight: 600; color: var(--text-color);">← Quay lại BaoDi Studio</a>
+                <a href="index.html" class="nav-link" style="font-weight: 600; color: var(--text-color);">← Back to BaoDi Studio</a>
             </div>
         </nav>
     </header>
@@ -41,7 +41,7 @@
                 <span class="journal-hero-badge">Personal Journal & Reflections</span>
                 <h1 class="journal-hero-title">Ink & Reflections</h1>
                 <p class="journal-hero-desc">
-                    Nơi ghi chép những suy nghĩ cá nhân, lưu giữ kỷ niệm cuộc sống, và những dòng cảm xúc chân thật ngoài công việc của Nguyễn Lê Bảo Duy.
+                    A dedicated space for personal reflections, life milestones, and honest thoughts beyond the studio by Nguyen Le Bao Duy.
                 </p>
             </div>
         </section>
@@ -49,15 +49,15 @@
         <!-- Category Filters -->
         <section class="journal-filter-section">
             <div class="journal-filter-controls">
-                <button class="journal-filter-btn active" data-filter="all">Tất cả bài viết</button>
-                <button class="journal-filter-btn" data-filter="memories">Kỷ niệm</button>
-                <button class="journal-filter-btn" data-filter="thoughts">Cảm xúc</button>
-                <button class="journal-filter-btn" data-filter="code">Chuyện làm nghề</button>
-                <button class="journal-filter-btn" data-filter="milestones">Cột mốc</button>
+                <button class="journal-filter-btn active" data-filter="all">All Entries</button>
+                <button class="journal-filter-btn" data-filter="memories">Memories</button>
+                <button class="journal-filter-btn" data-filter="thoughts">Thoughts</button>
+                <button class="journal-filter-btn" data-filter="code">Craft & Code</button>
+                <button class="journal-filter-btn" data-filter="milestones">Milestones</button>
             </div>
             <div class="journal-stats">
-                <span>Hiển thị: </span>
-                <strong id="visible-posts-count">0</strong> / <span id="total-posts-count">0</span> bài viết
+                <span>Showing: </span>
+                <strong id="visible-posts-count">0</strong> / <span id="total-posts-count">0</span> entries
             </div>
         </section>
 
@@ -67,9 +67,9 @@
                 <!-- Empty State Message -->
                 <div class="journal-empty-state" style="grid-column: 1 / -1; text-align: center; padding: 5rem 2rem; border: 1.5px dashed var(--border-color); background-color: var(--bg-card); display: flex; flex-direction: column; align-items: center; gap: 1rem; border-radius: 8px;">
                     <div style="font-size: 2.8rem; filter: grayscale(30%);">✍️</div>
-                    <h3 style="font-family: var(--font-heading); font-size: 1.6rem; font-weight: 500; color: var(--text-color); margin-top: 0.5rem;">Góc nhật ký đang trống</h3>
+                    <h3 style="font-family: var(--font-heading); font-size: 1.6rem; font-weight: 500; color: var(--text-color); margin-top: 0.5rem;">Journal is currently quiet</h3>
                     <p style="font-size: 0.9rem; color: var(--text-muted); max-width: 480px; line-height: 1.65; margin: 0 auto 0.5rem;">
-                        Hãy nhấp vào nút <strong>"Panel Sáng Tác ✍️"</strong> ở thanh chân trang (Footer) bên dưới để soạn thảo bài viết mới và tạo mã HTML dán vào đây.
+                        Click <strong>"Creator Panel ✍️"</strong> in the footer below to compose a new entry or publish directly.
                     </p>
                 </div>
             </div>
@@ -85,16 +85,16 @@
                     <line x1="19" y1="12" x2="5" y2="12"></line>
                     <polyline points="12 19 5 12 12 5"></polyline>
                 </svg>
-                <span>Trở lại trang</span>
+                <span>Back to Journal</span>
             </button>
             <div class="journal-stats" style="margin: 0; font-size: 0.65rem;">BaoDi Studio Journal</div>
         </div>
         <div class="journal-reader-content-wrapper" id="journal-reader-content-wrapper">
             <article>
                 <div class="journal-article-meta">
-                    <span id="reader-category">Danh mục</span> &bull; <span id="reader-date">Ngày đăng</span>
+                    <span id="reader-category">Category</span> &bull; <span id="reader-date">Date</span>
                 </div>
-                <h2 class="journal-article-title" id="reader-title">Tiêu Đề Bài Viết</h2>
+                <h2 class="journal-article-title" id="reader-title">Article Title</h2>
                 <div class="journal-article-body" id="reader-body">
                     <!-- Dynamic Body Content -->
                 </div>
@@ -108,15 +108,15 @@
     <!-- Password Protection Modal -->
     <div id="password-modal" class="password-modal">
         <div class="password-modal-content">
-            <h3 class="password-modal-title">🔐 Xác thực Quản trị</h3>
-            <p class="password-modal-desc">Vui lòng nhập mật khẩu quản trị viên để mở khóa các tính năng sáng tác bài viết.</p>
+            <h3 class="password-modal-title">🔐 Admin Authentication</h3>
+            <p class="password-modal-desc">Please enter the administrator password to unlock the publishing panel.</p>
             <div class="password-field">
-                <input type="password" id="admin-password" class="creator-input" placeholder="Nhập mật khẩu..." style="width: 100%; text-align: center; font-size: 0.95rem; padding: 0.8rem; background-color: var(--bg-color); color: var(--text-color); border: 1px solid var(--border-color);" required>
-                <div id="password-error" style="color: #ef4444; font-size: 0.72rem; margin-top: 0.5rem; font-family: var(--font-mono); font-weight: 600; display: none;">❌ Mật khẩu chưa chính xác!</div>
+                <input type="password" id="admin-password" class="creator-input" placeholder="Enter password..." style="width: 100%; text-align: center; font-size: 0.95rem; padding: 0.8rem; background-color: var(--bg-color); color: var(--text-color); border: 1px solid var(--border-color);" required>
+                <div id="password-error" style="color: #ef4444; font-size: 0.72rem; margin-top: 0.5rem; font-family: var(--font-mono); font-weight: 600; display: none;">❌ Incorrect password!</div>
             </div>
             <div style="display: flex; gap: 0.8rem; margin-top: 1.5rem; width: 100%;">
-                <button id="cancel-password-btn" class="creator-submit-btn" style="background: none; border: 1px solid var(--border-color); color: var(--text-color); flex: 1;">Hủy</button>
-                <button id="submit-password-btn" class="creator-submit-btn" style="flex: 1;">Xác nhận</button>
+                <button id="cancel-password-btn" class="creator-submit-btn" style="background: none; border: 1px solid var(--border-color); color: var(--text-color); flex: 1;">Cancel</button>
+                <button id="submit-password-btn" class="creator-submit-btn" style="flex: 1;">Unlock</button>
             </div>
         </div>
     </div>
@@ -126,7 +126,7 @@
         <div class="footer-container" style="max-width: 1200px; margin: 0 auto; padding: 3rem 4%; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem;">
             <p style="margin: 0; font-size: 0.88rem; color: var(--text-muted);">&copy; 2026 BaoDi Studio. Curated Web Layout Factory.</p>
             <div style="display: flex; gap: 1.5rem; align-items: center;">
-                <button id="open-creator-panel" class="creator-panel-trigger">Panel Sáng Tác ✍️</button>
+                <button id="open-creator-panel" class="creator-panel-trigger">Creator Panel ✍️</button>
                 <a href="index.html" style="font-size: 0.88rem; color: var(--text-color); text-decoration: none; font-weight: 500;">BaoDi.Studio</a>
             </div>
         </div>
@@ -140,7 +140,7 @@
                     <path d="M12 20h9"></path>
                     <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
                 </svg>
-                <span>Báo Di's Creator Panel (Soạn thảo & Đăng bài tự động)</span>
+                <span>Bao Di's Creator Panel (Compose & Direct Publish)</span>
             </div>
             <button class="creator-close" id="close-creator-panel" aria-label="Close Dashboard">&times;</button>
         </div>
@@ -148,7 +148,7 @@
             <form class="creator-form" id="creator-form">
                 <!-- GitHub Configurations (Safe LocalStorage Storage) -->
                 <div style="background-color: #1A1A1E; border: 1px solid #2D2D35; padding: 1.2rem; border-radius: 8px; display: flex; flex-direction: column; gap: 0.8rem;">
-                    <div style="font-family: var(--font-mono); font-size: 0.72rem; text-transform: uppercase; color: var(--accent-color); font-weight: 700; margin-bottom: 0.2rem;">⚡ Cấu hình Tự động Đăng bài (Lưu cục bộ)</div>
+                    <div style="font-family: var(--font-mono); font-size: 0.72rem; text-transform: uppercase; color: var(--accent-color); font-weight: 700; margin-bottom: 0.2rem;">⚡ Direct Publishing Configuration (Stored Locally)</div>
                     <div style="display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 1rem;">
                         <div class="creator-field">
                             <label for="post-github-token">GitHub Access Token (PAT)</label>
@@ -164,64 +164,64 @@
                         </div>
                     </div>
                     <p style="font-size: 0.65rem; color: #94A3B8; margin: 0; line-height: 1.5;">
-                        * Hướng dẫn: Đăng nhập GitHub > Settings > Developer settings > Personal access tokens (classic) > Generate new token (tích chọn quyền <strong>repo</strong>). Token này được lưu an toàn trong máy bạn, không lo bị lộ.
+                        * Guide: GitHub > Settings > Developer settings > Personal access tokens (classic) > Generate new token (select 'repo' scope). Token is stored safely in your browser LocalStorage.
                     </p>
                 </div>
 
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
                     <div class="creator-field">
-                        <label for="post-title">Tiêu đề bài viết</label>
-                        <input type="text" id="post-title" class="creator-input" placeholder="Ví dụ: Kỷ niệm ngày đầu lập nghiệp..." required>
+                        <label for="post-title">Post Title</label>
+                        <input type="text" id="post-title" class="creator-input" placeholder="e.g., First milestone of my creative journey..." required>
                     </div>
                     <div class="creator-field">
-                        <label for="post-date">Ngày đăng</label>
-                        <input type="text" id="post-date" class="creator-input" placeholder="Ví dụ: 08 Tháng 8, 2026" required>
+                        <label for="post-date">Publish Date</label>
+                        <input type="text" id="post-date" class="creator-input" placeholder="e.g., August 8, 2026" required>
                     </div>
                 </div>
 
                 <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem;">
                     <div class="creator-field">
-                        <label for="post-category">Danh mục bài viết</label>
+                        <label for="post-category">Post Category</label>
                         <select id="post-category" class="creator-select">
-                            <option value="memories">Kỷ niệm</option>
-                            <option value="thoughts">Cảm xúc</option>
-                            <option value="code">Chuyện làm nghề</option>
-                            <option value="milestones">Cột mốc</option>
+                            <option value="memories">Memories</option>
+                            <option value="thoughts">Thoughts</option>
+                            <option value="code">Craft & Code</option>
+                            <option value="milestones">Milestones</option>
                         </select>
                     </div>
                     <div class="creator-field">
-                        <label for="post-read-time">Thời gian đọc (phút)</label>
+                        <label for="post-read-time">Read Time (minutes)</label>
                         <input type="number" id="post-read-time" class="creator-input" value="3" min="1">
                     </div>
                     <div class="creator-field">
-                        <label for="post-image">Ảnh Cover bài viết (Không bắt buộc)</label>
-                        <input type="text" id="post-image" class="creator-input" placeholder="assets/preview_editorial.jpg (Để trống nếu không có ảnh)">
+                        <label for="post-image">Cover Image URL (Optional)</label>
+                        <input type="text" id="post-image" class="creator-input" placeholder="assets/preview_editorial.jpg (Leave empty if none)">
                     </div>
                 </div>
 
                 <div class="creator-field">
-                    <label for="post-excerpt">Mô tả ngắn / Trích dẫn (Không bắt buộc)</label>
-                    <input type="text" id="post-excerpt" class="creator-input" placeholder="Tóm tắt ngắn gọn khoảng 2-3 câu... (Sẽ tự động trích từ nội dung nếu để trống)">
+                    <label for="post-excerpt">Short Excerpt / Quote (Optional)</label>
+                    <input type="text" id="post-excerpt" class="creator-input" placeholder="Brief summary in 2-3 sentences... (Auto-generated from content if left blank)">
                 </div>
 
                 <div class="creator-field">
-                    <label for="post-content">Nội dung bài viết (Chữ tự do hoặc HTML. Tự động chuyển xuống dòng thành &lt;p&gt;)</label>
-                    <textarea id="post-content" class="creator-textarea" placeholder="Nhập nội dung bài viết của bạn tại đây... Mỗi đoạn văn cách nhau bằng 2 lần xuống dòng (Enter)." required></textarea>
+                    <label for="post-content">Article Content (Plain text or HTML. Paragraphs auto-wrap in &lt;p&gt;)</label>
+                    <textarea id="post-content" class="creator-textarea" placeholder="Type your story or reflection here... Separate paragraphs with double Enter." required></textarea>
                 </div>
 
                 <div class="creator-actions" style="align-items: center;">
-                    <button type="submit" id="creator-generate-btn" class="creator-submit-btn">Tạo Mã HTML</button>
-                    <button type="button" id="creator-publish-btn" class="creator-submit-btn" style="background-color: #22c55e; color: #000000;">Đăng Bài Trực Tiếp ⚡</button>
+                    <button type="submit" id="creator-generate-btn" class="creator-submit-btn">Generate HTML</button>
+                    <button type="button" id="creator-publish-btn" class="creator-submit-btn" style="background-color: #22c55e; color: #000000;">Publish Directly ⚡</button>
                     <div id="publish-status" style="font-family: var(--font-mono); font-size: 0.72rem; color: #34d399; font-weight: 600; display: none;"></div>
                 </div>
             </form>
 
             <div class="creator-output-section">
                 <div class="creator-output-label">
-                    <span>Mã HTML (Dành cho việc chỉnh sửa thủ công nếu cần):</span>
-                    <button id="creator-copy-btn" class="creator-copy-btn">Sao chép mã</button>
+                    <span>Generated HTML (For manual inspection if needed):</span>
+                    <button id="creator-copy-btn" class="creator-copy-btn">Copy Code</button>
                 </div>
-                <div id="creator-output-code" class="creator-output-code" readonly placeholder="Mã HTML bài viết sẽ được xuất hiện tại đây sau khi bạn bấm nút 'Tạo Mã HTML'..." style="height: 480px;"></div>
+                <div id="creator-output-code" class="creator-output-code" readonly placeholder="HTML code will appear here after clicking 'Generate HTML'..." style="height: 480px;"></div>
             </div>
         </div>
     </div>

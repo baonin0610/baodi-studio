@@ -978,8 +978,8 @@ function initHomepageFeaturedStories() {
                 return `
                     <article class="story-card">
                         <div class="story-meta">
-                            <span class="story-category">${post.categoryLabel || post.category || 'Chia sẻ'}</span>
-                            <span class="story-date">${post.date || 'Gần đây'}</span>
+                            <span class="story-category">${post.categoryLabel || post.category || 'Story'}</span>
+                            <span class="story-date">${post.date || 'Recent'}</span>
                         </div>
                         <h3 class="story-title">
                             <a href="journal.html">${post.title}</a>
@@ -988,9 +988,9 @@ function initHomepageFeaturedStories() {
                             ${cleanExcerpt}
                         </p>
                         <div class="story-footer">
-                            <span class="story-readtime">${post.readTime || '3'} phút đọc</span>
+                            <span class="story-readtime">${post.readTime || '3'} min read</span>
                             <a href="journal.html" class="story-link">
-                                <span>Đọc toàn bài</span>
+                                <span>Read Full Article</span>
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <line x1="5" y1="12" x2="19" y2="12"></line>
                                     <polyline points="12 5 19 12 12 19"></polyline>

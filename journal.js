@@ -145,7 +145,7 @@ function renderPostsList(posts) {
                     ${post.content}
                 </div>
                 <div class="journal-card-footer">
-                    <span>${post.readTime} phút đọc</span>
+                    <span>${post.readTime} min read</span>
                     <span>Bao Duy's Journal</span>
                 </div>
             </div>
@@ -430,7 +430,7 @@ function initPostCreator() {
             const content = document.getElementById('post-content').value.trim();
 
             if (!title || !content) {
-                alert('Vui lòng điền đầy đủ: Tiêu đề và Nội dung bài viết.');
+                alert('Please provide both Title and Content.');
                 return;
             }
 
@@ -453,7 +453,7 @@ function initPostCreator() {
                                 ${parsedContentHTML}
                             </div>
                             <div class="journal-card-footer">
-                                <span>${readTime} phút đọc</span>
+                                <span>${readTime} min read</span>
                                 <span>Bao Duy's Journal</span>
                             </div>
                         </div>
@@ -477,7 +477,7 @@ function initPostCreator() {
             const content = document.getElementById('post-content').value.trim();
 
             if (!title || !content || !date) {
-                alert('Vui lòng nhập đầy đủ các thông tin cốt lõi (Tiêu đề, Ngày, Nội dung).');
+                alert('Please provide Title, Date, and Content.');
                 return;
             }
 
@@ -486,7 +486,7 @@ function initPostCreator() {
             const repo = repoInput.value.trim();
 
             if (!token) {
-                alert('Vui lòng cung cấp GitHub Access Token (PAT) để đăng bài trực tiếp lên Web.');
+                alert('Please provide a GitHub Personal Access Token (PAT) to publish directly.');
                 tokenInput.focus();
                 return;
             }
@@ -499,7 +499,7 @@ function initPostCreator() {
             if (statusDiv) {
                 statusDiv.style.display = 'block';
                 statusDiv.style.color = '#34d399';
-                statusDiv.textContent = '⏳ Đang đọc cơ sở dữ liệu posts.json từ GitHub...';
+                statusDiv.textContent = '⏳ Reading database posts.json from GitHub...';
             }
 
             // 1. Fetch current posts.json from Repo to get current contents and SHA code
@@ -510,9 +510,9 @@ function initPostCreator() {
                 }
             })
             .then(res => {
-                if (res.status === 401) throw new Error('Token không hợp lệ (Unauthorized). Hãy kiểm tra lại PAT.');
-                if (res.status === 404) throw new Error('Không tìm thấy tệp posts.json hoặc sai đường dẫn Repo.');
-                if (!res.ok) throw new Error('Không thể kết nối API của GitHub.');
+                if (res.status === 401) throw new Error('Invalid Token (Unauthorized). Please verify your PAT.');
+                if (res.status === 404) throw new Error('posts.json not found or incorrect repository configuration.');
+                if (!res.ok) throw new Error('Cannot connect to GitHub API.');
                 return res.json();
             })
             .then(data => {
@@ -552,7 +552,7 @@ function initPostCreator() {
                 const updatedJSON = JSON.stringify(currentPosts, null, 4);
                 const encodedContent = b64EncodeUnicode(updatedJSON);
 
-                if (statusDiv) statusDiv.textContent = '⏳ Đang ghi bài viết mới lên kho lưu trữ...';
+                if (statusDiv) statusDiv.textContent = '⏳ Committing new entry to repository...';
 
                 return fetch(`https://api.github.com/repos/${owner}/${repo}/contents/posts.json`, {
                     method: 'PUT',
@@ -569,12 +569,12 @@ function initPostCreator() {
                 });
             })
             .then(res => {
-                if (!res.ok) throw new Error('Không thể commit đè tệp posts.json mới lên repository.');
+                if (!res.ok) throw new Error('Failed to commit updated posts.json to repository.');
                 return res.json();
             })
             .then(data => {
                 if (statusDiv) {
-                    statusDiv.textContent = '✅ Đăng thành công! Đang đồng bộ...';
+                    statusDiv.textContent = '✅ Published successfully! Syncing locally...';
                 }
                 
                 // Clear input form
@@ -582,7 +582,7 @@ function initPostCreator() {
                 document.getElementById('post-excerpt').value = '';
                 document.getElementById('post-content').value = '';
                 
-                alert('⚡ ĐĂNG BÀI THÀNH CÔNG!\nBài viết đã được đẩy lên GitHub. GitHub Pages đang tự động dựng trang (khoảng 1 phút). Bài viết sẽ xuất hiện trên màn hình của bạn ngay bây giờ!');
+                alert('⚡ PUBLISHED SUCCESSFULLY!\nYour article has been committed to GitHub. GitHub Pages is rebuilding automatically (~1 min). The entry is now visible in your browser!');
                 
                 closePanel();
                 loadAndSyncPosts(); // Refresh dynamic list
@@ -591,7 +591,7 @@ function initPostCreator() {
                 console.error(err);
                 if (statusDiv) {
                     statusDiv.style.color = '#ef4444';
-                    statusDiv.textContent = `❌ Lỗi: ${err.message}`;
+                    statusDiv.textContent = `❌ Error: ${err.message}`;
                 }
             });
         });
@@ -612,8 +612,8 @@ function initPostCreator() {
                     }, 2000);
                 })
                 .catch(err => {
-                    console.error('Lỗi copy: ', err);
-                    alert('Bạn vui lòng bôi đen mã bên cạnh và tự sao chép.');
+                    console.error('Clipboard error: ', err);
+                    alert('Failed to copy. Please manually select and copy the code.');
                 });
         });
     }

@@ -3154,8 +3154,276 @@ body {
 .founder-hero-section {
     position: relative;
     padding-top: calc(var(--header-height, 80px) + 2rem);
-    padding-bottom: 5rem;
+    padding-bottom: 6rem;
     overflow: hidden;
+}
+
+/* ==========================================================================
+   Hero Animated Background Slideshow
+   ========================================================================== */
+.hero-bg-carousel {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 1;
+    pointer-events: auto;
+}
+
+.hero-bg-track {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.hero-bg-slide {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    visibility: hidden;
+    transform: scale(1.06) translate3d(0, 0, 0);
+    transition: opacity 1.4s cubic-bezier(0.4, 0, 0.2, 1),
+                transform 7s cubic-bezier(0.1, 0.9, 0.2, 1),
+                visibility 1.4s;
+    z-index: 1;
+}
+
+.hero-bg-slide.active {
+    opacity: 1;
+    visibility: visible;
+    transform: scale(1) translate3d(0, 0, 0);
+    z-index: 2;
+}
+
+.hero-bg-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 25%;
+    display: block;
+    filter: brightness(0.96) saturate(1.08) contrast(1.02);
+}
+
+/* Editorial Scrim Overlay: Soft translucent veil giving maximum readability to text while revealing photos */
+.hero-bg-overlay {
+    position: absolute;
+    inset: 0;
+    background: 
+        /* Left-to-right gradient: strong scrim over text, softer scrim over avatar/photo side */
+        linear-gradient(
+            90deg,
+            rgba(245, 243, 239, 0.95) 0%,
+            rgba(245, 243, 239, 0.91) 38%,
+            rgba(245, 243, 239, 0.68) 72%,
+            rgba(245, 243, 239, 0.88) 100%
+        ),
+        /* Top-to-bottom vignette: smooth blend to header and feed below */
+        linear-gradient(
+            180deg,
+            rgba(245, 243, 239, 0.85) 0%,
+            transparent 22%,
+            transparent 78%,
+            rgba(245, 243, 239, 0.98) 100%
+        );
+    pointer-events: none;
+    z-index: 3;
+}
+
+/* Dark mode adjustments */
+body.dark-mode .hero-bg-overlay {
+    background: 
+        linear-gradient(
+            90deg,
+            rgba(20, 20, 20, 0.95) 0%,
+            rgba(20, 20, 20, 0.90) 38%,
+            rgba(20, 20, 20, 0.65) 72%,
+            rgba(20, 20, 20, 0.88) 100%
+        ),
+        linear-gradient(
+            180deg,
+            rgba(20, 20, 20, 0.85) 0%,
+            transparent 22%,
+            transparent 78%,
+            rgba(20, 20, 20, 0.98) 100%
+        );
+}
+
+.hero-bg-grid-mask {
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(rgba(140, 124, 109, 0.08) 1.5px, transparent 1.5px);
+    background-size: 32px 32px;
+    pointer-events: none;
+    z-index: 4;
+}
+
+/* Floating Sleek Control Bar */
+.hero-bg-controls {
+    position: absolute;
+    bottom: 2rem;
+    left: 4%;
+    right: 4%;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1.5rem;
+    z-index: 10;
+    pointer-events: auto;
+}
+
+.hero-slide-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    padding: 0.55rem 1.15rem;
+    border-radius: 30px;
+    background: rgba(255, 255, 255, 0.85);
+    border: 1px solid rgba(140, 124, 109, 0.3);
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    cursor: pointer;
+    transition: var(--transition-fast);
+    color: var(--text-color);
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+    font-weight: 600;
+}
+
+.hero-slide-badge:hover {
+    background: rgba(255, 255, 255, 0.98);
+    border-color: var(--accent-color);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.slide-live-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background-color: var(--accent-color);
+    box-shadow: 0 0 8px var(--accent-color);
+    animation: statusPulse 2s infinite ease-in-out;
+}
+
+.slide-counter-text {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: var(--accent-color);
+}
+
+.slide-badge-sep {
+    color: var(--border-color);
+    opacity: 0.8;
+}
+
+.slide-location-text {
+    font-family: var(--font-body);
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text-color);
+    max-width: 320px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.slide-zoom-icon {
+    color: var(--accent-color);
+    opacity: 0.7;
+    margin-left: 0.2rem;
+    transition: transform 0.2s ease;
+}
+
+.hero-slide-badge:hover .slide-zoom-icon {
+    transform: scale(1.2);
+    opacity: 1;
+}
+
+.hero-slide-nav {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: rgba(255, 255, 255, 0.82);
+    border: 1px solid rgba(140, 124, 109, 0.25);
+    padding: 0.45rem 0.85rem;
+    border-radius: 30px;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.05);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+.hero-slide-dots {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+}
+
+.slide-dot {
+    width: 14px;
+    height: 7px;
+    border-radius: 4px;
+    border: none;
+    background: rgba(140, 124, 109, 0.28);
+    cursor: pointer;
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+    transition: width 0.35s ease, background-color 0.3s ease;
+}
+
+.slide-dot:hover {
+    background: rgba(140, 124, 109, 0.55);
+}
+
+.slide-dot.active {
+    width: 34px;
+    background: var(--text-color);
+}
+
+.slide-dot .dot-bar {
+    display: block;
+    width: 0%;
+    height: 100%;
+    background: var(--accent-color);
+    border-radius: 4px;
+}
+
+.hero-slide-arrows {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    border-left: 1px solid rgba(140, 124, 109, 0.25);
+    padding-left: 0.65rem;
+}
+
+.hero-slide-arrow {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 1px solid transparent;
+    background: transparent;
+    color: var(--text-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--transition-fast);
+    padding: 0;
+}
+
+.hero-slide-arrow:hover {
+    background: var(--bg-card);
+    border-color: var(--border-color);
+    color: var(--accent-color);
+    transform: scale(1.1);
 }
 
 .founder-hero-container {
@@ -3167,7 +3435,7 @@ body {
     gap: 4.5rem;
     align-items: center;
     position: relative;
-    z-index: 2;
+    z-index: 5;
 }
 
 .founder-hero-content {
@@ -3249,11 +3517,13 @@ body {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 1rem;
-    background-color: rgba(255, 255, 255, 0.45);
-    border: 1px solid var(--border-color);
+    background-color: rgba(255, 255, 255, 0.78);
+    border: 1px solid rgba(140, 124, 109, 0.28);
     border-radius: 12px;
     padding: 1.4rem;
-    backdrop-filter: blur(8px);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
 }
 
 .cred-item {
@@ -3381,11 +3651,13 @@ body {
 }
 
 .founder-card-meta {
-    background-color: var(--bg-card);
-    border: 1px solid var(--border-color);
+    background-color: rgba(255, 255, 255, 0.88);
+    border: 1px solid rgba(140, 124, 109, 0.3);
     border-radius: 12px;
     padding: 1.2rem 1.6rem;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.06);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
     text-align: center;
     display: flex;
     flex-direction: column;

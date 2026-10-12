@@ -21,6 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initMobileNavDrawer();
     initFacebookFeedInteractions();
     initFacebookPhotoSpotlightAndLightbox();
+    initHeroBackgroundSlider();
 });
 
 /**
@@ -1146,6 +1147,9 @@ function initFacebookPhotoSpotlightAndLightbox() {
         document.body.style.overflow = 'hidden';
     }
 
+    // Expose globally so hero background slider can open lightbox
+    window.openImageLightbox = openLightbox;
+
     function closeLightbox() {
         modal.classList.remove('active');
         modal.setAttribute('aria-hidden', 'true');
@@ -1200,6 +1204,186 @@ function initFacebookPhotoSpotlightAndLightbox() {
         }
     });
 }
+
+/**
+ * 16. Hero Background Animated Slideshow (Auto-transitions, Dots, Controls & Lightbox)
+ */
+function initHeroBackgroundSlider() {
+    const carousel = document.getElementById('hero-bg-carousel');
+    if (!carousel) return;
+
+    const slides = Array.from(carousel.querySelectorAll('.hero-bg-slide'));
+    const dots = Array.from(carousel.querySelectorAll('.slide-dot'));
+    const counterEl = document.getElementById('hero-slide-counter');
+    const locationEl = document.getElementById('hero-slide-location');
+    const prevBtn = document.getElementById('hero-slide-prev');
+    const nextBtn = document.getElementById('hero-slide-next');
+    const badgeBtn = document.getElementById('hero-slide-badge');
+
+    if (slides.length === 0) return;
+
+    let currentIndex = 0;
+    const totalSlides = slides.length;
+    let autoPlayTimer = null;
+    const slideDuration = 5200; // 5.2 seconds per slide
+
+    function updateSlideUI(index) {
+        slides.forEach((slide, idx) => {
+            if (idx === index) {
+                slide.classList.add('active');
+            } else {
+                slide.classList.remove('active');
+            }
+        });
+
+        dots.forEach((dot, idx) => {
+            const bar = dot.querySelector('.dot-bar');
+            if (idx === index) {
+                dot.classList.add('active');
+                if (bar) {
+                    bar.style.transition = 'none';
+                    bar.style.width = '0%';
+                    void bar.offsetWidth; // Force reflow
+                    bar.style.transition = `width ${slideDuration}ms linear`;
+                    bar.style.width = '100%';
+                }
+            } else {
+                dot.classList.remove('active');
+                if (bar) {
+                    bar.style.transition = 'none';
+                    bar.style.width = '0%';
+                }
+            }
+        });
+
+        const activeSlide = slides[index];
+        if (counterEl) {
+            counterEl.textContent = `${String(index + 1).padStart(2, '0')} / ${String(totalSlides).padStart(2, '0')}`;
+        }
+        if (locationEl && activeSlide) {
+            locationEl.textContent = activeSlide.getAttribute('data-title') || 'Official Academic Delegation';
+        }
+    }
+
+    function goToSlide(index) {
+        currentIndex = (index + totalSlides) % totalSlides;
+        updateSlideUI(currentIndex);
+    }
+
+    function nextSlide() {
+        goToSlide(currentIndex + 1);
+    }
+
+    function prevSlide() {
+        goToSlide(currentIndex - 1);
+    }
+
+    function startAutoPlay() {
+        stopAutoPlay();
+        const currentDot = dots[currentIndex];
+        const bar = currentDot?.querySelector('.dot-bar');
+        if (bar) {
+            bar.style.transition = 'none';
+            bar.style.width = '0%';
+            void bar.offsetWidth;
+            bar.style.transition = `width ${slideDuration}ms linear`;
+            bar.style.width = '100%';
+        }
+        autoPlayTimer = setInterval(nextSlide, slideDuration);
+    }
+
+    function stopAutoPlay() {
+        if (autoPlayTimer) {
+            clearInterval(autoPlayTimer);
+            autoPlayTimer = null;
+        }
+        const currentDot = dots[currentIndex];
+        const bar = currentDot?.querySelector('.dot-bar');
+        if (bar) {
+            const computedWidth = window.getComputedStyle(bar).width;
+            bar.style.transition = 'none';
+            bar.style.width = computedWidth;
+        }
+    }
+
+    // Attach Next / Prev Buttons
+    if (nextBtn) {
+        nextBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            nextSlide();
+            startAutoPlay();
+        });
+    }
+
+    if (prevBtn) {
+        prevBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            prevSlide();
+            startAutoPlay();
+        });
+    }
+
+    // Attach Dot Clicks
+    dots.forEach((dot, idx) => {
+        dot.addEventListener('click', (e) => {
+            e.stopPropagation();
+            goToSlide(idx);
+            startAutoPlay();
+        });
+    });
+
+    // Pause on hover over control panel
+    const controls = document.getElementById('hero-bg-controls');
+    if (controls) {
+        controls.addEventListener('mouseenter', stopAutoPlay);
+        controls.addEventListener('mouseleave', startAutoPlay);
+    }
+
+    // Click on slide badge opens High-Res Lightbox Modal
+    if (badgeBtn) {
+        badgeBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const activeSlide = slides[currentIndex];
+            if (!activeSlide) return;
+            const img = activeSlide.querySelector('img');
+            const title = activeSlide.getAttribute('data-title');
+            const desc = activeSlide.getAttribute('data-desc');
+            const fbUrl = activeSlide.getAttribute('data-fb-url');
+            if (window.openImageLightbox && img) {
+                window.openImageLightbox(img.src, title, desc, fbUrl);
+            }
+        });
+    }
+
+    // Touch Swipe Support for Mobile & Tablets
+    let touchStartX = 0;
+    let touchEndX = 0;
+    carousel.addEventListener('touchstart', (e) => {
+        if (e.touches.length === 1) {
+            touchStartX = e.touches[0].screenX;
+        }
+    }, { passive: true });
+
+    carousel.addEventListener('touchend', (e) => {
+        if (e.changedTouches.length === 1) {
+            touchEndX = e.changedTouches[0].screenX;
+            const diff = touchEndX - touchStartX;
+            if (Math.abs(diff) > 45) {
+                if (diff < 0) {
+                    nextSlide();
+                } else {
+                    prevSlide();
+                }
+                startAutoPlay();
+            }
+        }
+    }, { passive: true });
+
+    // Initialize first slide and start auto-transition
+    updateSlideUI(0);
+    startAutoPlay();
+}
+
 
 
 

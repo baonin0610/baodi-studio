@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initMobileNavDrawer();
     initFacebookFeedInteractions();
     initFacebookPhotoSpotlightAndLightbox();
-    initHeroBackgroundSlider();
+    initDelegationGalleryCarousel();
 });
 
 /**
@@ -1206,40 +1206,41 @@ function initFacebookPhotoSpotlightAndLightbox() {
 }
 
 /**
- * 16. Hero Background Animated Slideshow (Auto-transitions, Dots, Controls & Lightbox)
+ * 16. Dedicated University Delegation Visual Gallery Carousel
+ * (Auto-transitions, Interactive Thumbnails, Progress Bars, Lightbox & Touch Swiping)
  */
-function initHeroBackgroundSlider() {
-    const carousel = document.getElementById('hero-bg-carousel');
-    if (!carousel) return;
+function initDelegationGalleryCarousel() {
+    const container = document.getElementById('delegation-carousel-container');
+    if (!container) return;
 
-    const slides = Array.from(carousel.querySelectorAll('.hero-bg-slide'));
-    const dots = Array.from(carousel.querySelectorAll('.slide-dot'));
-    const counterEl = document.getElementById('hero-slide-counter');
-    const locationEl = document.getElementById('hero-slide-location');
-    const prevBtn = document.getElementById('hero-slide-prev');
-    const nextBtn = document.getElementById('hero-slide-next');
-    const badgeBtn = document.getElementById('hero-slide-badge');
+    const slides = Array.from(container.querySelectorAll('.delegation-slide'));
+    const thumbs = Array.from(container.querySelectorAll('.delegation-thumb'));
+    const counterEl = document.getElementById('delegation-counter');
+    const prevBtn = document.getElementById('delegation-prev-btn');
+    const nextBtn = document.getElementById('delegation-next-btn');
 
     if (slides.length === 0) return;
 
     let currentIndex = 0;
     const totalSlides = slides.length;
     let autoPlayTimer = null;
-    const slideDuration = 5200; // 5.2 seconds per slide
+    const slideDuration = 4800; // 4.8 seconds per slide
 
-    function updateSlideUI(index) {
+    function updateSlide(index) {
+        currentIndex = (index + totalSlides) % totalSlides;
+
         slides.forEach((slide, idx) => {
-            if (idx === index) {
+            if (idx === currentIndex) {
                 slide.classList.add('active');
             } else {
                 slide.classList.remove('active');
             }
         });
 
-        dots.forEach((dot, idx) => {
-            const bar = dot.querySelector('.dot-bar');
-            if (idx === index) {
-                dot.classList.add('active');
+        thumbs.forEach((thumb, idx) => {
+            const bar = thumb.querySelector('.thumb-bar');
+            if (idx === currentIndex) {
+                thumb.classList.add('active');
                 if (bar) {
                     bar.style.transition = 'none';
                     bar.style.width = '0%';
@@ -1248,7 +1249,7 @@ function initHeroBackgroundSlider() {
                     bar.style.width = '100%';
                 }
             } else {
-                dot.classList.remove('active');
+                thumb.classList.remove('active');
                 if (bar) {
                     bar.style.transition = 'none';
                     bar.style.width = '0%';
@@ -1256,32 +1257,23 @@ function initHeroBackgroundSlider() {
             }
         });
 
-        const activeSlide = slides[index];
         if (counterEl) {
-            counterEl.textContent = `${String(index + 1).padStart(2, '0')} / ${String(totalSlides).padStart(2, '0')}`;
+            counterEl.textContent = `${String(currentIndex + 1).padStart(2, '0')} / ${String(totalSlides).padStart(2, '0')}`;
         }
-        if (locationEl && activeSlide) {
-            locationEl.textContent = activeSlide.getAttribute('data-title') || 'Official Academic Delegation';
-        }
-    }
-
-    function goToSlide(index) {
-        currentIndex = (index + totalSlides) % totalSlides;
-        updateSlideUI(currentIndex);
     }
 
     function nextSlide() {
-        goToSlide(currentIndex + 1);
+        updateSlide(currentIndex + 1);
     }
 
     function prevSlide() {
-        goToSlide(currentIndex - 1);
+        updateSlide(currentIndex - 1);
     }
 
     function startAutoPlay() {
         stopAutoPlay();
-        const currentDot = dots[currentIndex];
-        const bar = currentDot?.querySelector('.dot-bar');
+        const currentThumb = thumbs[currentIndex];
+        const bar = currentThumb?.querySelector('.thumb-bar');
         if (bar) {
             bar.style.transition = 'none';
             bar.style.width = '0%';
@@ -1297,8 +1289,8 @@ function initHeroBackgroundSlider() {
             clearInterval(autoPlayTimer);
             autoPlayTimer = null;
         }
-        const currentDot = dots[currentIndex];
-        const bar = currentDot?.querySelector('.dot-bar');
+        const currentThumb = thumbs[currentIndex];
+        const bar = currentThumb?.querySelector('.thumb-bar');
         if (bar) {
             const computedWidth = window.getComputedStyle(bar).width;
             bar.style.transition = 'none';
@@ -1323,48 +1315,51 @@ function initHeroBackgroundSlider() {
         });
     }
 
-    // Attach Dot Clicks
-    dots.forEach((dot, idx) => {
-        dot.addEventListener('click', (e) => {
+    // Attach Click on Thumbnails
+    thumbs.forEach((thumb, idx) => {
+        thumb.addEventListener('click', (e) => {
             e.stopPropagation();
-            goToSlide(idx);
+            updateSlide(idx);
             startAutoPlay();
         });
     });
 
-    // Pause on hover over control panel
-    const controls = document.getElementById('hero-bg-controls');
-    if (controls) {
-        controls.addEventListener('mouseenter', stopAutoPlay);
-        controls.addEventListener('mouseleave', startAutoPlay);
-    }
+    // Pause on hover over carousel container
+    container.addEventListener('mouseenter', stopAutoPlay);
+    container.addEventListener('mouseleave', startAutoPlay);
 
-    // Click on slide badge opens High-Res Lightbox Modal
-    if (badgeBtn) {
-        badgeBtn.addEventListener('click', (e) => {
+    // Lightbox triggers for each slide (button click & image click)
+    slides.forEach(slide => {
+        const lbBtn = slide.querySelector('.slide-lightbox-btn');
+        const img = slide.querySelector('img');
+        const title = slide.getAttribute('data-title');
+        const desc = slide.getAttribute('data-desc');
+        const fbUrl = slide.getAttribute('data-fb-url');
+
+        function triggerLightbox(e) {
             e.stopPropagation();
-            const activeSlide = slides[currentIndex];
-            if (!activeSlide) return;
-            const img = activeSlide.querySelector('img');
-            const title = activeSlide.getAttribute('data-title');
-            const desc = activeSlide.getAttribute('data-desc');
-            const fbUrl = activeSlide.getAttribute('data-fb-url');
             if (window.openImageLightbox && img) {
                 window.openImageLightbox(img.src, title, desc, fbUrl);
             }
-        });
-    }
+        }
+
+        if (lbBtn) lbBtn.addEventListener('click', triggerLightbox);
+        if (img) {
+            img.style.cursor = 'pointer';
+            img.addEventListener('click', triggerLightbox);
+        }
+    });
 
     // Touch Swipe Support for Mobile & Tablets
     let touchStartX = 0;
     let touchEndX = 0;
-    carousel.addEventListener('touchstart', (e) => {
+    container.addEventListener('touchstart', (e) => {
         if (e.touches.length === 1) {
             touchStartX = e.touches[0].screenX;
         }
     }, { passive: true });
 
-    carousel.addEventListener('touchend', (e) => {
+    container.addEventListener('touchend', (e) => {
         if (e.changedTouches.length === 1) {
             touchEndX = e.changedTouches[0].screenX;
             const diff = touchEndX - touchStartX;
@@ -1379,8 +1374,8 @@ function initHeroBackgroundSlider() {
         }
     }, { passive: true });
 
-    // Initialize first slide and start auto-transition
-    updateSlideUI(0);
+    // Initialize first slide and start auto-play
+    updateSlide(0);
     startAutoPlay();
 }
 

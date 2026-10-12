@@ -36,10 +36,14 @@ html {
     font-family: var(--font-body);
     font-size: 16px;
     -webkit-font-smoothing: antialiased;
+    max-width: 100vw;
+    overflow-x: clip;
 }
 
 body {
-    overflow-x: hidden;
+    max-width: 100vw;
+    overflow-x: clip;
+    position: relative;
 }
 
 /* Scrollbar styling */
@@ -85,26 +89,30 @@ body {
     width: 100%;
     z-index: 1000;
     border-bottom: 1px solid var(--border-color);
-    background-color: rgba(245, 243, 239, 0.9);
-    backdrop-filter: blur(10px);
+    background-color: rgba(245, 243, 239, 0.94);
+    backdrop-filter: blur(14px);
+    transition: transform 0.3s ease, background-color 0.3s ease;
 }
 
 .nav-container {
     max-width: 1400px;
     margin: 0 auto;
-    padding: 1.5rem 4%;
+    padding: 1.1rem 4%;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 1.5rem;
 }
 
 .logo {
     font-family: var(--font-heading);
-    font-size: 1.6rem;
+    font-size: clamp(1.4rem, 2vw, 1.65rem);
     font-weight: 700;
     letter-spacing: -0.03em;
     text-transform: uppercase;
     color: var(--text-color);
+    text-decoration: none;
+    flex-shrink: 0;
 }
 
 .logo span {
@@ -115,21 +123,24 @@ body {
 .nav-links {
     display: flex;
     align-items: center;
-    gap: 3rem;
+    gap: clamp(0.7rem, 1.4vw, 1.6rem);
+    flex-wrap: nowrap;
 }
 
 .nav-link {
-    font-size: 0.85rem;
+    font-size: clamp(0.72rem, 0.85vw, 0.82rem);
     color: var(--text-muted);
-    font-weight: 500;
+    font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.08em;
     position: relative;
     padding-bottom: 0.2rem;
+    white-space: nowrap;
+    text-decoration: none;
     transition: var(--transition-fast);
 }
 
-.nav-link:hover {
+.nav-link:hover, .nav-link.active {
     color: var(--text-color);
 }
 
@@ -139,14 +150,14 @@ body {
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 1px;
+    height: 1.5px;
     background-color: var(--text-color);
     transform: scaleX(0);
     transform-origin: right;
     transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.nav-link:hover::after {
+.nav-link:hover::after, .nav-link.active::after {
     transform: scaleX(1);
     transform-origin: left;
 }
@@ -154,19 +165,269 @@ body {
 .launch-nav-btn {
     border: 1px solid var(--text-color);
     color: var(--text-color);
-    font-size: 0.8rem;
+    font-size: 0.76rem;
     font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
-    padding: 0.6rem 1.4rem;
-    border-radius: 0px; /* Monochromatic look */
+    letter-spacing: 0.08em;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
     background: transparent;
+    text-decoration: none;
+    white-space: nowrap;
     transition: var(--transition-fast);
+    flex-shrink: 0;
 }
 
 .launch-nav-btn:hover {
     background-color: var(--text-color);
     color: var(--bg-color);
+}
+
+/* Mobile Nav Actions (Shown only on viewports < 1024px) */
+.nav-mobile-actions {
+    display: none;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.mobile-guide-btn {
+    width: 38px;
+    height: 38px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-card);
+    color: var(--text-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--transition-fast);
+}
+
+.mobile-guide-btn:hover {
+    border-color: var(--text-color);
+    color: var(--accent-color);
+}
+
+.mobile-menu-toggle {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-card);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    cursor: pointer;
+    padding: 0;
+    transition: var(--transition-fast);
+}
+
+.mobile-menu-toggle:hover {
+    border-color: var(--text-color);
+}
+
+.hamburger-line {
+    width: 20px;
+    height: 2px;
+    background-color: var(--text-color);
+    border-radius: 2px;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.mobile-menu-toggle.active .hamburger-line:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+}
+
+.mobile-menu-toggle.active .hamburger-line:nth-child(2) {
+    opacity: 0;
+}
+
+.mobile-menu-toggle.active .hamburger-line:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+}
+
+/* Mobile Navigation Drawer & Overlay */
+.mobile-drawer-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(26, 26, 26, 0.45);
+    backdrop-filter: blur(6px);
+    z-index: 1001;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.35s ease, visibility 0.35s ease;
+}
+
+.mobile-drawer-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.mobile-nav-drawer {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: min(380px, 86vw);
+    height: 100vh;
+    background: var(--bg-color);
+    border-left: 1px solid var(--border-color);
+    box-shadow: -12px 0 45px rgba(0, 0, 0, 0.12);
+    z-index: 1002;
+    transform: translateX(100%);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    display: flex;
+    flex-direction: column;
+    padding: 2.2rem 1.8rem;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.mobile-nav-drawer.active {
+    transform: translateX(0);
+}
+
+.drawer-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 1.2rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.drawer-logo {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    color: var(--text-color);
+}
+
+.drawer-logo span {
+    color: var(--accent-color);
+    font-weight: 400;
+}
+
+.drawer-close-btn {
+    background: none;
+    border: 1px solid var(--border-color);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    font-size: 1.4rem;
+    line-height: 1;
+    color: var(--text-color);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition-fast);
+}
+
+.drawer-close-btn:hover {
+    background-color: var(--text-color);
+    color: var(--bg-color);
+}
+
+.drawer-badge {
+    margin: 1.2rem 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.06em;
+    color: var(--accent-color);
+    text-transform: uppercase;
+}
+
+.drawer-links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    margin: 0.8rem 0 auto;
+}
+
+.drawer-link {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem 0.9rem;
+    border-radius: 8px;
+    text-decoration: none;
+    color: var(--text-color);
+    transition: var(--transition-fast);
+}
+
+.drawer-link:hover, .drawer-link.active {
+    background-color: var(--bg-card);
+    transform: translateX(4px);
+}
+
+.drawer-link-num {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    color: var(--accent-color);
+    font-weight: 700;
+    letter-spacing: 0.05em;
+}
+
+.drawer-link-text {
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+}
+
+.drawer-footer-actions {
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    border-top: 1px solid var(--border-color);
+    padding-top: 1.4rem;
+}
+
+.drawer-btn-guide {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.8rem;
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-card);
+    color: var(--text-color);
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition-fast);
+}
+
+.drawer-btn-guide:hover {
+    border-color: var(--text-color);
+}
+
+.drawer-btn-zalo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.85rem;
+    background-color: #0068FF;
+    color: #ffffff;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+    box-shadow: 0 4px 15px rgba(0, 104, 255, 0.25);
+    transition: var(--transition-fast);
+}
+
+.drawer-btn-zalo:hover {
+    background-color: #0056D6;
+    transform: translateY(-2px);
 }
 
 /* Hero Section */
@@ -1185,6 +1446,14 @@ body {
 
 /* Responsive Grid Adjustments */
 @media (max-width: 1024px) {
+    .nav-links {
+        display: none !important;
+    }
+    
+    .nav-mobile-actions {
+        display: flex !important;
+    }
+
     .hero-container {
         grid-template-columns: 1fr;
         gap: 4rem;
@@ -1322,34 +1591,18 @@ body {
         gap: 0.8rem;
     }
     
-    .nav-links {
-        display: flex;
-        gap: 0.5rem;
-        align-items: center;
-    }
-    
-    .nav-links .nav-link {
-        display: none;
-    }
-    
-    .guide-nav-btn {
-        padding: 0.5rem 0.7rem;
-        font-size: 0.75rem;
-    }
-    
-    .launch-nav-btn {
-        padding: 0.5rem 0.7rem;
-        font-size: 0.75rem;
+    .nav-container {
+        padding: 0.9rem 4%;
     }
 }
 
 @media (max-width: 480px) {
     .nav-container {
-        padding: 0 1rem;
+        padding: 0.8rem 1rem;
     }
     
     .logo {
-        font-size: 1.1rem;
+        font-size: 1.25rem;
     }
     
     .guide-nav-btn span {
@@ -3415,11 +3668,552 @@ body {
     justify-content: center;
 }
 
-/* Responsive adjustments */
+/* ==========================================================================
+   Facebook Feed & Social Dispatch Section
+   ========================================================================== */
+.facebook-feed-section {
+    padding: 6rem 4%;
+    background-color: var(--bg-card);
+    border-top: 1px solid var(--border-color);
+    position: relative;
+}
+
+.fb-section-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 0.9rem;
+    border-radius: 20px;
+    background-color: rgba(24, 119, 242, 0.08);
+    border: 1px solid rgba(24, 119, 242, 0.2);
+    color: #1877F2;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 1.2rem;
+}
+
+.fb-section-badge svg {
+    color: #1877F2;
+}
+
+.fb-profile-banner {
+    max-width: 780px;
+    margin: 2.2rem auto 0;
+    padding: 1.2rem 1.8rem;
+    background-color: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+}
+
+.fb-profile-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.fb-avatar-ring {
+    position: relative;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    padding: 2px;
+    background: linear-gradient(135deg, #1877F2, #00C6FF);
+}
+
+.fb-profile-avatar {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #ffffff;
+    display: block;
+}
+
+.fb-profile-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.fb-profile-name-row {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.fb-profile-name {
+    font-family: var(--font-heading);
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.fb-profile-handle {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--text-muted);
+}
+
+.fb-follow-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1.2rem;
+    background-color: #1877F2;
+    color: #ffffff !important;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-decoration: none;
+    box-shadow: 0 4px 14px rgba(24, 119, 242, 0.28);
+    transition: var(--transition-fast);
+}
+
+.fb-follow-btn:hover {
+    background-color: #1464cc;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(24, 119, 242, 0.38);
+}
+
+.fb-posts-grid {
+    max-width: 1240px;
+    margin: 3.5rem auto 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+}
+
+.fb-card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease, border-color 0.4s ease;
+}
+
+.fb-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 16px 40px rgba(26, 26, 26, 0.08);
+    border-color: rgba(24, 119, 242, 0.35);
+}
+
+.fb-card-header {
+    padding: 1.4rem 1.4rem 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    position: relative;
+}
+
+.fb-author-avatar-wrap {
+    position: relative;
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+}
+
+.fb-author-img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid var(--border-color);
+}
+
+.fb-story-badge {
+    position: absolute;
+    bottom: -1px;
+    right: -1px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: #22c55e;
+    border: 2px solid #ffffff;
+}
+
+.fb-author-meta {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+}
+
+.fb-author-title {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.fb-author-name {
+    font-family: var(--font-body);
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: var(--text-color);
+}
+
+.fb-verified-icon {
+    flex-shrink: 0;
+}
+
+.fb-post-submeta {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    color: var(--text-muted);
+}
+
+.fb-dot {
+    color: var(--border-color);
+}
+
+.fb-privacy {
+    display: inline-flex;
+    align-items: center;
+    color: var(--text-muted);
+}
+
+.fb-card-menu {
+    color: var(--text-muted);
+    cursor: pointer;
+    opacity: 0.6;
+    transition: opacity 0.2s ease;
+}
+
+.fb-card-menu:hover {
+    opacity: 1;
+}
+
+.fb-card-body {
+    padding: 0.6rem 1.4rem 1.2rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.fb-post-text {
+    font-size: 0.92rem;
+    line-height: 1.7;
+    color: var(--text-color);
+    margin: 0 0 1rem;
+}
+
+.fb-post-text strong {
+    color: var(--text-color);
+    font-weight: 700;
+}
+
+.fb-hashtags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: auto;
+}
+
+.fb-hashtag {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    color: #1877F2;
+    background-color: rgba(24, 119, 242, 0.06);
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    font-weight: 600;
+}
+
+.fb-card-media {
+    position: relative;
+    width: 100%;
+    height: 220px;
+    background-color: #000000;
+    overflow: hidden;
+}
+
+.fb-card-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.fb-card:hover .fb-card-media img {
+    transform: scale(1.04);
+}
+
+.fb-media-tag {
+    position: absolute;
+    bottom: 10px;
+    left: 12px;
+    background: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(4px);
+    color: #ffffff;
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0.25rem 0.6rem;
+    border-radius: 4px;
+}
+
+.fb-card-stats {
+    padding: 0.8rem 1.4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-color);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--text-muted);
+}
+
+.fb-reaction-pills {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.reaction-emoji {
+    font-size: 0.85rem;
+}
+
+.reaction-count {
+    margin-left: 0.2rem;
+    font-weight: 700;
+    color: var(--text-color);
+}
+
+.fb-social-counts {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.fb-card-actions {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    padding: 0.4rem 0.8rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.fb-action-btn {
+    background: transparent;
+    border: none;
+    padding: 0.6rem 0.2rem;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    cursor: pointer;
+    text-decoration: none;
+    transition: var(--transition-fast);
+}
+
+.fb-action-btn:hover {
+    background-color: rgba(140, 124, 109, 0.08);
+    color: var(--text-color);
+}
+
+.fb-action-btn.liked {
+    color: #1877F2 !important;
+}
+
+.fb-action-btn.liked .fb-action-icon {
+    fill: #1877F2;
+    stroke: #1877F2;
+    animation: likeBounce 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes likeBounce {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.35) rotate(-10deg); }
+    100% { transform: scale(1) rotate(0deg); }
+}
+
+.fb-card-footer {
+    padding: 0.9rem 1.4rem;
+    background-color: var(--bg-color);
+    text-align: center;
+}
+
+.fb-origin-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--text-color);
+    text-decoration: none;
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.fb-origin-link:hover {
+    color: #1877F2;
+    transform: translateX(3px);
+}
+
+.fb-section-cta {
+    max-width: 1240px;
+    margin: 3.5rem auto 0;
+    display: flex;
+    justify-content: center;
+}
+
+.fb-cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    background-color: #1877F2 !important;
+    border-color: #1877F2 !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 20px rgba(24, 119, 242, 0.28);
+}
+
+.fb-cta-btn:hover {
+    background-color: #1464cc !important;
+    box-shadow: 0 8px 30px rgba(24, 119, 242, 0.4);
+    transform: translateY(-2px);
+}
+
+/* Quick button in hero */
+.fb-quick-btn {
+    border-color: rgba(24, 119, 242, 0.4) !important;
+    color: #1877F2 !important;
+}
+
+.fb-quick-btn:hover {
+    border-color: #1877F2 !important;
+    background-color: rgba(24, 119, 242, 0.08) !important;
+}
+
+.facebook-btn:hover {
+    color: #1877F2 !important;
+    border-color: #1877F2 !important;
+}
+
+/* ==========================================================================
+   Editorial Footer Styling
+   ========================================================================== */
+.site-footer {
+    border-top: 1px solid var(--border-color);
+    background-color: var(--bg-color);
+    padding: 3.5rem 4% 2.5rem;
+}
+
+.footer-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.footer-brand {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.footer-logo {
+    font-family: var(--font-heading);
+    font-size: 1.6rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+    color: var(--text-color);
+}
+
+.footer-logo span {
+    color: var(--accent-color);
+    font-weight: 400;
+}
+
+.footer-tagline {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.footer-socials {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    flex-wrap: wrap;
+    border-top: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
+    padding: 1.4rem 0;
+}
+
+.footer-social-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text-color);
+    text-decoration: none;
+    transition: var(--transition-fast);
+}
+
+.footer-social-link:hover {
+    color: var(--accent-color);
+    transform: translateY(-1px);
+}
+
+.footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.footer-status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* ==========================================================================
+   Fluid Tab & Window Resizing Optimization (All Breakpoints)
+   ========================================================================== */
+@media (max-width: 1100px) {
+    .fb-posts-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.8rem;
+    }
+
+    .brand-gallery-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .brand-item-wide {
+        grid-column: span 2;
+    }
+}
+
 @media (max-width: 992px) {
     .founder-hero-container {
         grid-template-columns: 1fr;
-        gap: 3.5rem;
+        gap: 3rem;
         text-align: center;
     }
 
@@ -3433,31 +4227,27 @@ body {
 
     .founder-credentials-grid {
         text-align: left;
-        max-width: 500px;
+        max-width: 540px;
         width: 100%;
-    }
-
-    .brand-gallery-container {
-        grid-template-columns: 1fr 1fr;
-    }
-
-    .brand-item-wide {
-        grid-column: span 2;
+        margin: 0 auto;
     }
 
     .featured-stories-grid {
         grid-template-columns: 1fr;
+        gap: 1.8rem;
     }
 }
 
-@media (max-width: 640px) {
-    .founder-portrait-frame {
-        width: 250px;
-        height: 250px;
+@media (max-width: 768px) {
+    .facebook-feed-section,
+    .brand-gallery-section,
+    .featured-stories-section {
+        padding: 4.5rem 4%;
     }
 
-    .founder-credentials-grid {
+    .fb-posts-grid {
         grid-template-columns: 1fr;
+        gap: 1.8rem;
     }
 
     .brand-gallery-container {
@@ -3468,10 +4258,56 @@ body {
         grid-column: span 1;
     }
 
-    .story-card {
-        padding: 1.8rem;
+    .fb-profile-banner {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .fb-profile-info {
+        flex-direction: column;
+    }
+
+    .footer-bottom {
+        flex-direction: column;
+        align-items: flex-start;
     }
 }
+
+@media (max-width: 580px) {
+    .founder-portrait-frame {
+        width: min(250px, 70vw);
+        height: min(250px, 70vw);
+    }
+
+    .founder-credentials-grid {
+        grid-template-columns: 1fr;
+        padding: 1.1rem;
+    }
+
+    .founder-hero-actions {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .founder-hero-actions a {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .story-card {
+        padding: 1.6rem;
+    }
+
+    .fb-card-actions {
+        padding: 0.3rem;
+    }
+
+    .fb-action-btn {
+        font-size: 0.72rem;
+        gap: 0.25rem;
+    }
+}
+
 
 
 

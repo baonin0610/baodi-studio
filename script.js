@@ -18,6 +18,8 @@ document.addEventListener('DOMContentLoaded', () => {
     initMobileSwipeToast();
     initMobileTouchSwiper();
     initHomepageFeaturedStories();
+    initMobileNavDrawer();
+    initFacebookFeedInteractions();
 });
 
 /**
@@ -1008,4 +1010,104 @@ function initHomepageFeaturedStories() {
             console.log('Homepage using static fallback articles:', err);
         });
 }
+
+/**
+ * 13. Mobile Navigation Drawer Toggle & Interactions
+ */
+function initMobileNavDrawer() {
+    const toggleBtn = document.getElementById('mobile-menu-toggle');
+    const drawer = document.getElementById('mobile-nav-drawer');
+    const overlay = document.getElementById('mobile-drawer-overlay');
+    const closeBtn = document.getElementById('close-drawer-btn');
+    const drawerLinks = document.querySelectorAll('.drawer-link');
+    const drawerGuideBtn = document.getElementById('drawer-guide-btn');
+    const mobileGuideBtn = document.getElementById('mobile-guide-btn');
+    const mainGuideBtn = document.getElementById('open-guide-btn');
+
+    if (!toggleBtn || !drawer || !overlay) return;
+
+    function openDrawer() {
+        toggleBtn.classList.add('active');
+        drawer.classList.add('active');
+        overlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeDrawer() {
+        toggleBtn.classList.remove('active');
+        drawer.classList.remove('active');
+        overlay.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    toggleBtn.addEventListener('click', () => {
+        if (drawer.classList.contains('active')) {
+            closeDrawer();
+        } else {
+            openDrawer();
+        }
+    });
+
+    if (closeBtn) closeBtn.addEventListener('click', closeDrawer);
+    overlay.addEventListener('click', closeDrawer);
+
+    // Close when clicking any nav link in drawer
+    drawerLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            closeDrawer();
+        });
+    });
+
+    // Close on Escape key
+    window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && drawer.classList.contains('active')) {
+            closeDrawer();
+        }
+    });
+
+    // Mobile guide buttons trigger the same guide modal
+    if (drawerGuideBtn && mainGuideBtn) {
+        drawerGuideBtn.addEventListener('click', () => {
+            closeDrawer();
+            mainGuideBtn.click();
+        });
+    }
+
+    if (mobileGuideBtn && mainGuideBtn) {
+        mobileGuideBtn.addEventListener('click', () => {
+            mainGuideBtn.click();
+        });
+    }
+}
+
+/**
+ * 14. Facebook Feed Card Interactions (Likes & Reactions)
+ */
+function initFacebookFeedInteractions() {
+    const likeButtons = document.querySelectorAll('.fb-action-btn.like-btn');
+    
+    likeButtons.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const card = btn.closest('.fb-card');
+            if (!card) return;
+            
+            const countEl = card.querySelector('.reaction-count');
+            const labelEl = btn.querySelector('.btn-label');
+            const isLiked = btn.classList.toggle('liked');
+            const baseLikes = parseInt(countEl?.getAttribute('data-base-likes') || '100', 10);
+            
+            if (countEl && labelEl) {
+                if (isLiked) {
+                    countEl.textContent = (baseLikes + 1).toString();
+                    labelEl.textContent = 'Liked';
+                } else {
+                    countEl.textContent = baseLikes.toString();
+                    labelEl.textContent = 'Like';
+                }
+            }
+        });
+    });
+}
+
 

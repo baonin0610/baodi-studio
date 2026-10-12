@@ -42,8 +42,82 @@
                 </button>
                 <a href="index.html#about-developer" class="launch-nav-btn" style="background-color: var(--text-color); color: var(--bg-color);">About Developer</a>
             </div>
+            <div class="nav-mobile-actions">
+                <button class="mobile-guide-btn" id="mobile-guide-btn" aria-label="User Guide">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                        <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                    </svg>
+                </button>
+                <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle Navigation Menu">
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                </button>
+            </div>
         </nav>
     </header>
+
+    <!-- Mobile Navigation Drawer Overlay & Panel -->
+    <div id="mobile-drawer-overlay" class="mobile-drawer-overlay"></div>
+    <aside id="mobile-nav-drawer" class="mobile-nav-drawer" aria-label="Mobile Navigation">
+        <div class="drawer-header">
+            <span class="drawer-logo">BaoDi.<span>Studio</span></span>
+            <button class="drawer-close-btn" id="close-drawer-btn" aria-label="Close Navigation Menu">&times;</button>
+        </div>
+        <div class="drawer-badge">
+            <span class="status-indicator-dot"></span>
+            <span>Nguyen Le Bao Duy • Studio Platform</span>
+        </div>
+        <div class="drawer-links">
+            <a href="index.html#about-developer" class="drawer-link">
+                <span class="drawer-link-num">01</span>
+                <span class="drawer-link-text">About Developer</span>
+            </a>
+            <a href="index.html#brand-gallery" class="drawer-link">
+                <span class="drawer-link-num">02</span>
+                <span class="drawer-link-text">Brand Visuals</span>
+            </a>
+            <a href="index.html#featured-stories" class="drawer-link">
+                <span class="drawer-link-num">03</span>
+                <span class="drawer-link-text">Featured Stories</span>
+            </a>
+            <a href="index.html#facebook-feed" class="drawer-link">
+                <span class="drawer-link-num">04</span>
+                <span class="drawer-link-text">Facebook Social Feed</span>
+            </a>
+            <a href="index.html#showcase" class="drawer-link">
+                <span class="drawer-link-num">05</span>
+                <span class="drawer-link-text">Client Projects</span>
+            </a>
+            <a href="templates.html" class="drawer-link active">
+                <span class="drawer-link-num">06</span>
+                <span class="drawer-link-text">11 Template Demos</span>
+            </a>
+            <a href="journal.html" class="drawer-link">
+                <span class="drawer-link-num">07</span>
+                <span class="drawer-link-text">Personal Journal</span>
+            </a>
+            <a href="index.html#forum" class="drawer-link">
+                <span class="drawer-link-num">08</span>
+                <span class="drawer-link-text">Client Forum</span>
+            </a>
+        </div>
+        <div class="drawer-footer-actions">
+            <button class="drawer-btn-guide" id="drawer-guide-btn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                </svg>
+                <span>Read User Guide</span>
+            </button>
+            <a href="https://zalo.me/0979605867" target="_blank" rel="noopener noreferrer" class="drawer-btn-zalo">
+                <span>Connect via Zalo (+84 979.605.867)</span>
+            </a>
+        </div>
+    </aside>
 
     <main>
         <!-- Hero Header Section for Templates -->

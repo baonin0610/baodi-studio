@@ -3784,6 +3784,105 @@ body {
     box-shadow: 0 6px 20px rgba(24, 119, 242, 0.38);
 }
 
+/* ==========================================================================
+   Delegation Photo Spotlight Reel
+   ========================================================================== */
+.fb-photo-spotlight {
+    max-width: 1200px;
+    margin: 2.2rem auto 0;
+    padding: 1.4rem 1.6rem;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+}
+
+.spotlight-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.1rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.spotlight-title-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.spotlight-icon {
+    font-size: 1.1rem;
+}
+
+.spotlight-label {
+    font-family: var(--font-body);
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: var(--text-color);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.spotlight-hint {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--text-muted);
+}
+
+.spotlight-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.2rem;
+}
+
+.spotlight-thumb {
+    position: relative;
+    aspect-ratio: 16 / 10;
+    border-radius: 10px;
+    overflow: hidden;
+    cursor: pointer;
+    background-color: #0b0f17;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease, border-color 0.35s ease;
+}
+
+.spotlight-thumb:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 10px 24px rgba(24, 119, 242, 0.22);
+    border-color: #1877F2;
+}
+
+.spotlight-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s ease;
+}
+
+.spotlight-thumb:hover img {
+    transform: scale(1.08);
+}
+
+.spotlight-badge {
+    position: absolute;
+    bottom: 8px;
+    left: 8px;
+    background: rgba(0, 0, 0, 0.72);
+    backdrop-filter: blur(6px);
+    color: #ffffff;
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    font-weight: 600;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    pointer-events: none;
+}
+
 .fb-posts-grid {
     max-width: 1200px;
     margin: 3.5rem auto 0;
@@ -3817,6 +3916,7 @@ body {
     background-color: #0b0f17;
     overflow: hidden;
     border-right: 1px solid var(--border-color);
+    cursor: pointer;
 }
 
 .fb-card-media-col .fb-card-media {
@@ -4122,6 +4222,215 @@ body {
 }
 
 /* ==========================================================================
+   Secondary Subpage Link Banner (Design Factory & Templates)
+   ========================================================================== */
+.templates-hub-banner-section {
+    padding: 4.5rem 4%;
+    background-color: var(--bg-card);
+    border-top: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.templates-hub-banner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2.5rem;
+    flex-wrap: wrap;
+    padding: 3rem;
+    background: linear-gradient(135deg, rgba(24, 119, 242, 0.04) 0%, rgba(26, 26, 26, 0.02) 100%);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.03);
+}
+
+.hub-banner-content {
+    max-width: 720px;
+}
+
+.hub-badge {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #1877F2;
+    display: inline-block;
+    margin-bottom: 0.6rem;
+}
+
+.hub-title {
+    font-family: var(--font-heading);
+    font-size: 1.85rem;
+    font-weight: 600;
+    color: var(--text-color);
+    margin: 0 0 0.8rem;
+    letter-spacing: -0.01em;
+}
+
+.hub-desc {
+    font-size: 0.92rem;
+    line-height: 1.65;
+    color: var(--text-muted);
+    margin: 0;
+}
+
+.hub-banner-action .primary-btn {
+    white-space: nowrap;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.1);
+}
+
+/* ==========================================================================
+   High-Resolution Image Lightbox Modal
+   ========================================================================== */
+.image-lightbox-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    padding: 2rem;
+}
+
+.image-lightbox-modal.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.lightbox-backdrop {
+    position: absolute;
+    inset: 0;
+    background-color: rgba(5, 5, 8, 0.88);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+}
+
+.lightbox-container {
+    position: relative;
+    z-index: 2;
+    max-width: 1100px;
+    width: 100%;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    background-color: #0d1117;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
+    transform: scale(0.95);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.image-lightbox-modal.active .lightbox-container {
+    transform: scale(1);
+}
+
+.lightbox-close-btn {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+    font-size: 1.4rem;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 5;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.lightbox-close-btn:hover {
+    background-color: rgba(220, 38, 38, 0.85);
+    transform: scale(1.1);
+}
+
+.lightbox-media-wrap {
+    width: 100%;
+    height: min(65vh, 600px);
+    background-color: #05070a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.lightbox-media-wrap img {
+    max-width: 100%;
+    max-height: 100%;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+}
+
+.lightbox-caption-bar {
+    padding: 1.2rem 1.6rem;
+    background-color: #0d1117;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.lightbox-caption-text {
+    flex-grow: 1;
+}
+
+.lightbox-title {
+    font-family: var(--font-body);
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0 0 0.25rem;
+}
+
+.lightbox-desc {
+    font-size: 0.82rem;
+    color: rgba(255, 255, 255, 0.7);
+    margin: 0;
+    line-height: 1.5;
+}
+
+.lightbox-fb-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.55rem 1.1rem;
+    background-color: #1877F2;
+    color: #ffffff !important;
+    border-radius: 6px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+    flex-shrink: 0;
+}
+
+.lightbox-fb-btn:hover {
+    background-color: #1464cc;
+    transform: translateY(-2px);
+}
+
+/* ==========================================================================
    Editorial Footer Styling
    ========================================================================== */
 .site-footer {
@@ -4277,6 +4586,46 @@ body {
 
     .fb-card-media-col {
         height: 240px;
+    }
+
+    .spotlight-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.8rem;
+    }
+
+    .templates-hub-banner {
+        flex-direction: column;
+        text-align: center;
+        padding: 2.2rem 1.4rem;
+    }
+
+    .hub-banner-action {
+        width: 100%;
+    }
+
+    .hub-banner-action a {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .lightbox-container {
+        max-height: 95vh;
+    }
+
+    .lightbox-media-wrap {
+        height: 48vh;
+    }
+
+    .lightbox-caption-bar {
+        padding: 1rem;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.8rem;
+    }
+
+    .lightbox-fb-btn {
+        width: 100%;
+        justify-content: center;
     }
 
     .brand-gallery-container {

@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initHomepageFeaturedStories();
     initMobileNavDrawer();
     initFacebookFeedInteractions();
+    initFacebookPhotoSpotlightAndLightbox();
 });
 
 /**
@@ -1109,5 +1110,96 @@ function initFacebookFeedInteractions() {
         });
     });
 }
+
+/**
+ * 15. Facebook Photo Spotlight & High-Resolution Lightbox Modal
+ */
+function initFacebookPhotoSpotlightAndLightbox() {
+    const modal = document.getElementById('image-lightbox-modal');
+    if (!modal) return;
+
+    const closeBtn = document.getElementById('lightbox-close-btn');
+    const lightboxImg = document.getElementById('lightbox-img');
+    const lightboxTitle = document.getElementById('lightbox-title');
+    const lightboxDesc = document.getElementById('lightbox-desc');
+    const lightboxFbLink = document.getElementById('lightbox-fb-link');
+    const backdrop = modal.querySelector('.lightbox-backdrop');
+
+    function openLightbox(imgSrc, title, desc, fbUrl) {
+        if (!lightboxImg) return;
+        lightboxImg.src = imgSrc;
+        lightboxImg.alt = title || 'High-Resolution Delegation Photo';
+        if (lightboxTitle) lightboxTitle.textContent = title || 'Official Delegation Dispatch';
+        if (lightboxDesc) lightboxDesc.textContent = desc || '';
+        
+        if (lightboxFbLink) {
+            if (fbUrl && fbUrl !== '#') {
+                lightboxFbLink.href = fbUrl;
+                lightboxFbLink.style.display = 'inline-flex';
+            } else {
+                lightboxFbLink.style.display = 'none';
+            }
+        }
+
+        modal.classList.add('active');
+        modal.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+        modal.classList.remove('active');
+        modal.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+        if (lightboxImg) {
+            lightboxImg.src = '';
+        }
+    }
+
+    // 1. Spotlight thumbnails click
+    const spotlightThumbs = document.querySelectorAll('.spotlight-thumb');
+    spotlightThumbs.forEach(thumb => {
+        thumb.addEventListener('click', () => {
+            const imgSrc = thumb.getAttribute('data-img');
+            const title = thumb.getAttribute('data-title');
+            const desc = thumb.getAttribute('data-desc');
+            const targetId = thumb.getAttribute('data-post-target');
+            const targetCard = targetId ? document.querySelector(`.fb-card[data-post-id="${targetId}"]`) : null;
+            const fbUrl = targetCard?.querySelector('.fb-origin-link')?.getAttribute('href') || '#';
+            
+            if (imgSrc) {
+                openLightbox(imgSrc, title, desc, fbUrl);
+            }
+        });
+    });
+
+    // 2. Facebook Post card media column click
+    const cardMediaCols = document.querySelectorAll('.fb-card-media-col');
+    cardMediaCols.forEach(mediaCol => {
+        mediaCol.addEventListener('click', () => {
+            const card = mediaCol.closest('.fb-card');
+            if (!card) return;
+            const img = mediaCol.querySelector('img');
+            const tagText = mediaCol.querySelector('.fb-media-tag span')?.textContent?.trim() || '';
+            const postTitle = card.querySelector('.fb-post-text strong')?.textContent?.trim() || 'Official Delegation Dispatch';
+            const fbUrl = card.querySelector('.fb-origin-link')?.getAttribute('href') || '#';
+            
+            if (img) {
+                openLightbox(img.src, postTitle, tagText, fbUrl);
+            }
+        });
+    });
+
+    // 3. Close controls
+    if (closeBtn) closeBtn.addEventListener('click', closeLightbox);
+    if (backdrop) backdrop.addEventListener('click', closeLightbox);
+
+    // 4. Keyboard ESC to close
+    window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.classList.contains('active')) {
+            closeLightbox();
+        }
+    });
+}
+
 
 

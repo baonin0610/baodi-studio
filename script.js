@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initMobileBottomNav();
     initMobileSwipeToast();
     initMobileTouchSwiper();
+    initHomepageFeaturedStories();
 });
 
 /**
@@ -955,3 +956,56 @@ function initInstantLaunchPrefetch() {
 document.addEventListener('DOMContentLoaded', () => {
     initInstantLaunchPrefetch();
 });
+
+/**
+ * 12. Load Featured Stories from posts.json dynamically onto Homepage
+ */
+function initHomepageFeaturedStories() {
+    const container = document.getElementById('homepage-featured-stories');
+    if (!container) return;
+
+    fetch('posts.json?t=' + Date.now())
+        .then(res => res.json())
+        .then(posts => {
+            if (!Array.isArray(posts) || posts.length === 0) return;
+
+            // Pick up to 2-3 most recent posts
+            const recent = posts.slice(0, 3);
+            
+            // Build cards
+            const cardsHTML = recent.map(post => {
+                const cleanExcerpt = post.excerpt || (post.content ? post.content.replace(/<[^>]*>/g, '').substring(0, 160) + '...' : '');
+                return `
+                    <article class="story-card">
+                        <div class="story-meta">
+                            <span class="story-category">${post.categoryLabel || post.category || 'Chia sẻ'}</span>
+                            <span class="story-date">${post.date || 'Gần đây'}</span>
+                        </div>
+                        <h3 class="story-title">
+                            <a href="journal.html">${post.title}</a>
+                        </h3>
+                        <p class="story-excerpt">
+                            ${cleanExcerpt}
+                        </p>
+                        <div class="story-footer">
+                            <span class="story-readtime">${post.readTime || '3'} phút đọc</span>
+                            <a href="journal.html" class="story-link">
+                                <span>Đọc toàn bài</span>
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                                    <polyline points="12 5 19 12 12 19"></polyline>
+                                </svg>
+                            </a>
+                        </div>
+                    </article>
+                `;
+            }).join('');
+
+            container.innerHTML = cardsHTML;
+        })
+        .catch(err => {
+            // Keep pre-rendered fallback cards intact if offline
+            console.log('Homepage using static fallback articles:', err);
+        });
+}
+

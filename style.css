@@ -3785,32 +3785,85 @@ body {
 }
 
 .fb-posts-grid {
-    max-width: 1240px;
+    max-width: 1200px;
     margin: 3.5rem auto 0;
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 2.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
 }
 
 .fb-card {
     background-color: var(--bg-card);
     border: 1px solid var(--border-color);
-    border-radius: 14px;
-    display: flex;
-    flex-direction: column;
+    border-radius: 16px;
+    display: grid;
+    grid-template-columns: 46% 54%;
     overflow: hidden;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
     transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease, border-color 0.4s ease;
 }
 
 .fb-card:hover {
-    transform: translateY(-6px);
+    transform: translateY(-4px);
     box-shadow: 0 16px 40px rgba(26, 26, 26, 0.08);
     border-color: rgba(24, 119, 242, 0.35);
 }
 
+.fb-card-media-col {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    min-height: 380px;
+    background-color: #0b0f17;
+    overflow: hidden;
+    border-right: 1px solid var(--border-color);
+}
+
+.fb-card-media-col .fb-card-media {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.fb-card-media-col .fb-card-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.fb-card:hover .fb-card-media-col .fb-card-media img {
+    transform: scale(1.04);
+}
+
+.fb-media-tag {
+    position: absolute;
+    bottom: 14px;
+    left: 14px;
+    background: rgba(0, 0, 0, 0.72);
+    backdrop-filter: blur(8px);
+    color: #ffffff;
+    font-family: var(--font-mono);
+    font-size: 0.64rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0.3rem 0.7rem;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    z-index: 2;
+}
+
+.fb-card-content-col {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    background-color: var(--bg-card);
+}
+
 .fb-card-header {
-    padding: 1.4rem 1.4rem 0.8rem;
+    padding: 1.4rem 1.6rem 0.8rem;
     display: flex;
     align-items: center;
     gap: 0.8rem;
@@ -3858,7 +3911,7 @@ body {
 
 .fb-author-name {
     font-family: var(--font-body);
-    font-size: 0.92rem;
+    font-size: 0.95rem;
     font-weight: 700;
     color: var(--text-color);
 }
@@ -3898,7 +3951,7 @@ body {
 }
 
 .fb-card-body {
-    padding: 0.6rem 1.4rem 1.2rem;
+    padding: 0.6rem 1.6rem 1.2rem;
     flex-grow: 1;
     display: flex;
     flex-direction: column;
@@ -3933,45 +3986,12 @@ body {
     font-weight: 600;
 }
 
-.fb-card-media {
-    position: relative;
-    width: 100%;
-    height: 280px;
-    background-color: #000000;
-    overflow: hidden;
-}
-
-.fb-card-media img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.fb-card:hover .fb-card-media img {
-    transform: scale(1.04);
-}
-
-.fb-media-tag {
-    position: absolute;
-    bottom: 10px;
-    left: 12px;
-    background: rgba(0, 0, 0, 0.65);
-    backdrop-filter: blur(4px);
-    color: #ffffff;
-    font-family: var(--font-mono);
-    font-size: 0.62rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    padding: 0.25rem 0.6rem;
-    border-radius: 4px;
-}
-
 .fb-card-stats {
-    padding: 0.8rem 1.4rem;
+    padding: 0.8rem 1.6rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    border-top: 1px solid var(--border-color);
     border-bottom: 1px solid var(--border-color);
     font-family: var(--font-mono);
     font-size: 0.72rem;
@@ -4039,14 +4059,8 @@ body {
     animation: likeBounce 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-@keyframes likeBounce {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.35) rotate(-10deg); }
-    100% { transform: scale(1) rotate(0deg); }
-}
-
 .fb-card-footer {
-    padding: 0.9rem 1.4rem;
+    padding: 0.85rem 1.6rem;
     background-color: var(--bg-color);
     text-align: center;
 }
@@ -4196,9 +4210,8 @@ body {
    Fluid Tab & Window Resizing Optimization (All Breakpoints)
    ========================================================================== */
 @media (max-width: 1100px) {
-    .fb-posts-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 1.8rem;
+    .fb-card {
+        grid-template-columns: 44% 56%;
     }
 
     .brand-gallery-container {
@@ -4238,6 +4251,19 @@ body {
     }
 }
 
+@media (max-width: 880px) {
+    .fb-card {
+        grid-template-columns: 1fr;
+    }
+
+    .fb-card-media-col {
+        min-height: auto;
+        height: 280px;
+        border-right: none;
+        border-bottom: 1px solid var(--border-color);
+    }
+}
+
 @media (max-width: 768px) {
     .facebook-feed-section,
     .brand-gallery-section,
@@ -4246,12 +4272,11 @@ body {
     }
 
     .fb-posts-grid {
-        grid-template-columns: 1fr;
-        gap: 1.8rem;
+        gap: 2rem;
     }
 
-    .fb-card-media {
-        height: 230px;
+    .fb-card-media-col {
+        height: 240px;
     }
 
     .brand-gallery-container {

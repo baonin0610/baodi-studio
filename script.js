@@ -1219,6 +1219,13 @@ function initDelegationGalleryCarousel() {
     const prevBtn = document.getElementById('delegation-prev-btn');
     const nextBtn = document.getElementById('delegation-next-btn');
 
+    // Separate Info Panel Elements (outside and below image)
+    const tagEl = document.getElementById('delegation-info-tag');
+    const headingEl = document.getElementById('delegation-info-heading');
+    const descEl = document.getElementById('delegation-info-desc');
+    const fbLinkEl = document.getElementById('delegation-fb-link');
+    const zoomBtn = document.getElementById('delegation-zoom-btn');
+
     if (slides.length === 0) return;
 
     let currentIndex = 0;
@@ -1259,6 +1266,27 @@ function initDelegationGalleryCarousel() {
 
         if (counterEl) {
             counterEl.textContent = `${String(currentIndex + 1).padStart(2, '0')} / ${String(totalSlides).padStart(2, '0')}`;
+        }
+
+        // Dynamically update the separate info panel below the image
+        const activeSlide = slides[currentIndex];
+        if (activeSlide) {
+            const title = activeSlide.getAttribute('data-title') || '';
+            const tag = activeSlide.getAttribute('data-tag') || '';
+            const desc = activeSlide.getAttribute('data-desc') || '';
+            const fbUrl = activeSlide.getAttribute('data-fb-url') || '#';
+
+            if (tagEl) tagEl.textContent = tag;
+            if (headingEl) headingEl.textContent = title;
+            if (descEl) descEl.textContent = desc;
+            if (fbLinkEl) {
+                if (fbUrl && fbUrl !== '#') {
+                    fbLinkEl.href = fbUrl;
+                    fbLinkEl.style.display = 'inline-flex';
+                } else {
+                    fbLinkEl.style.display = 'none';
+                }
+            }
         }
     }
 
@@ -1328,25 +1356,36 @@ function initDelegationGalleryCarousel() {
     container.addEventListener('mouseenter', stopAutoPlay);
     container.addEventListener('mouseleave', startAutoPlay);
 
-    // Lightbox triggers for each slide (button click & image click)
+    // Zoom Button in Info Panel triggers Fullscreen Lightbox
+    if (zoomBtn) {
+        zoomBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const activeSlide = slides[currentIndex];
+            if (!activeSlide) return;
+            const img = activeSlide.querySelector('img');
+            const title = activeSlide.getAttribute('data-title');
+            const desc = activeSlide.getAttribute('data-desc');
+            const fbUrl = activeSlide.getAttribute('data-fb-url');
+            if (window.openImageLightbox && img) {
+                window.openImageLightbox(img.src, title, desc, fbUrl);
+            }
+        });
+    }
+
+    // Clicking directly on the clean photo also opens Fullscreen Lightbox
     slides.forEach(slide => {
-        const lbBtn = slide.querySelector('.slide-lightbox-btn');
         const img = slide.querySelector('img');
         const title = slide.getAttribute('data-title');
         const desc = slide.getAttribute('data-desc');
         const fbUrl = slide.getAttribute('data-fb-url');
 
-        function triggerLightbox(e) {
-            e.stopPropagation();
-            if (window.openImageLightbox && img) {
-                window.openImageLightbox(img.src, title, desc, fbUrl);
-            }
-        }
-
-        if (lbBtn) lbBtn.addEventListener('click', triggerLightbox);
         if (img) {
-            img.style.cursor = 'pointer';
-            img.addEventListener('click', triggerLightbox);
+            img.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (window.openImageLightbox) {
+                    window.openImageLightbox(img.src, title, desc, fbUrl);
+                }
+            });
         }
     });
 

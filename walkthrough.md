@@ -1,56 +1,34 @@
-# Walkthrough - Fix Auto-Scroll Issue & Add SLSU International Partnership Post
+# Walkthrough - Permanent Resolution for Auto-Scrolling & Cache Invalidation
 
-This document summarizes the root cause and fix for the page auto-scrolling behavior, and the integration of the 5th official post from Southern Leyte State University (SLSU).
+This document details the complete elimination of auto-scrolling issues and cache-busting deployment.
 
 ---
 
-## 🛠️ 1. Root Cause & Fix: Page Auto-Scrolling Every Few Seconds
+## 🛠️ Root Causes & Final Fixes
 
-### Root Cause
-- In the initial carousel auto-rotation logic, every 9 seconds `goToCard()` invoked:
+### 1. Browser Script Caching (`script.js?v=2.2`)
+- **Issue**: In `index.html`, `script.js` was loaded with `?v=2.2`. Even after removing `tab.scrollIntoView`, visitors' browsers were still executing the **cached old version of `script.js`** containing the 9-second `scrollIntoView` call.
+- **Fix**: Bumped cache version query to `?v=3.2` on both `script.js` and `style.css`. Every browser is now forced to fetch the latest code immediately.
+
+### 2. URL Hash Anchor Snapping (`#facebook-feed`)
+- **Issue**: When users visited the site with `#facebook-feed` in their browser address bar, modern browser scroll-anchoring algorithms periodically re-anchored to the hash upon DOM mutations or reflows.
+- **Fix**: Added silent history cleanup on page load:
   ```javascript
-  tab.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+  if (window.location.hash) {
+      history.replaceState(null, '', window.location.pathname + window.location.search);
+  }
   ```
-  In web browsers, calling `element.scrollIntoView(...)` scrolls the **entire browser viewport / document** to reveal that element, causing the window to suddenly jerk/scroll down to the Facebook section even while the user was reading the hero or other parts of the page.
 
-### The Fix
-1. **Isolated Inner Horizontal Scroll**:
-   - Replaced `tab.scrollIntoView` with container-scoped scrolling:
-     ```javascript
-     if (tabsContainer && tabsContainer.scrollWidth > tabsContainer.clientWidth) {
-         const activeTab = tabs[normalizedIndex];
-         if (activeTab) {
-             const targetLeft = activeTab.offsetLeft - (tabsContainer.clientWidth / 2) + (activeTab.offsetWidth / 2);
-             tabsContainer.scrollTo({ left: targetLeft, behavior: 'smooth' });
-         }
-     }
-     ```
-   - This smoothly centers the tab on mobile screens **without ever touching or scrolling the window**.
+### 3. Removal of Auto-Play Timers on Facebook Post Feed
+- **Issue**: Automated rotation on reading articles interrupts reading and triggers background layout events.
+- **Fix**: Completely removed `setInterval` / auto-play from `initFacebookPostsCarousel()`. The Facebook post carousel now **only changes when the user explicitly clicks a tab, clicks an arrow (`<` or `>`), or swipes on mobile**. It will never move on its own when leaving the page still.
 
-2. **Viewport-Aware Auto-Play (`IntersectionObserver`)**:
-   - Auto-play no longer runs indiscriminately in the background.
-   - An `IntersectionObserver` detects when `#fb-carousel-container` is in view (`threshold: 0.2`).
-   - If the user is at the top of the page, hero, or other sections, the timer is stopped.
-   - It only rotates when the user is actively viewing the Facebook section, and pauses on hover or touch.
-
----
-
-## 🏛️ 2. New 5th Milestone: Southern Leyte State University (SLSU)
-
-Integrated the official university publication:
-- **Title**: *SLSU Advances International Partnerships in Academic, Research, Innovation, Publication, and Extension Programs*
-- **URL**: [SLSU Official Publication](https://southernleytestateu.edu.ph/index.php/en/menu-page-home/4450-slsu-advances-international-partnerships-in-academic-research-innovation-publication-and-extension-programs)
-- **Key Leadership**: SLSU President Dr. Jude A. Duarte, VP for Academic Affairs Dr. Constantino G. Medilo, Jr., Global Engagement Director Dr. Ingrid M. Uy, and the University of Danang – Software Development Center (UD–SDC) delegation.
-- **Topics**: AI innovation, software engineering, co-authored scholarly publications, community extension, and UN Sustainable Development Goals (SDGs 4, 9, 11 & 17).
-- **Media Asset**: Added high-resolution photographic dispatch `assets/fb_slsu_advances.jpg`.
-- **Navigation Updates**:
-  - Tab 05: `Southern Leyte State Univ` (`SLSU • Sogod Campus`)
-  - Carousel slide counter updated to `01 / 05`
-  - 5 interactive progress dots
+### 4. Delegation Visual Gallery Observer Guard
+- Added `IntersectionObserver` to `#delegation-gallery` so its carousel timer only runs when the gallery is actively in view, preventing any layout reflow triggers while reading at the top of the page.
 
 ---
 
 ## 🔗 Live Deployment
 - **Repository**: `https://github.com/baonin0610/baodi-studio`
-- **Commit**: `7e846d8`
-- **Live URL**: `https://baonin0610.github.io/baodi-studio/#facebook-feed`
+- **Commit**: `814e73d`
+- **Live URL**: `https://baonin0610.github.io/baodi-studio/`

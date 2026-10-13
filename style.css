@@ -81,6 +81,14 @@ body {
     }
 }
 
+/* Smooth Scroll Margin for Sticky Header Navigation */
+#hero-section,
+#about-developer,
+#delegation-gallery,
+#facebook-feed {
+    scroll-margin-top: 85px;
+}
+
 /* Header & Navigation */
 .site-header {
     position: fixed;
@@ -2561,7 +2569,7 @@ body {
     
     .mobile-nav-item:hover,
     .mobile-nav-item.active {
-        color: var(--text-color);
+        color: var(--accent-color);
     }
     
     .mobile-nav-item.active svg {

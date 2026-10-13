@@ -436,73 +436,159 @@ function initHeroCardTilt() {
 }
 
 /**
- * 10. Mobile Bottom Navigation & Scroll Spy Indicator
- * Handles smooth clicks and dynamically highlights the active navigation tab as screen scrolls.
+ * 10. Comprehensive Navbar & Mobile Bottom Nav ScrollSpy
+ * Accurately tracks viewport position and highlights active nav link across desktop & mobile.
  */
 function initMobileBottomNav() {
+    const desktopNavLinks = document.querySelectorAll('.site-header .nav-links .nav-link[href^="#"]');
     const bottomNav = document.querySelector('.mobile-bottom-nav');
-    if (!bottomNav) return;
+    const mobileNavItems = bottomNav ? bottomNav.querySelectorAll('.mobile-nav-item[href^="#"], .mobile-nav-item[data-target]') : [];
+    const drawerLinks = document.querySelectorAll('.mobile-nav-drawer .drawer-link[href^="#"]');
+    const logoLink = document.querySelector('.site-header .logo');
 
-    const navItems = bottomNav.querySelectorAll('.mobile-nav-item');
-    const sections = {
-        'hero-section': document.getElementById('hero-section'),
-        'delegation-gallery': document.getElementById('delegation-gallery'),
-        'facebook-feed': document.getElementById('facebook-feed'),
-        'about-developer': document.getElementById('about-developer')
-    };
+    const sections = [
+        { id: 'about-developer', altId: 'hero-section', el: document.getElementById('hero-section') || document.getElementById('about-developer') },
+        { id: 'delegation-gallery', altId: 'delegation-gallery', el: document.getElementById('delegation-gallery') },
+        { id: 'facebook-feed', altId: 'facebook-feed', el: document.getElementById('facebook-feed') }
+    ].filter(s => s.el);
 
-    // Smooth scroll offset adjustments
-    navItems.forEach(item => {
-        item.addEventListener('click', (e) => {
-            e.preventDefault();
-            const targetId = item.getAttribute('data-target');
-            const targetEl = document.getElementById(targetId);
+    if (sections.length === 0) return;
 
-            if (targetEl) {
-                const headerOffset = 60;
-                const elementPosition = targetEl.getBoundingClientRect().top;
-                const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+    // Smooth scroll navigation click handler
+    function scrollToSection(targetId) {
+        let targetEl = document.getElementById(targetId);
+        if (targetId === 'about-developer' || targetId === 'hero-section') {
+            targetEl = document.getElementById('hero-section') || document.getElementById('about-developer');
+        }
+        if (!targetEl) return;
 
-                window.scrollTo({
-                    top: offsetPosition,
-                    behavior: 'smooth'
-                });
+        const headerOffset = 75;
+        const elementPosition = targetEl.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
 
-                // Update active tab class immediately
-                navItems.forEach(nav => nav.classList.remove('active'));
-                item.classList.add('active');
+        window.scrollTo({
+            top: Math.max(0, offsetPosition),
+            behavior: 'smooth'
+        });
+
+        // Close mobile drawer if open
+        const drawer = document.getElementById('mobile-nav-drawer');
+        const overlay = document.getElementById('mobile-drawer-overlay');
+        if (drawer?.classList.contains('active')) {
+            drawer.classList.remove('active');
+            overlay?.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+    }
+
+    // Attach click to desktop internal links & CTA button
+    const allHeaderNavLinks = document.querySelectorAll('.site-header .nav-links .nav-link[href^="#"], .site-header .launch-nav-btn[href^="#"]');
+    allHeaderNavLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            const href = link.getAttribute('href');
+            if (href && href.startsWith('#')) {
+                e.preventDefault();
+                scrollToSection(href.replace('#', ''));
             }
         });
     });
 
-    // Scroll Spy active indicator listener
-    window.addEventListener('scroll', () => {
-        // Skip scroll spy on large viewports where bottom-nav is hidden
-        if (window.innerWidth > 768) return;
+    // Attach click to mobile bottom nav links
+    mobileNavItems.forEach(item => {
+        item.addEventListener('click', (e) => {
+            const targetId = item.getAttribute('data-target') || (item.getAttribute('href') || '').replace('#', '');
+            if (targetId && !targetId.includes('.html')) {
+                e.preventDefault();
+                scrollToSection(targetId);
+            }
+        });
+    });
 
-        let currentSectionId = 'hero-section';
-        const scrollPosition = window.scrollY + 200; // Offset for trigger bounds
+    // Attach click to mobile drawer links
+    drawerLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            const href = link.getAttribute('href');
+            if (href && href.startsWith('#')) {
+                e.preventDefault();
+                scrollToSection(href.replace('#', ''));
+            }
+        });
+    });
 
-        for (const [id, element] of Object.entries(sections)) {
-            if (element) {
-                const top = element.offsetTop;
-                const height = element.offsetHeight;
+    // Also attach to header logo to return to top smoothly
+    if (logoLink) {
+        logoLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    }
 
-                if (scrollPosition >= top && scrollPosition < top + height) {
-                    currentSectionId = id;
+    // ScrollSpy: Calculate which section currently commands the viewport
+    function updateScrollSpy() {
+        const headerOffset = 90;
+        let activeId = 'about-developer';
+
+        // Check if user has scrolled near the bottom of the page
+        const isNearBottom = (window.innerHeight + window.pageYOffset) >= (document.documentElement.scrollHeight - 80);
+
+        if (isNearBottom) {
+            activeId = sections[sections.length - 1].id;
+        } else {
+            // Check from bottom-most section upward to find the section entering the viewport
+            const triggerOffset = headerOffset + 80;
+            for (let i = sections.length - 1; i >= 0; i--) {
+                const section = sections[i];
+                const rect = section.el.getBoundingClientRect();
+                if (rect.top <= triggerOffset) {
+                    activeId = section.id;
+                    break;
                 }
             }
         }
 
-        // Highlight matching tab element
-        navItems.forEach(item => {
-            if (item.getAttribute('data-target') === currentSectionId) {
-                item.classList.add('active');
-            } else {
-                item.classList.remove('active');
-            }
+        // 1. Update Desktop Header Links
+        desktopNavLinks.forEach(link => {
+            const href = link.getAttribute('href');
+            if (!href || !href.startsWith('#')) return;
+            const target = href.replace('#', '');
+            const isMatch = (target === activeId) ||
+                            (activeId === 'about-developer' && (target === 'hero-section' || target === 'about-developer'));
+            link.classList.toggle('active', isMatch);
         });
-    });
+
+        // 2. Update Mobile Bottom Nav Links
+        mobileNavItems.forEach(item => {
+            const target = item.getAttribute('data-target') || (item.getAttribute('href') || '').replace('#', '');
+            const isMatch = (target === activeId) ||
+                            (activeId === 'about-developer' && (target === 'hero-section' || target === 'about-developer'));
+            item.classList.toggle('active', isMatch);
+        });
+
+        // 3. Update Mobile Drawer Links
+        drawerLinks.forEach(link => {
+            const href = link.getAttribute('href');
+            if (!href || !href.startsWith('#')) return;
+            const target = href.replace('#', '');
+            const isMatch = (target === activeId) ||
+                            (activeId === 'about-developer' && (target === 'hero-section' || target === 'about-developer'));
+            link.classList.toggle('active', isMatch);
+        });
+    }
+
+    // Throttled scroll listener using requestAnimationFrame for 60fps performance
+    let isScrollTicking = false;
+    window.addEventListener('scroll', () => {
+        if (!isScrollTicking) {
+            window.requestAnimationFrame(() => {
+                updateScrollSpy();
+                isScrollTicking = false;
+            });
+            isScrollTicking = true;
+        }
+    }, { passive: true });
+
+    // Run on initial page load
+    updateScrollSpy();
 }
 
 /**

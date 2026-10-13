@@ -4,6 +4,10 @@
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
+    // Prevent browser native scroll-anchoring jumps by clearing the hash
+    if (window.location.hash) {
+        history.replaceState(null, '', window.location.pathname + window.location.search);
+    }
 
     initCustomCursor();
     initShowcaseFilters();
@@ -1197,9 +1201,22 @@ function initDelegationGalleryCarousel() {
         }
     }, { passive: true });
 
-    // Initialize first slide and start auto-play
+    // Initialize first slide (only auto-play when user is viewing gallery)
     updateSlide(0);
-    startAutoPlay();
+    if ('IntersectionObserver' in window) {
+        const galleryObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    startAutoPlay();
+                } else {
+                    stopAutoPlay();
+                }
+            });
+        }, { threshold: 0.2 });
+        galleryObserver.observe(container);
+    } else {
+        startAutoPlay();
+    }
 }
 
 /**
@@ -1222,9 +1239,6 @@ function initFacebookPostsCarousel() {
 
     let currentIndex = 0;
     let isTransitioning = false;
-    let autoPlayTimer = null;
-    let isCarouselVisible = false;
-    const AUTO_PLAY_INTERVAL = 9000;
 
     function goToCard(index, direction) {
         if (isTransitioning) return;
@@ -1282,35 +1296,13 @@ function initFacebookPostsCarousel() {
 
         setTimeout(() => {
             isTransitioning = false;
-        }, 420);
-    }
-
-    function startAutoPlay() {
-        stopAutoPlay();
-        // Only run auto-play when the carousel is actually in the user's viewport
-        if (!isCarouselVisible) return;
-        autoPlayTimer = setInterval(() => {
-            goToCard(currentIndex + 1, 'next');
-        }, AUTO_PLAY_INTERVAL);
-    }
-
-    function stopAutoPlay() {
-        if (autoPlayTimer) {
-            clearInterval(autoPlayTimer);
-            autoPlayTimer = null;
-        }
-    }
-
-    function resetAutoPlay() {
-        stopAutoPlay();
-        startAutoPlay();
+        }, 380);
     }
 
     // Prev / Next Arrows
     if (prevBtn) {
         prevBtn.addEventListener('click', (e) => {
             e.preventDefault();
-            resetAutoPlay();
             goToCard(currentIndex - 1, 'prev');
         });
     }
@@ -1318,7 +1310,6 @@ function initFacebookPostsCarousel() {
     if (nextBtn) {
         nextBtn.addEventListener('click', (e) => {
             e.preventDefault();
-            resetAutoPlay();
             goToCard(currentIndex + 1, 'next');
         });
     }
@@ -1328,7 +1319,6 @@ function initFacebookPostsCarousel() {
         tab.addEventListener('click', (e) => {
             e.preventDefault();
             const targetIdx = parseInt(tab.getAttribute('data-index') || '0', 10);
-            resetAutoPlay();
             goToCard(targetIdx, targetIdx >= currentIndex ? 'next' : 'prev');
         });
     });
@@ -1338,7 +1328,6 @@ function initFacebookPostsCarousel() {
         dot.addEventListener('click', (e) => {
             e.preventDefault();
             const targetIdx = parseInt(dot.getAttribute('data-index') || '0', 10);
-            resetAutoPlay();
             goToCard(targetIdx, targetIdx >= currentIndex ? 'next' : 'prev');
         });
     });
@@ -1359,7 +1348,6 @@ function initFacebookPostsCarousel() {
                 const diffX = e.changedTouches[0].clientX - touchStartX;
                 const diffY = e.changedTouches[0].clientY - touchStartY;
                 if (Math.abs(diffX) > 40 && Math.abs(diffX) > Math.abs(diffY)) {
-                    resetAutoPlay();
                     if (diffX < 0) {
                         goToCard(currentIndex + 1, 'next');
                     } else {
@@ -1370,26 +1358,17 @@ function initFacebookPostsCarousel() {
         }, { passive: true });
     }
 
-    // Pause on hover
-    container.addEventListener('mouseenter', stopAutoPlay);
-    container.addEventListener('mouseleave', () => {
-        if (isCarouselVisible) startAutoPlay();
-    });
-    container.addEventListener('touchstart', stopAutoPlay, { passive: true });
-
     // Keyboard Arrow Keys
     container.addEventListener('keydown', (e) => {
         if (e.key === 'ArrowLeft') {
-            resetAutoPlay();
             goToCard(currentIndex - 1, 'prev');
         } else if (e.key === 'ArrowRight') {
-            resetAutoPlay();
             goToCard(currentIndex + 1, 'next');
         }
     });
 
-    // Global jump function for links/spotlight buttons
-    window.jumpToFacebookCard = function(target, shouldScroll = false) {
+    // Global jump function for links/spotlight buttons (DO NOT scroll window)
+    window.jumpToFacebookCard = function(target) {
         let targetIndex = -1;
         if (typeof target === 'number') {
             targetIndex = target;
@@ -1402,32 +1381,9 @@ function initFacebookPostsCarousel() {
             });
         }
         if (targetIndex >= 0 && targetIndex < cards.length) {
-            resetAutoPlay();
             goToCard(targetIndex, targetIndex >= currentIndex ? 'next' : 'prev');
-            if (shouldScroll) {
-                const fbFeedSection = document.getElementById('facebook-feed');
-                if (fbFeedSection) {
-                    fbFeedSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-            }
         }
     };
-
-    // IntersectionObserver: Only activate auto-play when user has scrolled to the carousel
-    if ('IntersectionObserver' in window) {
-        const carouselObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                isCarouselVisible = entry.isIntersecting;
-                if (isCarouselVisible) {
-                    startAutoPlay();
-                } else {
-                    stopAutoPlay();
-                }
-            });
-        }, { threshold: 0.2 });
-
-        carouselObserver.observe(container);
-    }
 }
 
 

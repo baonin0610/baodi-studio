@@ -1,40 +1,45 @@
-# Walkthrough - 3D Virtual Exhibition Portfolio Details Overlay Subpages (Template 11)
+# Walkthrough - Interactive Facebook Post Carousel with University Tabs
 
-This document summarizes the upgrades made to expand **Template 11 (3D Virtual Exhibition Room)** with a dynamic subpage navigation slider inside the details overlay, creating a multi-page presentation experience.
-
----
-
-## 🛠️ Upgrades Implemented
-
-### 1. Dynamic Subpage Overlay Structure
-- Replaced the previous separate static layout blocks in `index.html` with a unified dynamic layout under `#overlay-slides-container`.
-- Integrated a subpage navigation bar (`.overlay-page-nav`) containing **PREV** and **NEXT** buttons alongside a page count indicator (`PAGE 0X / 0Y`).
-
-### 2. Multi-page Specifications Data Store
-- Declared a multi-page dataset (`cardDetailsData`) in `script.js` mapping all 8 cards to a **3-page presentation sequence**:
-  - **Card 1: Owner Bio Profile**:
-    - Page 1: Biography & Core Experience Summary
-    - Page 2: National Economics University (NEU) Graduation Logs
-    - Page 3: Marketing KPIs, Outbound Funnel values & Core Values
-  - **Card 2: Career Experience Logs**:
-    - Page 1: ABC Corporation SEO & Lead Generation Manager details
-    - Page 2: DEF Digital Agency Content Marketing Specialist logs
-    - Page 3: Freelance Consultant foundations
-  - **Cards 3 to 8 (Projects 1 to 6)**:
-    - Page 1: Project Overview & Main category specs
-    - Page 2: Keyword gap strategy & Planning executions
-    - Page 3: Conversion results, delivered assets & CTR metrics
-
-### 3. Transition Animations & Decoders
-- Coded CSS slide-ups and opacity transitions using the `.slide-fade-out` class.
-- When shifting pages inside the overlay, the layout fades and trundles down, updates specifications and labels, triggers the holographic scrambling text decoder (`scrambleText`) to reveal the new subpage title, and fades back in cleanly.
-- Updated the right panoramic visual image frame to transition images smoothly alongside the text content.
+This document details the transformation of the vertical Facebook Feed into an **Interactive Horizontal Slider / Carousel** featuring **University Tabs**, directional arrow navigation, live slide counter, touch gestures, and auto-rotation.
 
 ---
 
-## 🧪 Testing and Verification
+## 🚀 Key Improvements Implemented
 
-- Opened all 8 cards in the 3D room grid to check that the details overlay correctly initiates on Page 01.
-- Toggled the next and prev subpage navigation buttons, ensuring they correctly disable when reaching bounds (first/last page).
-- Verified that images and dynamic action CTA button text (e.g. Email connection, phone dialer, live preview links) adjust accurately per subpage.
-- Pushed changes successfully to production.
+### 1. Interactive University Tab Navigation Bar (`.fb-carousel-nav`)
+- Created a top navigation bar directly above the Facebook post viewport:
+  - **Tab 01**: `Western Leyte College` (WLC • Ormoc City)
+  - **Tab 02**: `BiPSU University` (STCS • Naval, Biliran)
+  - **Tab 03**: `Leyte Normal University` (DIGITS • Tacloban)
+  - **Tab 04**: `Visayas State University` (VSU • Baybay City)
+- Features:
+  - Active pill highlight with glow effect and number badge (`01`, `02`, `03`, `04`).
+  - Smooth auto-scroll to keep active tab centered during touch navigation on mobile.
+  - Live slide counter (`01 / 04`).
+  - Next / Previous circular arrow buttons with hover and active states.
+
+### 2. Single-Post Carousel Viewport (`#fb-cards-viewport`)
+- Eliminated vertical scrolling: Displays **1 prominent card at a time** instead of 4 vertically stacked cards.
+- Retained the complete Facebook post layout:
+  - High-resolution campus photography on the left with location pill tags.
+  - Author info, verified badge, dispatch timestamp, formatted post content, hashtag pills, interactive Like/Reaction counters, and verified Facebook link buttons on the right.
+- Smooth CSS keyframe transitions (`fbSlideInNext` & `fbSlideInPrev`) delivering directional slide animation.
+
+### 3. Gesture Controls & Smart Playback (`script.js`)
+- **Touch Swipe**: Full horizontal swipe support on touch screens (smart threshold detecting horizontal gestures).
+- **Auto-Play**: Automatically advances every 9 seconds, with intelligent pause-on-hover and pause-on-touch.
+- **Keyboard Navigation**: Left/Right arrow keys allow immediate slide switching.
+- **Spotlight Integration**: Clicking photo spotlight thumbnails or external post targets smoothly jumps the carousel to that specific university card (`window.jumpToFacebookCard`).
+
+---
+
+## 📱 Mobile & Responsive Experience
+- Responsive breakpoints handle horizontal tab scrolling on screens under 880px and 768px.
+- Compact layout on mobile devices ensures zero page jumping or awkward layout reflow.
+
+---
+
+## 🔗 Live Deployment
+- **Repository**: `https://github.com/baonin0610/baodi-studio`
+- **Commit**: `abec2fe`
+- **Live URL**: `https://baonin0610.github.io/baodi-studio/#facebook-feed`

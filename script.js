@@ -1216,12 +1216,14 @@ function initFacebookPostsCarousel() {
     const counterCurrent = document.getElementById('fb-counter-current');
     const dots = container.querySelectorAll('.fb-dot');
     const viewport = document.getElementById('fb-cards-viewport');
+    const tabsContainer = document.getElementById('fb-uni-tabs');
 
     if (!cards.length) return;
 
     let currentIndex = 0;
     let isTransitioning = false;
     let autoPlayTimer = null;
+    let isCarouselVisible = false;
     const AUTO_PLAY_INTERVAL = 9000;
 
     function goToCard(index, direction) {
@@ -1250,15 +1252,21 @@ function initFacebookPostsCarousel() {
             newCard.classList.add('active');
         }
 
-        // Update university tabs
+        // Update university tabs state
         tabs.forEach((tab, i) => {
             const isActive = i === normalizedIndex;
             tab.classList.toggle('active', isActive);
             tab.setAttribute('aria-selected', isActive ? 'true' : 'false');
-            if (isActive) {
-                tab.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-            }
         });
+
+        // Smooth horizontal scrolling within tab list ONLY (never scrolls parent window)
+        if (tabsContainer && tabsContainer.scrollWidth > tabsContainer.clientWidth) {
+            const activeTab = tabs[normalizedIndex];
+            if (activeTab) {
+                const targetLeft = activeTab.offsetLeft - (tabsContainer.clientWidth / 2) + (activeTab.offsetWidth / 2);
+                tabsContainer.scrollTo({ left: targetLeft, behavior: 'smooth' });
+            }
+        }
 
         // Update slide counter
         if (counterCurrent) {
@@ -1279,6 +1287,8 @@ function initFacebookPostsCarousel() {
 
     function startAutoPlay() {
         stopAutoPlay();
+        // Only run auto-play when the carousel is actually in the user's viewport
+        if (!isCarouselVisible) return;
         autoPlayTimer = setInterval(() => {
             goToCard(currentIndex + 1, 'next');
         }, AUTO_PLAY_INTERVAL);
@@ -1362,7 +1372,9 @@ function initFacebookPostsCarousel() {
 
     // Pause on hover
     container.addEventListener('mouseenter', stopAutoPlay);
-    container.addEventListener('mouseleave', startAutoPlay);
+    container.addEventListener('mouseleave', () => {
+        if (isCarouselVisible) startAutoPlay();
+    });
     container.addEventListener('touchstart', stopAutoPlay, { passive: true });
 
     // Keyboard Arrow Keys
@@ -1377,7 +1389,7 @@ function initFacebookPostsCarousel() {
     });
 
     // Global jump function for links/spotlight buttons
-    window.jumpToFacebookCard = function(target) {
+    window.jumpToFacebookCard = function(target, shouldScroll = false) {
         let targetIndex = -1;
         if (typeof target === 'number') {
             targetIndex = target;
@@ -1392,15 +1404,30 @@ function initFacebookPostsCarousel() {
         if (targetIndex >= 0 && targetIndex < cards.length) {
             resetAutoPlay();
             goToCard(targetIndex, targetIndex >= currentIndex ? 'next' : 'prev');
-            const fbFeedSection = document.getElementById('facebook-feed');
-            if (fbFeedSection) {
-                fbFeedSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            if (shouldScroll) {
+                const fbFeedSection = document.getElementById('facebook-feed');
+                if (fbFeedSection) {
+                    fbFeedSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
             }
         }
     };
 
-    // Initialize Auto-Play
-    startAutoPlay();
+    // IntersectionObserver: Only activate auto-play when user has scrolled to the carousel
+    if ('IntersectionObserver' in window) {
+        const carouselObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                isCarouselVisible = entry.isIntersecting;
+                if (isCarouselVisible) {
+                    startAutoPlay();
+                } else {
+                    stopAutoPlay();
+                }
+            });
+        }, { threshold: 0.2 });
+
+        carouselObserver.observe(container);
+    }
 }
 
 

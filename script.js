@@ -7,7 +7,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     initCustomCursor();
     initShowcaseFilters();
-    initForumEngine();
     initTemplateLinkCopier();
     initScrollReveal();
     initLivePreviewModal();
@@ -16,7 +15,6 @@ document.addEventListener('DOMContentLoaded', () => {
     initMobileBottomNav();
     initMobileSwipeToast();
     initMobileTouchSwiper();
-    initHomepageFeaturedStories();
     initMobileNavDrawer();
     initFacebookFeedInteractions();
     initFacebookPhotoSpotlightAndLightbox();
@@ -109,143 +107,6 @@ function initShowcaseFilters() {
 }
 
 /**
- * 3. Client Forum System
- * Manages loading preloaded comments, reading from localStorage, and writing new ones.
- */
-function initForumEngine() {
-    const form = document.getElementById('forum-form');
-    const commentList = document.getElementById('comment-list');
-    const countBadge = document.getElementById('comment-count');
-    
-    // Default preloaded comments data structure
-    const defaultComments = [
-        {
-            name: "Trung Nguyen",
-            tag: "Client Reviewer",
-            date: "Today, 10:20 AM",
-            ref: "Linh Nguyen — Editorial Photographer (Template 1)",
-            message: "Photography template #1 is absolutely stunning and elegant! The Alabaster tone combined with natural imagery looks extremely premium, capturing real artistry rather than industrial feel. The aperture reveal and View hover work beautifully."
-        },
-        {
-            name: "Maria Anders",
-            tag: "Creative Director",
-            date: "Yesterday, 4:15 PM",
-            ref: "Alex Nguyen — Creative Developer (Template 2)",
-            message: "Excited for the Creative Developer theme! The combination of dark backgrounds with neon lines and dynamic particle fields is exactly what we need to show our technical and creative side. Please add a dark-light theme toggle for it if possible."
-        },
-        {
-            name: "Khanh Do",
-            tag: "Interior Designer",
-            date: "Yesterday, 11:05 AM",
-            ref: "Linh Nguyen — Editorial Photographer (Template 1)",
-            message: "Can we customize template #1 into an interior design showcase? I feel its asymmetrical grid layout and 3:4 image crops fit space design perfectly."
-        }
-    ];
-
-    // Load comments from localStorage or load default ones
-    let loadedComments = JSON.parse(localStorage.getItem('baodi_comments'));
-    if (!loadedComments) {
-        loadedComments = defaultComments;
-        localStorage.setItem('baodi_comments', JSON.stringify(loadedComments));
-    }
-
-    // Render list of comments
-    function renderComments() {
-        commentList.innerHTML = '';
-        loadedComments.forEach(comment => {
-            const card = createCommentCard(comment);
-            commentList.appendChild(card);
-        });
-        countBadge.textContent = loadedComments.length;
-    }
-
-    // Generate Initials Avatar
-    function getInitials(name) {
-        return name.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2);
-    }
-
-    // Create Comment HTML element
-    function createCommentCard(comment) {
-        const card = document.createElement('div');
-        card.classList.add('comment-card');
-        
-        const initials = getInitials(comment.name);
-        
-        card.innerHTML = `
-            <div class="comment-header">
-                <div class="comment-author">
-                    <div class="author-avatar">${initials}</div>
-                    <div>
-                        <h4 class="author-name">${comment.name}</h4>
-                        <span class="author-tag">${comment.tag || 'Client Feedback'}</span>
-                    </div>
-                </div>
-                <span class="comment-date">${comment.date}</span>
-            </div>
-            <div class="comment-body">
-                <span class="comment-ref">Discussing: ${comment.ref}</span>
-                <p>${comment.message}</p>
-            </div>
-        `;
-        return card;
-    }
-
-    // Handle Form Submission
-    form.addEventListener('submit', (e) => {
-        e.preventDefault();
-
-        const nameInput = document.getElementById('client-name');
-        const emailInput = document.getElementById('client-email');
-        const selectTemplate = document.getElementById('template-select');
-        const messageInput = document.getElementById('client-message');
-
-        const selectedOptionText = selectTemplate.options[selectTemplate.selectedIndex].text;
-        
-        const now = new Date();
-        const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-        const dateString = `Today, ${timeString}`;
-
-        const newComment = {
-            name: nameInput.value,
-            tag: "Client Contributor",
-            date: dateString,
-            ref: selectedOptionText,
-            message: messageInput.value
-        };
-
-        // Prepend comment to data
-        loadedComments.unshift(newComment);
-        localStorage.setItem('baodi_comments', JSON.stringify(loadedComments));
-
-        // Create and animate new card insertion
-        const newCard = createCommentCard(newComment);
-        commentList.insertBefore(newCard, commentList.firstChild);
-        
-        // Update count badge
-        countBadge.textContent = loadedComments.length;
-
-        // Reset form inputs
-        nameInput.value = '';
-        emailInput.value = '';
-        messageInput.value = '';
-
-        // Add subtle indicator on cursor for success feedback
-        const cursor = document.getElementById('custom-cursor');
-        if (cursor) {
-            cursor.style.backgroundColor = 'var(--accent-color)';
-            cursor.style.transform = 'translate(-50%, -50%) scale(3)';
-            setTimeout(() => {
-                cursor.style.backgroundColor = 'var(--text-color)';
-                cursor.style.transform = 'translate(-50%, -50%) scale(1)';
-            }, 1000);
-        }
-    });
-
-    // Render initially
-    renderComments();
-}
-
-/**
  * 4. Template Link Copier
  * Copies the absolute URL of the selected template to the clipboard.
  */
@@ -294,7 +155,7 @@ function initTemplateLinkCopier() {
  * Programmatically tracks elements and fades them up beautifully when scrolled into view.
  */
 function initScrollReveal() {
-    const targets = document.querySelectorAll('.showcase-card, .section-header, .about-section, .forum-section');
+    const targets = document.querySelectorAll('.showcase-card, .section-header, .about-section, .fb-card, .delegation-info-panel');
     
     // Add scroll reveal classes dynamically
     targets.forEach(el => {
@@ -580,8 +441,8 @@ function initMobileBottomNav() {
     const navItems = bottomNav.querySelectorAll('.mobile-nav-item');
     const sections = {
         'hero-section': document.getElementById('hero-section'),
-        'showcase': document.getElementById('showcase'),
-        'forum': document.getElementById('forum'),
+        'delegation-gallery': document.getElementById('delegation-gallery'),
+        'facebook-feed': document.getElementById('facebook-feed'),
         'about-developer': document.getElementById('about-developer')
     };
 
@@ -931,57 +792,6 @@ document.addEventListener('DOMContentLoaded', () => {
     initInstantLaunchPrefetch();
 });
 
-/**
- * 12. Load Featured Stories from posts.json dynamically onto Homepage
- */
-function initHomepageFeaturedStories() {
-    const container = document.getElementById('homepage-featured-stories');
-    if (!container) return;
-
-    fetch('posts.json?t=' + Date.now())
-        .then(res => res.json())
-        .then(posts => {
-            if (!Array.isArray(posts) || posts.length === 0) return;
-
-            // Pick up to 2-3 most recent posts
-            const recent = posts.slice(0, 3);
-            
-            // Build cards
-            const cardsHTML = recent.map(post => {
-                const cleanExcerpt = post.excerpt || (post.content ? post.content.replace(/<[^>]*>/g, '').substring(0, 160) + '...' : '');
-                return `
-                    <article class="story-card">
-                        <div class="story-meta">
-                            <span class="story-category">${post.categoryLabel || post.category || 'Story'}</span>
-                            <span class="story-date">${post.date || 'Recent'}</span>
-                        </div>
-                        <h3 class="story-title">
-                            <a href="journal.html">${post.title}</a>
-                        </h3>
-                        <p class="story-excerpt">
-                            ${cleanExcerpt}
-                        </p>
-                        <div class="story-footer">
-                            <span class="story-readtime">${post.readTime || '3'} min read</span>
-                            <a href="journal.html" class="story-link">
-                                <span>Read Full Article</span>
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                                    <polyline points="12 5 19 12 12 19"></polyline>
-                                </svg>
-                            </a>
-                        </div>
-                    </article>
-                `;
-            }).join('');
-
-            container.innerHTML = cardsHTML;
-        })
-        .catch(err => {
-            // Keep pre-rendered fallback cards intact if offline
-            console.log('Homepage using static fallback articles:', err);
-        });
-}
 
 /**
  * 13. Mobile Navigation Drawer Toggle & Interactions

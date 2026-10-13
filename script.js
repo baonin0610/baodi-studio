@@ -19,6 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initFacebookFeedInteractions();
     initFacebookPhotoSpotlightAndLightbox();
     initDelegationGalleryCarousel();
+    initFacebookPostsCarousel();
 });
 
 /**
@@ -155,7 +156,7 @@ function initTemplateLinkCopier() {
  * Programmatically tracks elements and fades them up beautifully when scrolled into view.
  */
 function initScrollReveal() {
-    const targets = document.querySelectorAll('.showcase-card, .section-header, .about-section, .fb-card, .delegation-info-panel');
+    const targets = document.querySelectorAll('.showcase-card, .section-header, .about-section, .fb-carousel-container, .delegation-info-panel');
     
     // Add scroll reveal classes dynamically
     targets.forEach(el => {
@@ -953,6 +954,9 @@ function initFacebookPhotoSpotlightAndLightbox() {
             if (imgSrc) {
                 openLightbox(imgSrc, title, desc, fbUrl);
             }
+            if (targetId && typeof window.jumpToFacebookCard === 'function') {
+                window.jumpToFacebookCard(targetId);
+            }
         });
     });
 
@@ -1197,6 +1201,208 @@ function initDelegationGalleryCarousel() {
     updateSlide(0);
     startAutoPlay();
 }
+
+/**
+ * 17. Facebook Feed Posts Carousel with University Tabs
+ */
+function initFacebookPostsCarousel() {
+    const container = document.getElementById('fb-carousel-container');
+    if (!container) return;
+
+    const tabs = container.querySelectorAll('.fb-uni-tab');
+    const cards = container.querySelectorAll('.fb-cards-viewport .fb-card');
+    const prevBtn = document.getElementById('fb-prev-btn');
+    const nextBtn = document.getElementById('fb-next-btn');
+    const counterCurrent = document.getElementById('fb-counter-current');
+    const dots = container.querySelectorAll('.fb-dot');
+    const viewport = document.getElementById('fb-cards-viewport');
+
+    if (!cards.length) return;
+
+    let currentIndex = 0;
+    let isTransitioning = false;
+    let autoPlayTimer = null;
+    const AUTO_PLAY_INTERVAL = 9000;
+
+    function goToCard(index, direction) {
+        if (isTransitioning) return;
+        const total = cards.length;
+        const normalizedIndex = ((index % total) + total) % total;
+
+        if (normalizedIndex === currentIndex && cards[currentIndex]?.classList.contains('active')) return;
+
+        isTransitioning = true;
+        const actualDirection = direction || (normalizedIndex > currentIndex ? 'next' : 'prev');
+
+        // Current active card
+        const currentCard = cards[currentIndex];
+        if (currentCard) {
+            currentCard.classList.remove('active', 'slide-prev');
+        }
+
+        // New active card
+        const newCard = cards[normalizedIndex];
+        if (newCard) {
+            newCard.classList.remove('slide-prev');
+            if (actualDirection === 'prev') {
+                newCard.classList.add('slide-prev');
+            }
+            newCard.classList.add('active');
+        }
+
+        // Update university tabs
+        tabs.forEach((tab, i) => {
+            const isActive = i === normalizedIndex;
+            tab.classList.toggle('active', isActive);
+            tab.setAttribute('aria-selected', isActive ? 'true' : 'false');
+            if (isActive) {
+                tab.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+            }
+        });
+
+        // Update slide counter
+        if (counterCurrent) {
+            counterCurrent.textContent = String(normalizedIndex + 1).padStart(2, '0');
+        }
+
+        // Update dots
+        dots.forEach((dot, i) => {
+            dot.classList.toggle('active', i === normalizedIndex);
+        });
+
+        currentIndex = normalizedIndex;
+
+        setTimeout(() => {
+            isTransitioning = false;
+        }, 420);
+    }
+
+    function startAutoPlay() {
+        stopAutoPlay();
+        autoPlayTimer = setInterval(() => {
+            goToCard(currentIndex + 1, 'next');
+        }, AUTO_PLAY_INTERVAL);
+    }
+
+    function stopAutoPlay() {
+        if (autoPlayTimer) {
+            clearInterval(autoPlayTimer);
+            autoPlayTimer = null;
+        }
+    }
+
+    function resetAutoPlay() {
+        stopAutoPlay();
+        startAutoPlay();
+    }
+
+    // Prev / Next Arrows
+    if (prevBtn) {
+        prevBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            resetAutoPlay();
+            goToCard(currentIndex - 1, 'prev');
+        });
+    }
+
+    if (nextBtn) {
+        nextBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            resetAutoPlay();
+            goToCard(currentIndex + 1, 'next');
+        });
+    }
+
+    // Tabs Click
+    tabs.forEach((tab) => {
+        tab.addEventListener('click', (e) => {
+            e.preventDefault();
+            const targetIdx = parseInt(tab.getAttribute('data-index') || '0', 10);
+            resetAutoPlay();
+            goToCard(targetIdx, targetIdx >= currentIndex ? 'next' : 'prev');
+        });
+    });
+
+    // Indicator Dots Click
+    dots.forEach((dot) => {
+        dot.addEventListener('click', (e) => {
+            e.preventDefault();
+            const targetIdx = parseInt(dot.getAttribute('data-index') || '0', 10);
+            resetAutoPlay();
+            goToCard(targetIdx, targetIdx >= currentIndex ? 'next' : 'prev');
+        });
+    });
+
+    // Touch Swipe Navigation for Mobile/Tablet Screens
+    let touchStartX = 0;
+    let touchStartY = 0;
+    if (viewport) {
+        viewport.addEventListener('touchstart', (e) => {
+            if (e.touches.length === 1) {
+                touchStartX = e.touches[0].clientX;
+                touchStartY = e.touches[0].clientY;
+            }
+        }, { passive: true });
+
+        viewport.addEventListener('touchend', (e) => {
+            if (e.changedTouches.length === 1) {
+                const diffX = e.changedTouches[0].clientX - touchStartX;
+                const diffY = e.changedTouches[0].clientY - touchStartY;
+                if (Math.abs(diffX) > 40 && Math.abs(diffX) > Math.abs(diffY)) {
+                    resetAutoPlay();
+                    if (diffX < 0) {
+                        goToCard(currentIndex + 1, 'next');
+                    } else {
+                        goToCard(currentIndex - 1, 'prev');
+                    }
+                }
+            }
+        }, { passive: true });
+    }
+
+    // Pause on hover
+    container.addEventListener('mouseenter', stopAutoPlay);
+    container.addEventListener('mouseleave', startAutoPlay);
+    container.addEventListener('touchstart', stopAutoPlay, { passive: true });
+
+    // Keyboard Arrow Keys
+    container.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowLeft') {
+            resetAutoPlay();
+            goToCard(currentIndex - 1, 'prev');
+        } else if (e.key === 'ArrowRight') {
+            resetAutoPlay();
+            goToCard(currentIndex + 1, 'next');
+        }
+    });
+
+    // Global jump function for links/spotlight buttons
+    window.jumpToFacebookCard = function(target) {
+        let targetIndex = -1;
+        if (typeof target === 'number') {
+            targetIndex = target;
+        } else if (typeof target === 'string') {
+            const cleaned = target.replace('#', '');
+            cards.forEach((card, idx) => {
+                if (card.getAttribute('data-post-id') === cleaned || card.id === cleaned) {
+                    targetIndex = idx;
+                }
+            });
+        }
+        if (targetIndex >= 0 && targetIndex < cards.length) {
+            resetAutoPlay();
+            goToCard(targetIndex, targetIndex >= currentIndex ? 'next' : 'prev');
+            const fbFeedSection = document.getElementById('facebook-feed');
+            if (fbFeedSection) {
+                fbFeedSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+    };
+
+    // Initialize Auto-Play
+    startAutoPlay();
+}
+
 
 
 

@@ -402,10 +402,66 @@
                 </div>
             </div>
 
-            <!-- Facebook Posts Grid (4 Real Posts - Horizontal Split Cards) -->
-            <div class="fb-posts-grid">
-                <!-- Post 1: Western Leyte College -->
-                <article class="fb-card" data-post-id="fb-1">
+            <!-- Facebook Posts Interactive Carousel -->
+            <div class="fb-carousel-container" id="fb-carousel-container">
+                <!-- University Selection Tab Bar & Carousel Controls -->
+                <div class="fb-carousel-nav">
+                    <div class="fb-uni-tabs" id="fb-uni-tabs" role="tablist" aria-label="Select Facebook Post by University">
+                        <button type="button" class="fb-uni-tab active" data-index="0" role="tab" aria-selected="true" aria-controls="fb-post-0">
+                            <span class="fb-tab-num">01</span>
+                            <span class="fb-tab-text">
+                                <span class="fb-tab-title">Western Leyte College</span>
+                                <span class="fb-tab-sub">WLC • Ormoc City</span>
+                            </span>
+                        </button>
+                        <button type="button" class="fb-uni-tab" data-index="1" role="tab" aria-selected="false" aria-controls="fb-post-1">
+                            <span class="fb-tab-num">02</span>
+                            <span class="fb-tab-text">
+                                <span class="fb-tab-title">BiPSU University</span>
+                                <span class="fb-tab-sub">STCS • Naval, Biliran</span>
+                            </span>
+                        </button>
+                        <button type="button" class="fb-uni-tab" data-index="2" role="tab" aria-selected="false" aria-controls="fb-post-2">
+                            <span class="fb-tab-num">03</span>
+                            <span class="fb-tab-text">
+                                <span class="fb-tab-title">Leyte Normal University</span>
+                                <span class="fb-tab-sub">DIGITS • Tacloban</span>
+                            </span>
+                        </button>
+                        <button type="button" class="fb-uni-tab" data-index="3" role="tab" aria-selected="false" aria-controls="fb-post-3">
+                            <span class="fb-tab-num">04</span>
+                            <span class="fb-tab-text">
+                                <span class="fb-tab-title">Visayas State University</span>
+                                <span class="fb-tab-sub">VSU • Baybay City</span>
+                            </span>
+                        </button>
+                    </div>
+
+                    <div class="fb-carousel-actions">
+                        <div class="fb-slide-counter">
+                            <span class="current-slide" id="fb-counter-current">01</span>
+                            <span class="counter-divider">/</span>
+                            <span class="total-slides">04</span>
+                        </div>
+                        <div class="fb-carousel-arrows">
+                            <button type="button" class="fb-arrow-btn prev" id="fb-prev-btn" aria-label="Previous Facebook post">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                    <polyline points="15 18 9 12 15 6"></polyline>
+                                </svg>
+                            </button>
+                            <button type="button" class="fb-arrow-btn next" id="fb-next-btn" aria-label="Next Facebook post">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                    <polyline points="9 18 15 12 9 6"></polyline>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Carousel Viewport & Cards -->
+                <div class="fb-cards-viewport" id="fb-cards-viewport">
+                    <!-- Post 1: Western Leyte College -->
+                    <article class="fb-card active" data-post-id="fb-1" data-index="0" id="fb-post-0">
                     <div class="fb-card-media-col">
                         <div class="fb-card-media">
                             <img src="assets/fb_wlc_ormoc.jpg" alt="University of Danang SDC Delegation at Western Leyte College" loading="lazy">
@@ -513,7 +569,7 @@
                 </article>
 
                 <!-- Post 2: Biliran Province State University (BiPSU) -->
-                <article class="fb-card" data-post-id="fb-2">
+                <article class="fb-card" data-post-id="fb-2" data-index="1" id="fb-post-1">
                     <div class="fb-card-media-col">
                         <div class="fb-card-media">
                             <img src="assets/fb_bipsu_tech.jpg" alt="BiPSU Collaboration with University of Da Nang SDC" loading="lazy">
@@ -622,7 +678,7 @@
                 </article>
 
                 <!-- Post 3: Leyte Normal University (DIGITS) -->
-                <article class="fb-card" data-post-id="fb-3">
+                <article class="fb-card" data-post-id="fb-3" data-index="2" id="fb-post-2">
                     <div class="fb-card-media-col">
                         <div class="fb-card-media">
                             <img src="assets/fb_lnu_digits.jpg" alt="LNU Global Horizons Symposium with University of Danang SDC" loading="lazy">
@@ -730,7 +786,7 @@
                 </article>
 
                 <!-- Post 4: Visayas State University (VSU) -->
-                <article class="fb-card" data-post-id="fb-4">
+                <article class="fb-card" data-post-id="fb-4" data-index="3" id="fb-post-3">
                     <div class="fb-card-media-col">
                         <div class="fb-card-media">
                             <img src="assets/fb_vsu_partnership.jpg" alt="Visayas State University & University of Da Nang SDC MOU" loading="lazy">
@@ -839,7 +895,16 @@
                 </article>
             </div>
 
-            <!-- Facebook Section Footer CTA -->
+            <!-- Bottom Carousel Progress Dots -->
+            <div class="fb-carousel-dots" id="fb-carousel-dots" role="tablist" aria-label="Post position dots">
+                <button type="button" class="fb-dot active" data-index="0" aria-label="Go to post 1"></button>
+                <button type="button" class="fb-dot" data-index="1" aria-label="Go to post 2"></button>
+                <button type="button" class="fb-dot" data-index="2" aria-label="Go to post 3"></button>
+                <button type="button" class="fb-dot" data-index="3" aria-label="Go to post 4"></button>
+            </div>
+        </div>
+
+        <!-- Facebook Section Footer CTA -->
             <div class="fb-section-cta">
                 <a href="https://www.facebook.com/visayasstateu/posts/1536431978525794/" target="_blank" rel="noopener noreferrer" class="primary-btn fb-cta-btn">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">

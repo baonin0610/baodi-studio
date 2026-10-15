@@ -24,6 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initFacebookPhotoSpotlightAndLightbox();
     initDelegationGalleryCarousel();
     initFacebookPostsCarousel();
+    initCardSpotlights();
 });
 
 /**
@@ -160,12 +161,19 @@ function initTemplateLinkCopier() {
  * Programmatically tracks elements and fades them up beautifully when scrolled into view.
  */
 function initScrollReveal() {
-    const targets = document.querySelectorAll('.showcase-card, .section-header, .about-section, .fb-carousel-container, .delegation-info-panel');
+    const targets = document.querySelectorAll(
+        '.section-header, .delegation-stage, .delegation-filmstrip-wrapper, .fb-carousel-container, .templates-hub-banner, .showcase-card, .founder-credentials-grid'
+    );
     
     // Add scroll reveal classes dynamically
     targets.forEach(el => {
         el.classList.add('reveal-on-scroll');
     });
+
+    if (!('IntersectionObserver' in window)) {
+        targets.forEach(el => el.classList.add('revealed'));
+        return;
+    }
 
     const observer = new IntersectionObserver((entries, obs) => {
         entries.forEach(entry => {
@@ -175,8 +183,8 @@ function initScrollReveal() {
             }
         });
     }, {
-        threshold: 0.05,
-        rootMargin: '0px 0px -50px 0px'
+        threshold: 0.08,
+        rootMargin: '0px 0px -40px 0px'
     });
 
     targets.forEach(el => observer.observe(el));
@@ -353,6 +361,39 @@ function initUserGuideModal() {
  * Follows cursor position to rotate card in 3D space and sweep reflective radial highlights.
  */
 function initHeroCardTilt() {
+    const founderCard = document.querySelector('.founder-visual-card');
+    if (founderCard && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+        let isHovering = false;
+        let rect;
+
+        founderCard.addEventListener('mouseenter', () => {
+            isHovering = true;
+            rect = founderCard.getBoundingClientRect();
+            founderCard.style.transition = 'transform 0.15s ease-out';
+        });
+
+        founderCard.addEventListener('mousemove', (e) => {
+            if (!isHovering) return;
+            if (!rect) rect = founderCard.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+
+            // Refined luxury tilt: max 4.5 degrees
+            const tiltX = ((centerY - y) / centerY) * 4.5;
+            const tiltY = ((x - centerX) / centerX) * 4.5;
+
+            founderCard.style.transform = `perspective(1000px) rotateX(${tiltX.toFixed(2)}deg) rotateY(${tiltY.toFixed(2)}deg) scale3d(1.02, 1.02, 1.02)`;
+        });
+
+        founderCard.addEventListener('mouseleave', () => {
+            isHovering = false;
+            founderCard.style.transition = 'transform 0.7s cubic-bezier(0.16, 1, 0.3, 1)';
+            founderCard.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+        });
+    }
+
     const card = document.getElementById('hero-tilt-card');
     const glare = card ? card.querySelector('.hero-card-glare') : null;
     const signature = card ? card.querySelector('.hero-card-signature') : null;
@@ -1488,7 +1529,28 @@ function initFacebookPostsCarousel() {
     };
 }
 
+/**
+ * 15. Modern Luxury Mouse-Tracking Spotlight Glow
+ * Radiates a soft golden spotlight on card surfaces following cursor movement.
+ */
+function initCardSpotlights() {
+    if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
 
-
-
-
+    const cards = document.querySelectorAll('.has-spotlight');
+    cards.forEach(card => {
+        let isMoving = false;
+        card.addEventListener('mousemove', (e) => {
+            if (!isMoving) {
+                window.requestAnimationFrame(() => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    card.style.setProperty('--mouse-x', `${x}px`);
+                    card.style.setProperty('--mouse-y', `${y}px`);
+                    isMoving = false;
+                });
+                isMoving = true;
+            }
+        });
+    });
+}

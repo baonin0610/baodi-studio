@@ -1924,27 +1924,27 @@ body {
 }
 
 .glow-1 {
-    width: 450px;
-    height: 450px;
-    background: radial-gradient(circle, var(--accent-color) 0%, transparent 80%);
+    width: 480px;
+    height: 480px;
+    background: radial-gradient(circle, rgba(212, 175, 55, 0.18) 0%, transparent 80%);
     top: 5%;
     left: -100px;
     animation: float-glow-1 25s ease-in-out infinite alternate;
 }
 
 .glow-2 {
-    width: 600px;
-    height: 600px;
-    background: radial-gradient(circle, #8b5cf6 0%, transparent 85%);
+    width: 650px;
+    height: 650px;
+    background: radial-gradient(circle, rgba(184, 134, 11, 0.14) 0%, transparent 85%);
     bottom: 10%;
     right: -150px;
     animation: float-glow-2 30s ease-in-out infinite alternate;
 }
 
 .glow-3 {
-    width: 350px;
-    height: 350px;
-    background: radial-gradient(circle, #3b82f6 0%, transparent 80%);
+    width: 420px;
+    height: 420px;
+    background: radial-gradient(circle, rgba(212, 175, 55, 0.11) 0%, transparent 80%);
     top: 50%;
     left: 40%;
     animation: float-glow-3 20s ease-in-out infinite alternate;
@@ -1965,17 +1965,21 @@ body {
     100% { transform: translate(50px, -80px) scale(1.1); }
 }
 
-/* Scroll Reveal Animation Styles */
+/* Cinematic Scroll Reveal Animation Styles (Blur & Glide) */
 .reveal-on-scroll {
     opacity: 0;
-    transform: translateY(40px);
-    transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
-    will-change: opacity, transform;
+    transform: translateY(32px) scale(0.985);
+    filter: blur(8px);
+    transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+                filter 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform, filter;
 }
 
 .reveal-on-scroll.revealed {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
+    filter: blur(0);
 }
 
 /* Live Template Preview Modal */
@@ -3571,8 +3575,108 @@ body {
 
 .founder-hero-name .accent-text {
     font-style: italic;
-    color: var(--accent-color);
     font-weight: 500;
+    background: linear-gradient(
+        120deg,
+        #d4af37 0%,
+        #fff6d1 25%,
+        #d4af37 50%,
+        #ffe89e 75%,
+        #b8860b 100%
+    );
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: metallicGoldSheen 7s linear infinite;
+    display: inline-block;
+}
+
+@keyframes metallicGoldSheen {
+    0% {
+        background-position: 0% 50%;
+    }
+    100% {
+        background-position: 200% 50%;
+    }
+}
+
+/* ==========================================================================
+   Luxury Badge Sweeping Sheen (Golden Border Beam)
+   ========================================================================== */
+.founder-badge,
+.gallery-badge,
+.hub-badge,
+.fb-section-badge,
+.drawer-badge {
+    position: relative;
+    overflow: hidden;
+}
+
+.founder-badge::after,
+.gallery-badge::after,
+.hub-badge::after,
+.fb-section-badge::after,
+.drawer-badge::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -80%;
+    width: 50%;
+    height: 200%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(212, 175, 55, 0.35),
+        transparent
+    );
+    transform: rotate(25deg);
+    pointer-events: none;
+    animation: badgeSheenSweep 5.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+@keyframes badgeSheenSweep {
+    0%, 65% {
+        left: -80%;
+        opacity: 0;
+    }
+    70% {
+        opacity: 1;
+    }
+    100% {
+        left: 160%;
+        opacity: 0;
+    }
+}
+
+/* ==========================================================================
+   Modern Luxury Spotlight Card Glow
+   ========================================================================== */
+.has-spotlight {
+    position: relative;
+    overflow: hidden;
+}
+
+.has-spotlight::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: inherit;
+    background: radial-gradient(
+        340px circle at var(--mouse-x, -999px) var(--mouse-y, -999px),
+        rgba(212, 175, 55, 0.14),
+        transparent 70%
+    );
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: 1;
+}
+
+.has-spotlight:hover::before {
+    opacity: 1;
 }
 
 .founder-hero-title-sub {
@@ -3681,6 +3785,8 @@ body {
     align-items: center;
     justify-content: center;
     position: relative;
+    transform-style: preserve-3d;
+    will-change: transform;
 }
 
 .founder-portrait-frame {

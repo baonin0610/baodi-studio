@@ -53,8 +53,29 @@ This document details the complete elimination of auto-scrolling issues and cach
 
 ---
 
+## ⚡ Floating Jumping Scroll Guide Indicator (Bottom-Right Corner)
+
+### 1. Motivation
+- On initial landing, the founder hero section spans the initial screen viewport height. Visitors might not instinctively know that significant content awaits below (Diplomatic delegations, Facebook dispatches, project templates).
+- The user requested a small jumping/bouncing icon in the bottom corner of the screen to guide visitors to scroll down.
+
+### 2. Solutions Implemented
+- **Design & Layout (`index.html` & `style.css`)**:
+  - Implemented `.floating-scroll-down-btn`: A boutique glassmorphism pill badge (`rgba(18, 16, 14, 0.86)` with `backdrop-filter: blur(14px)` and gold border `rgba(212, 175, 55, 0.38)`).
+  - Pinned at the **bottom-right corner** (`bottom: 32px; right: 32px` on desktop, `bottom: 74px; right: 18px` on mobile positioned safely above the mobile bottom nav dock).
+  - Features an animated down-arrow SVG with `@keyframes iconJumpBounce` jumping rhythmic downward pulses (dip, bounce, rest every 1.8s) paired with a breathing gold glow (`@keyframes scrollPillPulse`).
+- **Interactive Smooth Scroll (`script.js`)**:
+  - Clicking the button triggers `scrollToSection('delegation-gallery')` with sticky header offset correction.
+  - As the user scrolls down past the hero section (`window.pageYOffset > 100px`), the button automatically and gracefully fades out (`.is-hidden`).
+  - If the user scrolls back to the very top, the button smoothly fades back in.
+- **Cache-Busting Update**:
+  - Bumped to `v=3.4` (`style.css?v=3.4` and `script.js?v=3.4`).
+
+---
+
 ## 🔗 Live Deployment
 - **Repository**: `https://github.com/baonin0610/baodi-studio`
-- **Latest Commit**: `f32748e`
+- **Latest Commit**: `3c72fca`
 - **Live URL**: `https://baonin0610.github.io/baodi-studio/`
+
 

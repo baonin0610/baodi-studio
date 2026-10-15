@@ -523,6 +523,15 @@ function initMobileBottomNav() {
         });
     }
 
+    // Attach click to floating bottom-corner scroll down indicator
+    const floatingScrollBtn = document.getElementById('floating-scroll-down-btn');
+    if (floatingScrollBtn) {
+        floatingScrollBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            scrollToSection('delegation-gallery');
+        });
+    }
+
     // ScrollSpy: Calculate which section currently commands the viewport
     function updateScrollSpy() {
         const headerOffset = 90;
@@ -573,6 +582,13 @@ function initMobileBottomNav() {
                             (activeId === 'about-developer' && (target === 'hero-section' || target === 'about-developer'));
             link.classList.toggle('active', isMatch);
         });
+
+        // 4. Update Floating Scroll Down Indicator visibility
+        if (floatingScrollBtn) {
+            const currentScrollY = window.pageYOffset || document.documentElement.scrollTop;
+            const shouldHide = currentScrollY > 100;
+            floatingScrollBtn.classList.toggle('is-hidden', shouldHide);
+        }
     }
 
     // Throttled scroll listener using requestAnimationFrame for 60fps performance

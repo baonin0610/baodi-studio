@@ -23,7 +23,7 @@
     <link rel="preconnect" href="https://port-fl.github.io" crossorigin>
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="style.css?v=3.3">
+    <link rel="stylesheet" href="style.css?v=3.4">
 </head>
 <body>
     <!-- Ambient Background Light Glows -->
@@ -217,14 +217,6 @@
                             <span class="founder-tag">Da Nang, VN</span>
                         </div>
                     </div>
-                </div>
-            </div>
-
-            <!-- Scroll Down Indicator -->
-            <div class="scroll-indicator load-reveal" style="--reveal-delay: 0.9s">
-                <span class="scroll-text">Scroll to explore</span>
-                <div class="scroll-mouse">
-                    <div class="scroll-wheel"></div>
                 </div>
             </div>
         </section>
@@ -1252,6 +1244,17 @@
         </div>
     </div>
 
+    <!-- Floating Bottom-Corner Scroll Guide Indicator -->
+    <a href="#delegation-gallery" class="floating-scroll-down-btn" id="floating-scroll-down-btn" aria-label="Scroll down to view more information" title="Scroll down to explore">
+        <span class="scroll-btn-text">Scroll</span>
+        <div class="scroll-btn-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="4" x2="12" y2="18"></line>
+                <polyline points="6 12 12 18 18 12"></polyline>
+            </svg>
+        </div>
+    </a>
+
     <!-- Mobile Bottom Navigation Dock -->
     <nav class="mobile-bottom-nav" aria-label="Mobile Navigation">
         <a href="#about-developer" class="mobile-nav-item active" data-target="about-developer">
@@ -1286,7 +1289,7 @@
     </nav>
 
     <!-- Custom JS -->
-    <script src="script.js?v=3.3"></script>
+    <script src="script.js?v=3.4"></script>
     <!-- High-Resolution Image Lightbox Modal -->
     <div id="image-lightbox-modal" class="image-lightbox-modal" aria-hidden="true">
         <div class="lightbox-backdrop"></div>

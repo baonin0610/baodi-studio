@@ -73,9 +73,34 @@ This document details the complete elimination of auto-scrolling issues and cach
 
 ---
 
+## ✨ 5 Modern Luxury Animations Suite (Elite Editorial Experience)
+
+### 1. Liquid Metallic Gold Shimmer
+- **Elements**: `.founder-hero-name .accent-text` ("Bao Duy"), `.logo span` ("Studio"), `.drawer-logo span`, `.footer-logo span`.
+- **Effect**: Multi-stop metallic gold & champagne gradient moving dynamically across typography (`@keyframes metallicGoldSheen`), resembling polished metal reflecting gallery lights.
+
+### 2. Golden Border Beam / Sweeping Sheen
+- **Elements**: `.founder-badge`, `.gallery-badge`, `.hub-badge`, `.fb-section-badge`, `.drawer-badge`.
+- **Effect**: A slim, angled ribbon of golden light glides across the pill badge borders every 5.5 seconds (`@keyframes badgeSheenSweep`), creating high-end tactile allure without visual clutter.
+
+### 3. Mouse-Tracking Spotlight Glow
+- **Elements**: `.founder-credentials-grid`, `.founder-card-meta`, `.delegation-stage`, `.templates-hub-banner`.
+- **Effect**: Smooth radial spotlight (`340px circle at var(--mouse-x) var(--mouse-y)`) follows the cursor across card surfaces via `requestAnimationFrame` throttled calculations, reproducing signature Apple Pro and Linear dark-mode interfaces.
+
+### 4. Subtle 3D Parallax Tilt
+- **Elements**: `.founder-visual-card` (Avatar frame, rotating dashed ring, and Founder identity meta-card).
+- **Effect**: Interactive 3D spatial rotation (max 4.5 degrees) responsive to cursor coordinates on non-touch screens with `cubic-bezier(0.16, 1, 0.3, 1)` spring release.
+
+### 5. Cinematic Scroll Stagger Reveal with Blur
+- **Elements**: All section headers, delegation stage, filmstrip, Facebook feed container, and templates banner.
+- **Effect**: Elements glide upward smoothly (`translateY(32px) -> 0`) while transitioning from softened optical blur into crisp sharpness (`filter: blur(8px) -> blur(0)`), creating an editorial, museum-grade exhibition experience.
+
+---
+
 ## 🔗 Live Deployment
 - **Repository**: `https://github.com/baonin0610/baodi-studio`
-- **Latest Commit**: `3c72fca`
+- **Latest Commit**: `03fd884`
 - **Live URL**: `https://baonin0610.github.io/baodi-studio/`
+
 
 

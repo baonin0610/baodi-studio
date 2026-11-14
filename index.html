@@ -23,7 +23,7 @@
     <link rel="preconnect" href="https://port-fl.github.io" crossorigin>
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="style.css?v=3.6">
+    <link rel="stylesheet" href="style.css?v=3.7">
     <script>
         (function() {
             var theme = localStorage.getItem('baodi-theme') || 'obsidian';
@@ -32,6 +32,12 @@
     </script>
 </head>
 <body>
+    <!-- Global Dynamic Top Scroll Progress Bar -->
+    <div id="scroll-progress-bar" class="scroll-progress-bar" aria-hidden="true"></div>
+
+    <!-- Interactive AI Neural Constellation Canvas -->
+    <canvas id="neural-canvas" class="neural-canvas" aria-hidden="true"></canvas>
+
     <!-- Ambient Background Light Glows -->
     <div class="ambient-glow glow-1"></div>
     <div class="ambient-glow glow-2"></div>
@@ -198,33 +204,52 @@
             <div class="hero-container founder-hero-container">
                 <div class="founder-hero-content">
                     <div class="founder-badge load-reveal" style="--reveal-delay: 0.1s">
-                        <span class="status-indicator-dot"></span>
+                        <div class="ai-live-indicator">
+                            <span class="status-indicator-dot"></span>
+                            <div class="ai-waveform" title="Live Neural Telemetry">
+                                <span class="wave-bar"></span>
+                                <span class="wave-bar"></span>
+                                <span class="wave-bar"></span>
+                                <span class="wave-bar"></span>
+                            </div>
+                        </div>
                         <span>AI Engineer & Tech Lead • University of Danang (SDC)</span>
                     </div>
                     <h1 class="founder-hero-name load-reveal" style="--reveal-delay: 0.2s">
                         Nguyen Le <span class="accent-text">Bao Duy</span>
                     </h1>
-                    <p class="founder-hero-title-sub load-reveal" style="--reveal-delay: 0.3s">
-                        AI Systems Architect & Creative Technologist · Da Nang, Vietnam
-                    </p>
+                    <div class="founder-hero-title-sub load-reveal" style="--reveal-delay: 0.3s">
+                        <span class="role-intro">Specializing in</span>
+                        <div class="role-rotator-wrapper" id="role-rotator">
+                            <span class="role-rotator-item active">AI Systems Architecture</span>
+                            <span class="role-rotator-item">Agentic Workflow Engineering</span>
+                            <span class="role-rotator-item">Applied Machine Learning</span>
+                            <span class="role-rotator-item">UD-SDC Technology Leadership</span>
+                            <span class="role-rotator-item">High-Performance Web Platforms</span>
+                        </div>
+                    </div>
                     <p class="founder-hero-bio load-reveal" style="--reveal-delay: 0.4s">
                         Welcome to my personal studio. I design and build production-grade AI agent systems, applied machine learning architectures, and high-performance digital interfaces. Alongside software development, I actively represent the <strong>University of Danang – Software Development Centre (UD-SDC)</strong> in international academic symposia and technology partnerships across Southeast Asia.
                     </p>
                     
                     <div class="founder-credentials-grid load-reveal has-spotlight" style="--reveal-delay: 0.5s">
                         <div class="cred-item">
+                            <div class="cred-stat-pill"><span class="counter-num" data-target="11">0</span>+ Production Systems</div>
                             <span class="cred-label">Core Focus</span>
                             <span class="cred-val">Applied AI, Agent Workflows & Full-Stack Systems</span>
                         </div>
                         <div class="cred-item">
+                            <div class="cred-stat-pill"><span class="counter-num" data-target="100">0</span>% Institutional Accord</div>
                             <span class="cred-label">Academic Center</span>
                             <span class="cred-val">University of Danang — Software Development Centre (SDC)</span>
                         </div>
                         <div class="cred-item">
+                            <div class="cred-stat-pill"><span class="counter-num" data-target="5">0</span> Partner Universities</div>
                             <span class="cred-label">Key Engagements</span>
                             <span class="cred-val">Philippine Bilateral Delegations 2026 (SLSU, LNU, VSU, BiPSU)</span>
                         </div>
                         <div class="cred-item">
+                            <div class="cred-stat-pill"><span class="counter-num" data-target="2026">2020</span> Active Term</div>
                             <span class="cred-label">Status & Base</span>
                             <span class="cred-val">Available for Advisory & Projects · Da Nang (GMT+7)</span>
                         </div>
@@ -1350,7 +1375,7 @@
     </nav>
 
     <!-- Custom JS -->
-    <script src="script.js?v=3.6"></script>
+    <script src="script.js?v=3.7"></script>
     <!-- High-Resolution Image Lightbox Modal -->
     <div id="image-lightbox-modal" class="image-lightbox-modal" aria-hidden="true">
         <div class="lightbox-backdrop"></div>

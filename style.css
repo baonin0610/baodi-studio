@@ -169,6 +169,38 @@ body {
     scroll-margin-top: 85px;
 }
 
+/* ==========================================================================
+   Global Dynamic Top Scroll Progress Bar & Neural Mesh Canvas
+   ========================================================================== */
+.scroll-progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 0%;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent-color), var(--accent-hover, #f1cf68));
+    box-shadow: 0 0 12px var(--accent-color);
+    z-index: 100000;
+    transition: width 0.08s cubic-bezier(0.16, 1, 0.3, 1);
+    pointer-events: none;
+}
+
+.neural-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.65;
+    transition: opacity 0.5s ease;
+}
+
+html[data-theme="warm-editorial"] .neural-canvas {
+    opacity: 0.35;
+}
+
 /* Header & Navigation */
 .site-header {
     position: fixed;
@@ -3692,6 +3724,39 @@ html[data-theme="warm-editorial"] .ambient-glow {
     transition: var(--transition-fast);
 }
 
+/* AI Live Telemetry Waveform in Badge */
+.ai-live-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+}
+
+.ai-waveform {
+    display: inline-flex;
+    align-items: flex-end;
+    gap: 2px;
+    height: 12px;
+}
+
+.wave-bar {
+    width: 2.2px;
+    height: 3px;
+    background-color: var(--accent-color);
+    border-radius: 1px;
+    animation: wavePulse 1.2s ease-in-out infinite alternate;
+}
+
+.wave-bar:nth-child(1) { animation-delay: 0.05s; animation-duration: 0.9s; }
+.wave-bar:nth-child(2) { animation-delay: 0.25s; animation-duration: 1.3s; }
+.wave-bar:nth-child(3) { animation-delay: 0.45s; animation-duration: 0.8s; }
+.wave-bar:nth-child(4) { animation-delay: 0.15s; animation-duration: 1.1s; }
+
+@keyframes wavePulse {
+    0% { height: 2px; opacity: 0.35; }
+    50% { height: 11px; opacity: 1; }
+    100% { height: 4px; opacity: 0.6; }
+}
+
 /* ==========================================================================
    Modern Luxury Spotlight Card Glow
    ========================================================================== */
@@ -3709,13 +3774,14 @@ html[data-theme="warm-editorial"] .ambient-glow {
     bottom: 0;
     border-radius: inherit;
     background: radial-gradient(
-        340px circle at var(--mouse-x, -999px) var(--mouse-y, -999px),
+        380px circle at var(--mouse-x, -999px) var(--mouse-y, -999px),
         var(--accent-subtle),
+        rgba(212, 175, 55, 0.04),
         transparent 70%
     );
     pointer-events: none;
     opacity: 0;
-    transition: opacity 0.4s ease;
+    transition: opacity 0.35s ease;
     z-index: 1;
 }
 
@@ -3723,13 +3789,59 @@ html[data-theme="warm-editorial"] .ambient-glow {
     opacity: 1;
 }
 
+/* Kinetic Role Rotator Subtitle */
 .founder-hero-title-sub {
-    font-family: var(--font-mono);
-    font-size: 0.88rem;
-    color: var(--accent-color);
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
+    font-family: var(--font-body);
+    font-size: 1.02rem;
+    color: var(--text-muted);
+    letter-spacing: 0.01em;
     margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    min-height: 32px;
+}
+
+.role-intro {
+    font-family: var(--font-body);
+    font-size: 0.92rem;
+    color: var(--text-muted);
+    font-weight: 400;
+}
+
+.role-rotator-wrapper {
+    display: inline-flex;
+    position: relative;
+    overflow: hidden;
+    height: 1.6em;
+    vertical-align: middle;
+}
+
+.role-rotator-item {
+    font-family: var(--font-mono);
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--accent-color);
+    letter-spacing: 0.03em;
+    position: absolute;
+    top: 0;
+    left: 0;
+    white-space: nowrap;
+    opacity: 0;
+    transform: translateY(120%);
+    transition: transform 0.55s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.55s ease;
+}
+
+.role-rotator-item.active {
+    opacity: 1;
+    transform: translateY(0);
+    position: relative;
+}
+
+.role-rotator-item.exit {
+    opacity: 0;
+    transform: translateY(-120%);
 }
 
 .founder-hero-bio {
@@ -3763,6 +3875,29 @@ html[data-theme="warm-editorial"] .ambient-glow {
     display: flex;
     flex-direction: column;
     gap: 0.25rem;
+}
+
+/* Stat Counter Pills */
+.cred-stat-pill {
+    display: inline-flex;
+    align-items: center;
+    align-self: flex-start;
+    padding: 0.2rem 0.55rem;
+    border-radius: 6px;
+    background: var(--accent-subtle);
+    border: 1px solid var(--border-color);
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: var(--accent-color);
+    margin-bottom: 0.25rem;
+    letter-spacing: 0.03em;
+    transition: var(--transition-fast);
+}
+
+.counter-num {
+    font-variant-numeric: tabular-nums;
+    font-weight: 700;
 }
 
 .cred-label {
@@ -3850,6 +3985,15 @@ html[data-theme="warm-editorial"] .ambient-glow {
     perspective: 1000px;
 }
 
+@keyframes antigravityLevitate {
+    0%, 100% {
+        transform: translateY(0px) rotate(0deg);
+    }
+    50% {
+        transform: translateY(-8px) rotate(0.35deg);
+    }
+}
+
 .founder-portrait-card {
     position: relative;
     width: min(340px, 92vw);
@@ -3858,8 +4002,10 @@ html[data-theme="warm-editorial"] .ambient-glow {
     border-radius: 20px;
     padding: 0.9rem;
     box-shadow: var(--card-shadow);
-    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease, border-color 0.3s ease, background-color 0.4s ease;
+    animation: antigravityLevitate 7s ease-in-out infinite;
+    transition: box-shadow 0.4s ease, border-color 0.3s ease, background-color 0.4s ease;
     cursor: default;
+    will-change: transform;
 }
 
 .founder-portrait-card:hover {

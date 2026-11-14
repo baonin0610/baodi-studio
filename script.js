@@ -26,6 +26,11 @@ document.addEventListener('DOMContentLoaded', () => {
     initFacebookPostsCarousel();
     initCardSpotlights();
     initThemePalette();
+    initScrollProgressBar();
+    initNeuralCanvas();
+    initRoleRotator();
+    initAnimatedCounters();
+    initMagneticButtons();
 });
 
 /**
@@ -1655,4 +1660,269 @@ function initThemePalette() {
             }
         });
     }
+}
+
+/**
+ * 17. Global Top Scroll Progress Bar
+ * Fills a luminous hairline bar at the viewport top corresponding to page scroll position.
+ */
+function initScrollProgressBar() {
+    const bar = document.getElementById('scroll-progress-bar');
+    if (!bar) return;
+
+    let ticking = false;
+    window.addEventListener('scroll', () => {
+        if (!ticking) {
+            window.requestAnimationFrame(() => {
+                const total = document.documentElement.scrollHeight - window.innerHeight;
+                if (total > 0) {
+                    const progress = Math.min(100, Math.max(0, (window.scrollY / total) * 100));
+                    bar.style.width = `${progress}%`;
+                }
+                ticking = false;
+            });
+            ticking = true;
+        }
+    }, { passive: true });
+}
+
+/**
+ * 18. Interactive AI Neural Constellation Canvas
+ * Ambient star-like neural particles that drift and connect organically, responding dynamically
+ * to mouse cursor movement, synaptic lines, and theme accent colors.
+ */
+function initNeuralCanvas() {
+    const canvas = document.getElementById('neural-canvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    let width = 0;
+    let height = 0;
+    let particles = [];
+    let mouse = { x: -9999, y: -9999, active: false };
+    let animationFrameId = null;
+
+    function resize() {
+        const dpr = window.devicePixelRatio || 1;
+        width = window.innerWidth;
+        height = window.innerHeight;
+        canvas.width = width * dpr;
+        canvas.height = height * dpr;
+        ctx.scale(dpr, dpr);
+        initParticles();
+    }
+
+    function initParticles() {
+        const count = width < 768 ? 22 : 46;
+        particles = [];
+        for (let i = 0; i < count; i++) {
+            particles.push({
+                x: Math.random() * width,
+                y: Math.random() * height,
+                vx: (Math.random() - 0.5) * 0.4,
+                vy: (Math.random() - 0.5) * 0.4,
+                radius: Math.random() * 1.5 + 1.2,
+                baseAlpha: Math.random() * 0.4 + 0.3
+            });
+        }
+    }
+
+    function getAccentRgb() {
+        const theme = document.documentElement.getAttribute('data-theme') || 'obsidian';
+        switch (theme) {
+            case 'warm-editorial':
+                return { r: 140, g: 124, b: 109 };
+            case 'cyber-slate':
+                return { r: 56, g: 189, b: 248 };
+            case 'atelier-emerald':
+                return { r: 16, g: 185, b: 129 };
+            case 'obsidian':
+            default:
+                return { r: 212, g: 175, b: 55 };
+        }
+    }
+
+    function animate() {
+        if (document.hidden) {
+            animationFrameId = requestAnimationFrame(animate);
+            return;
+        }
+
+        ctx.clearRect(0, 0, width, height);
+        const rgb = getAccentRgb();
+        const maxDist = width < 768 ? 95 : 125;
+        const mouseDist = 150;
+
+        for (let i = 0; i < particles.length; i++) {
+            const p = particles[i];
+            p.x += p.vx;
+            p.y += p.vy;
+
+            // Bounce off boundaries
+            if (p.x < 0 || p.x > width) p.vx = -p.vx;
+            if (p.y < 0 || p.y > height) p.vy = -p.vy;
+
+            // Interactive mouse connection and soft repulsion
+            if (mouse.active) {
+                const dxM = p.x - mouse.x;
+                const dyM = p.y - mouse.y;
+                const distM = Math.sqrt(dxM * dxM + dyM * dyM);
+                if (distM < mouseDist) {
+                    const factor = 1 - distM / mouseDist;
+                    ctx.beginPath();
+                    ctx.moveTo(p.x, p.y);
+                    ctx.lineTo(mouse.x, mouse.y);
+                    ctx.strokeStyle = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${factor * 0.35})`;
+                    ctx.lineWidth = 0.9;
+                    ctx.stroke();
+
+                    // Soft deflection away from mouse
+                    p.x += (dxM / distM) * factor * 0.6;
+                    p.y += (dyM / distM) * factor * 0.6;
+                }
+            }
+
+            // Draw particle node
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${p.baseAlpha})`;
+            ctx.shadowBlur = 4;
+            ctx.shadowColor = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.5)`;
+            ctx.fill();
+            ctx.shadowBlur = 0;
+
+            // Connect neighboring particles
+            for (let j = i + 1; j < particles.length; j++) {
+                const p2 = particles[j];
+                const dx = p.x - p2.x;
+                const dy = p.y - p2.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < maxDist) {
+                    const alpha = (1 - dist / maxDist) * 0.22;
+                    ctx.beginPath();
+                    ctx.moveTo(p.x, p.y);
+                    ctx.lineTo(p2.x, p2.y);
+                    ctx.strokeStyle = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${alpha})`;
+                    ctx.lineWidth = 0.65;
+                    ctx.stroke();
+                }
+            }
+        }
+
+        animationFrameId = requestAnimationFrame(animate);
+    }
+
+    window.addEventListener('resize', resize, { passive: true });
+    window.addEventListener('mousemove', (e) => {
+        mouse.x = e.clientX;
+        mouse.y = e.clientY;
+        mouse.active = true;
+    }, { passive: true });
+    window.addEventListener('mouseleave', () => {
+        mouse.active = false;
+    });
+
+    resize();
+    animate();
+}
+
+/**
+ * 19. Kinetic Role Rotator
+ * Smooth vertical slide transition cycling through Duy's professional titles.
+ */
+function initRoleRotator() {
+    const container = document.getElementById('role-rotator');
+    if (!container) return;
+    const items = container.querySelectorAll('.role-rotator-item');
+    if (items.length <= 1) return;
+
+    let currentIndex = 0;
+    setInterval(() => {
+        const prev = items[currentIndex];
+        prev.classList.remove('active');
+        prev.classList.add('exit');
+
+        currentIndex = (currentIndex + 1) % items.length;
+        const next = items[currentIndex];
+        next.classList.remove('exit');
+        next.classList.add('active');
+
+        setTimeout(() => {
+            prev.classList.remove('exit');
+        }, 600);
+    }, 2800);
+}
+
+/**
+ * 20. Animated Stat Number Counters
+ * Dynamically counts numbers up when scrolled into view.
+ */
+function initAnimatedCounters() {
+    const counters = document.querySelectorAll('.counter-num');
+    if (!counters.length) return;
+
+    function countUp(el) {
+        const target = parseInt(el.getAttribute('data-target'), 10);
+        if (isNaN(target)) return;
+        const duration = 1500;
+        const start = target > 2000 ? target - 10 : 0;
+        const startTime = performance.now();
+
+        function step(now) {
+            const elapsed = now - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            const easeOut = 1 - Math.pow(1 - progress, 3);
+            const current = Math.floor(start + (target - start) * easeOut);
+            el.textContent = current.toLocaleString();
+
+            if (progress < 1) {
+                requestAnimationFrame(step);
+            } else {
+                el.textContent = target.toLocaleString();
+            }
+        }
+        requestAnimationFrame(step);
+    }
+
+    if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver((entries, obs) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    countUp(entry.target);
+                    obs.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.2 });
+
+        counters.forEach(c => observer.observe(c));
+    } else {
+        counters.forEach(c => countUp(c));
+    }
+}
+
+/**
+ * 21. Magnetic Button Physics Pull
+ * Subtly attracts CTA buttons and pills towards the cursor on hover with spring recovery.
+ */
+function initMagneticButtons() {
+    if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+    const magneticTargets = document.querySelectorAll(
+        '.primary-btn, .secondary-btn, .social-icon-btn, .palette-trigger-btn, .guide-nav-btn'
+    );
+
+    magneticTargets.forEach(btn => {
+        btn.addEventListener('mousemove', (e) => {
+            const rect = btn.getBoundingClientRect();
+            const x = e.clientX - rect.left - rect.width / 2;
+            const y = e.clientY - rect.top - rect.height / 2;
+            btn.style.transform = `translate(${x * 0.22}px, ${y * 0.22}px)`;
+            btn.style.transition = 'transform 0.1s ease-out';
+        });
+
+        btn.addEventListener('mouseleave', () => {
+            btn.style.transform = 'translate(0px, 0px)';
+            btn.style.transition = 'transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)';
+        });
+    });
 }

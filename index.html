@@ -23,13 +23,11 @@
     <link rel="preconnect" href="https://port-fl.github.io" crossorigin>
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="style.css?v=3.9">
+    <link rel="stylesheet" href="style.css?v=4.0">
     <script>
         (function() {
             var theme = localStorage.getItem('baodi-theme') || 'obsidian';
             document.documentElement.setAttribute('data-theme', theme);
-            var viewMode = localStorage.getItem('baodi-view-mode') || 'deck';
-            document.documentElement.setAttribute('data-view-mode', viewMode);
         })();
     </script>
 </head>
@@ -101,35 +99,9 @@
                     </div>
                 </div>
 
-                <!-- Dual View Mode Switcher: 3D Deck vs Classic Scroll -->
-                <button class="view-mode-toggle-btn" id="view-mode-toggle-btn" aria-label="Toggle Viewing Mode" title="Switch between 3D Cinematic Deck & Classic Scroll Mode">
-                    <span class="mode-icon deck-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15">
-                            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
-                            <line x1="8" y1="21" x2="16" y2="21"></line>
-                            <line x1="12" y1="17" x2="12" y2="21"></line>
-                        </svg>
-                    </span>
-                    <span class="mode-icon scroll-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15">
-                            <line x1="12" y1="3" x2="12" y2="21"></line>
-                            <polyline points="7 8 12 3 17 8"></polyline>
-                            <polyline points="7 16 12 21 17 16"></polyline>
-                        </svg>
-                    </span>
-                    <span class="mode-label" id="view-mode-label">3D Deck</span>
-                </button>
-
                 <a href="#about-developer" class="launch-nav-btn">About Developer</a>
             </div>
             <div class="nav-mobile-actions">
-                <button class="mobile-mode-btn" id="mobile-mode-btn" aria-label="Toggle 3D Deck / Scroll Mode" title="Toggle 3D Deck / Scroll">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="17" height="17">
-                        <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
-                        <line x1="8" y1="21" x2="16" y2="21"></line>
-                        <line x1="12" y1="17" x2="12" y2="21"></line>
-                    </svg>
-                </button>
                 <button class="mobile-palette-btn" id="mobile-palette-btn" aria-label="Toggle Color Theme Palette" title="Change Theme Palette">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18">
                         <circle cx="12" cy="12" r="10"></circle>
@@ -209,21 +181,6 @@
             </div>
         </div>
 
-        <!-- View Mode Switcher inside Drawer -->
-        <div class="drawer-mode-box">
-            <span class="drawer-theme-label">Display Mode / Chế độ xem</span>
-            <div class="drawer-mode-options">
-                <button class="drawer-mode-btn active" id="drawer-deck-btn" data-mode-val="deck">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
-                    <span>3D Deck Mode</span>
-                </button>
-                <button class="drawer-mode-btn" id="drawer-scroll-btn" data-mode-val="scroll">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><line x1="12" y1="3" x2="12" y2="21"></line><polyline points="7 8 12 3 17 8"></polyline><polyline points="7 16 12 21 17 16"></polyline></svg>
-                    <span>Classic Scroll</span>
-                </button>
-            </div>
-        </div>
-
         <div class="drawer-footer-actions">
             <button class="drawer-btn-guide" id="drawer-guide-btn">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
@@ -239,9 +196,9 @@
         </div>
     </aside>
 
-    <main class="deck-main-container" id="deck-main-container">
-        <!-- Slide 01: Personal Brand Hero Section -->
-        <section class="hero-section founder-hero-section deck-slide active" id="hero-section" data-slide="0">
+    <main>
+        <!-- Personal Brand Hero Section -->
+        <section class="hero-section founder-hero-section" id="hero-section">
             <div id="about-developer"></div>
 
             <div class="hero-container founder-hero-container">
@@ -350,8 +307,8 @@
             </div>
         </section>
 
-        <!-- Slide 02: Dedicated Delegation Visual Archives & Animated Showcase Section -->
-        <section id="delegation-gallery" class="delegation-gallery-section deck-slide next" data-slide="1">
+        <!-- Dedicated Delegation Visual Archives & Animated Showcase Section -->
+        <section id="delegation-gallery" class="delegation-gallery-section">
             <div class="section-header">
                 <div class="gallery-badge">
                     <span class="status-indicator-dot"></span>
@@ -488,8 +445,8 @@
 
 
 
-        <!-- Slide 03: Facebook Feed & Social Dispatch Section -->
-        <section id="facebook-feed" class="facebook-feed-section deck-slide next" data-slide="2">
+        <!-- Facebook Feed & Social Dispatch Section -->
+        <section id="facebook-feed" class="facebook-feed-section">
             <div class="section-header">
                 <div class="fb-section-badge">
                     <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
@@ -1147,57 +1104,55 @@
             </div>
         </section>
 
-        <!-- Slide 04: Design Factory & Footer Closing Stage -->
-        <div class="deck-slide deck-closing-slide next" id="deck-slide-3" data-slide="3">
-            <section class="templates-hub-banner-section" id="templates-hub-section">
-                <div class="templates-hub-banner has-spotlight">
-                    <div class="hub-banner-content">
-                        <span class="hub-badge">Design Factory & Client Showcase</span>
-                        <h3 class="hub-title">Explore Bespoke Client Portfolios & Design Factory Demos</h3>
-                        <p class="hub-desc">Looking for our delivered client websites, 11 interactive template demos, or brand visual systems? All client showcases and creative templates are preserved on our dedicated Design Factory subpage.</p>
-                    </div>
-                    <div class="hub-banner-action">
-                        <a href="templates.html" class="primary-btn">
-                            <span>Explore Client Projects & 11 Template Demos →</span>
-                        </a>
-                    </div>
+        <!-- Link to Secondary Subpage: Client Projects & Visuals -->
+        <section class="templates-hub-banner-section">
+            <div class="templates-hub-banner has-spotlight">
+                <div class="hub-banner-content">
+                    <span class="hub-badge">Design Factory & Client Showcase</span>
+                    <h3 class="hub-title">Explore Bespoke Client Portfolios & Design Factory Demos</h3>
+                    <p class="hub-desc">Looking for our delivered client websites, 11 interactive template demos, or brand visual systems? All client showcases and creative templates are preserved on our dedicated Design Factory subpage.</p>
                 </div>
-            </section>
-
-            <footer class="site-footer">
-                <div class="footer-container">
-                    <div class="footer-brand">
-                        <span class="footer-logo">BaoDi.<span>Studio</span></span>
-                        <p class="footer-tagline">Curated Web Layout Factory & Digital Identity by Nguyen Le Bao Duy</p>
-                    </div>
-                    <div class="footer-socials">
-                        <a href="https://facebook.com/" target="_blank" rel="noopener noreferrer" class="footer-social-link" aria-label="Facebook">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-                            </svg>
-                            <span>Facebook</span>
-                        </a>
-                        <a href="https://github.com/baonin0610" target="_blank" rel="noopener noreferrer" class="footer-social-link" aria-label="GitHub">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/>
-                            </svg>
-                            <span>GitHub</span>
-                        </a>
-                        <a href="https://zalo.me/0979605867" target="_blank" rel="noopener noreferrer" class="footer-social-link" aria-label="Zalo">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                            </svg>
-                            <span>Zalo (+84 979.605.867)</span>
-                        </a>
-                    </div>
-                    <div class="footer-bottom">
-                        <p>&copy; 2026 BaoDi Studio. All rights reserved.</p>
-                        <p class="footer-status-pill"><span class="status-indicator-dot"></span> Ready to deploy 24/7</p>
-                    </div>
+                <div class="hub-banner-action">
+                    <a href="templates.html" class="primary-btn">
+                        <span>Explore Client Projects & 11 Template Demos →</span>
+                    </a>
                 </div>
-            </footer>
-        </div>
+            </div>
+        </section>
     </main>
+
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <span class="footer-logo">BaoDi.<span>Studio</span></span>
+                <p class="footer-tagline">Curated Web Layout Factory & Digital Identity by Nguyen Le Bao Duy</p>
+            </div>
+            <div class="footer-socials">
+                <a href="https://facebook.com/" target="_blank" rel="noopener noreferrer" class="footer-social-link" aria-label="Facebook">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                    </svg>
+                    <span>Facebook</span>
+                </a>
+                <a href="https://github.com/baonin0610" target="_blank" rel="noopener noreferrer" class="footer-social-link" aria-label="GitHub">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/>
+                    </svg>
+                    <span>GitHub</span>
+                </a>
+                <a href="https://zalo.me/0979605867" target="_blank" rel="noopener noreferrer" class="footer-social-link" aria-label="Zalo">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                    </svg>
+                    <span>Zalo (+84 979.605.867)</span>
+                </a>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 BaoDi Studio. All rights reserved.</p>
+                <p class="footer-status-pill"><span class="status-indicator-dot"></span> Ready to deploy 24/7</p>
+            </div>
+        </div>
+    </footer>
 
 
     <!-- Live Template Preview Modal -->
@@ -1375,16 +1330,7 @@
         </div>
     </div>
 
-    <!-- Floating Bottom-Corner Scroll Guide Indicator -->
-    <a href="#delegation-gallery" class="floating-scroll-down-btn" id="floating-scroll-down-btn" aria-label="Scroll down to view more information" title="Scroll down to explore">
-        <span class="scroll-btn-text">Scroll</span>
-        <div class="scroll-btn-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <line x1="12" y1="4" x2="12" y2="18"></line>
-                <polyline points="6 12 12 18 18 12"></polyline>
-            </svg>
-        </div>
-    </a>
+
 
     <!-- Mobile Bottom Navigation Dock -->
     <nav class="mobile-bottom-nav" aria-label="Mobile Navigation">
@@ -1419,43 +1365,8 @@
         </a>
     </nav>
 
-    <!-- Interactive Floating 3D Side Deck Dock (Active in Deck Mode) -->
-    <nav class="side-deck-dock" id="side-deck-dock" aria-label="3D Deck Navigation">
-        <div class="deck-dock-track">
-            <button class="deck-nav-arrow deck-prev-btn" id="deck-prev-btn" aria-label="Previous Slide (Up)" title="Previous Slide (Up / ArrowUp)">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="14" height="14"><polyline points="18 15 12 9 6 15"></polyline></svg>
-            </button>
-            <div class="deck-dots-group">
-                <button class="deck-dot-btn active" data-slide-index="0" aria-label="Slide 01: Founder & Architect">
-                    <span class="deck-dot-num">01</span>
-                    <span class="deck-dot-tooltip">01 // Founder & Lab</span>
-                </button>
-                <button class="deck-dot-btn" data-slide-index="1" aria-label="Slide 02: University Delegations">
-                    <span class="deck-dot-num">02</span>
-                    <span class="deck-dot-tooltip">02 // Delegations Archive</span>
-                </button>
-                <button class="deck-dot-btn" data-slide-index="2" aria-label="Slide 03: Milestone Dispatches">
-                    <span class="deck-dot-num">03</span>
-                    <span class="deck-dot-tooltip">03 // Social Dispatches</span>
-                </button>
-                <button class="deck-dot-btn" data-slide-index="3" aria-label="Slide 04: Design Factory & Lab">
-                    <span class="deck-dot-num">04</span>
-                    <span class="deck-dot-tooltip">04 // Design Factory</span>
-                </button>
-            </div>
-            <button class="deck-nav-arrow deck-next-btn" id="deck-next-btn" aria-label="Next Slide (Down)" title="Next Slide (Down / ArrowDown)">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="14" height="14"><polyline points="6 9 12 15 18 9"></polyline></svg>
-            </button>
-        </div>
-        <div class="deck-slide-indicator">
-            <span class="deck-current-num" id="deck-current-num">01</span>
-            <span class="deck-divider">/</span>
-            <span class="deck-total-num">04</span>
-        </div>
-    </nav>
-
     <!-- Custom JS -->
-    <script src="script.js?v=3.9"></script>
+    <script src="script.js?v=4.0"></script>
     <!-- High-Resolution Image Lightbox Modal -->
     <div id="image-lightbox-modal" class="image-lightbox-modal" aria-hidden="true">
         <div class="lightbox-backdrop"></div>

@@ -31,6 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initRoleRotator();
     initAnimatedCounters();
     initMagneticButtons();
+    initDeckPresentation();
 });
 
 /**
@@ -1925,4 +1926,330 @@ function initMagneticButtons() {
             btn.style.transition = 'transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)';
         });
     });
+}
+
+/**
+ * 22. Dual View Mode: 3D Cinematic Deck Presentation & Classic Scroll
+ * Manages fullpage 3D stage sliding transitions, side dock navigation, keyboard & gesture controls,
+ * and effortless toggle between 3D Deck and Continuous Scroll modes.
+ */
+function initDeckPresentation() {
+    const slides = Array.from(document.querySelectorAll('.deck-slide'));
+    if (!slides.length) return;
+
+    const modeToggleBtn = document.getElementById('view-mode-toggle-btn');
+    const mobileModeBtn = document.getElementById('mobile-mode-btn');
+    const drawerDeckBtn = document.getElementById('drawer-deck-btn');
+    const drawerScrollBtn = document.getElementById('drawer-scroll-btn');
+    const modeLabel = document.getElementById('view-mode-label');
+    const dock = document.getElementById('side-deck-dock');
+    const dotBtns = Array.from(document.querySelectorAll('.deck-dot-btn'));
+    const prevArrow = document.getElementById('deck-prev-btn');
+    const nextArrow = document.getElementById('deck-next-btn');
+    const currentNum = document.getElementById('deck-current-num');
+    const floatingDownBtn = document.getElementById('floating-scroll-down-btn');
+
+    let currentSlideIndex = 0;
+    let isTransitioning = false;
+    let transitionCooldownTimer = null;
+
+    function applyViewMode(mode) {
+        if (mode !== 'deck' && mode !== 'scroll') mode = 'deck';
+        document.documentElement.setAttribute('data-view-mode', mode);
+
+        try {
+            localStorage.setItem('baodi-view-mode', mode);
+        } catch (e) {
+            console.warn('Could not persist view mode', e);
+        }
+
+        if (modeLabel) {
+            modeLabel.textContent = mode === 'deck' ? '3D Deck' : 'Scroll';
+        }
+
+        if (drawerDeckBtn) drawerDeckBtn.classList.toggle('active', mode === 'deck');
+        if (drawerScrollBtn) drawerScrollBtn.classList.toggle('active', mode === 'scroll');
+
+        if (mode === 'deck') {
+            goToSlide(currentSlideIndex, true);
+        } else {
+            // Restore natural position in classic scroll mode
+            const activeSection = slides[currentSlideIndex];
+            if (activeSection) {
+                setTimeout(() => {
+                    activeSection.scrollIntoView({ behavior: 'smooth' });
+                }, 50);
+            }
+        }
+    }
+
+    function goToSlide(index, immediate = false) {
+        if (index < 0) index = 0;
+        if (index >= slides.length) index = slides.length - 1;
+
+        currentSlideIndex = index;
+
+        slides.forEach((slide, idx) => {
+            slide.classList.remove('active', 'prev', 'next');
+            if (idx === index) {
+                slide.classList.add('active');
+                slide.scrollTop = 0; // Reset internal scroll to top of slide
+            } else if (idx < index) {
+                slide.classList.add('prev');
+            } else {
+                slide.classList.add('next');
+            }
+        });
+
+        // Update Dock Numbers and Dots
+        if (currentNum) {
+            currentNum.textContent = `0${index + 1}`;
+        }
+
+        dotBtns.forEach((dot, idx) => {
+            dot.classList.toggle('active', idx === index);
+        });
+
+        // Update Navbar Links Active State
+        const navLinks = document.querySelectorAll('.nav-link, .mobile-nav-item');
+        const sectionMap = ['about-developer', 'delegation-gallery', 'facebook-feed', 'templates.html'];
+        navLinks.forEach(link => {
+            const href = link.getAttribute('href') || '';
+            const target = link.getAttribute('data-target') || '';
+            const isMatch = href.includes(sectionMap[index]) || target.includes(sectionMap[index]);
+            link.classList.toggle('active', isMatch);
+        });
+
+        // Trigger Reveal Observer on New Slide Contents
+        const revealedItems = slides[index].querySelectorAll('.reveal-on-scroll');
+        revealedItems.forEach(el => el.classList.add('revealed'));
+    }
+
+    function triggerCooldown() {
+        isTransitioning = true;
+        clearTimeout(transitionCooldownTimer);
+        transitionCooldownTimer = setTimeout(() => {
+            isTransitioning = false;
+        }, 750);
+    }
+
+    // Initialize View Mode from storage or default to deck
+    let savedMode = 'deck';
+    try {
+        savedMode = localStorage.getItem('baodi-view-mode') || 'deck';
+    } catch (e) {
+        savedMode = 'deck';
+    }
+    applyViewMode(savedMode);
+
+    // Mouse Wheel / Trackpad Gesture Handler
+    window.addEventListener('wheel', (e) => {
+        if (document.documentElement.getAttribute('data-view-mode') !== 'deck') return;
+        if (isTransitioning) return;
+
+        const currentSlide = slides[currentSlideIndex];
+        if (!currentSlide) return;
+
+        const isScrollable = currentSlide.scrollHeight > currentSlide.clientHeight + 10;
+        const isAtBottom = currentSlide.scrollTop + currentSlide.clientHeight >= currentSlide.scrollHeight - 25;
+        const isAtTop = currentSlide.scrollTop <= 15;
+
+        if (e.deltaY > 35) {
+            if (!isScrollable || isAtBottom) {
+                if (currentSlideIndex < slides.length - 1) {
+                    goToSlide(currentSlideIndex + 1);
+                    triggerCooldown();
+                }
+            }
+        } else if (e.deltaY < -35) {
+            if (!isScrollable || isAtTop) {
+                if (currentSlideIndex > 0) {
+                    goToSlide(currentSlideIndex - 1);
+                    triggerCooldown();
+                }
+            }
+        }
+    }, { passive: true });
+
+    // Touch Swipe Gestures for Mobile
+    let touchStartY = 0;
+    let touchStartX = 0;
+
+    window.addEventListener('touchstart', (e) => {
+        if (e.touches && e.touches[0]) {
+            touchStartY = e.touches[0].clientY;
+            touchStartX = e.touches[0].clientX;
+        }
+    }, { passive: true });
+
+    window.addEventListener('touchend', (e) => {
+        if (document.documentElement.getAttribute('data-view-mode') !== 'deck') return;
+        if (isTransitioning) return;
+        if (!e.changedTouches || !e.changedTouches[0]) return;
+
+        const deltaY = e.changedTouches[0].clientY - touchStartY;
+        const deltaX = e.changedTouches[0].clientX - touchStartX;
+
+        // Ignore if mostly horizontal swipe
+        if (Math.abs(deltaX) > Math.abs(deltaY)) return;
+
+        const currentSlide = slides[currentSlideIndex];
+        if (!currentSlide) return;
+
+        const isScrollable = currentSlide.scrollHeight > currentSlide.clientHeight + 10;
+        const isAtBottom = currentSlide.scrollTop + currentSlide.clientHeight >= currentSlide.scrollHeight - 25;
+        const isAtTop = currentSlide.scrollTop <= 15;
+
+        if (deltaY < -50) { // Swipe Up (Advance)
+            if (!isScrollable || isAtBottom) {
+                if (currentSlideIndex < slides.length - 1) {
+                    goToSlide(currentSlideIndex + 1);
+                    triggerCooldown();
+                }
+            }
+        } else if (deltaY > 50) { // Swipe Down (Previous)
+            if (!isScrollable || isAtTop) {
+                if (currentSlideIndex > 0) {
+                    goToSlide(currentSlideIndex - 1);
+                    triggerCooldown();
+                }
+            }
+        }
+    }, { passive: true });
+
+    // Keyboard Arrow Keys Navigation
+    window.addEventListener('keydown', (e) => {
+        if (document.documentElement.getAttribute('data-view-mode') !== 'deck') return;
+        if (['ArrowDown', 'PageDown'].includes(e.key)) {
+            if (currentSlideIndex < slides.length - 1) {
+                e.preventDefault();
+                goToSlide(currentSlideIndex + 1);
+                triggerCooldown();
+            }
+        } else if (['ArrowUp', 'PageUp'].includes(e.key)) {
+            if (currentSlideIndex > 0) {
+                e.preventDefault();
+                goToSlide(currentSlideIndex - 1);
+                triggerCooldown();
+            }
+        }
+    });
+
+    // Dock Dot Clicks
+    dotBtns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const targetIdx = parseInt(btn.getAttribute('data-slide-index'), 10);
+            if (!isNaN(targetIdx)) {
+                goToSlide(targetIdx);
+                triggerCooldown();
+            }
+        });
+    });
+
+    // Dock Prev / Next Arrows
+    if (prevArrow) {
+        prevArrow.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (currentSlideIndex > 0) {
+                goToSlide(currentSlideIndex - 1);
+                triggerCooldown();
+            }
+        });
+    }
+
+    if (nextArrow) {
+        nextArrow.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (currentSlideIndex < slides.length - 1) {
+                goToSlide(currentSlideIndex + 1);
+                triggerCooldown();
+            } else {
+                goToSlide(0); // Loop to start
+                triggerCooldown();
+            }
+        });
+    }
+
+    // Floating Bottom Scroll Indicator Click
+    if (floatingDownBtn) {
+        floatingDownBtn.addEventListener('click', (e) => {
+            if (document.documentElement.getAttribute('data-view-mode') === 'deck') {
+                e.preventDefault();
+                if (currentSlideIndex < slides.length - 1) {
+                    goToSlide(currentSlideIndex + 1);
+                } else {
+                    goToSlide(0);
+                }
+                triggerCooldown();
+            }
+        });
+    }
+
+    // Intercept in-page Anchor Links in Deck Mode
+    const anchorMap = {
+        '#hero-section': 0,
+        '#about-developer': 0,
+        '#delegation-gallery': 1,
+        '#facebook-feed': 2,
+        '#templates-hub-section': 3,
+        '#templates-hub': 3
+    };
+
+    document.querySelectorAll('a[href^="#"]').forEach(link => {
+        link.addEventListener('click', (e) => {
+            const href = link.getAttribute('href');
+            if (anchorMap.hasOwnProperty(href)) {
+                if (document.documentElement.getAttribute('data-view-mode') === 'deck') {
+                    e.preventDefault();
+                    goToSlide(anchorMap[href]);
+                    triggerCooldown();
+
+                    // Close mobile drawer if open
+                    const drawer = document.getElementById('mobile-nav-drawer');
+                    const overlay = document.getElementById('mobile-drawer-overlay');
+                    if (drawer && drawer.classList.contains('open')) {
+                        drawer.classList.remove('open');
+                        if (overlay) overlay.classList.remove('active');
+                        document.body.classList.remove('drawer-open');
+                    }
+                }
+            }
+        });
+    });
+
+    // Header Mode Switcher Toggle Button
+    if (modeToggleBtn) {
+        modeToggleBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const current = document.documentElement.getAttribute('data-view-mode') || 'deck';
+            const nextMode = current === 'deck' ? 'scroll' : 'deck';
+            applyViewMode(nextMode);
+        });
+    }
+
+    // Mobile Header Mode Button
+    if (mobileModeBtn) {
+        mobileModeBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const current = document.documentElement.getAttribute('data-view-mode') || 'deck';
+            const nextMode = current === 'deck' ? 'scroll' : 'deck';
+            applyViewMode(nextMode);
+        });
+    }
+
+    // Drawer Buttons
+    if (drawerDeckBtn) {
+        drawerDeckBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            applyViewMode('deck');
+        });
+    }
+
+    if (drawerScrollBtn) {
+        drawerScrollBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            applyViewMode('scroll');
+        });
+    }
 }

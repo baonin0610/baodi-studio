@@ -5821,6 +5821,382 @@ html[data-theme="warm-editorial"] .ambient-glow {
     font-weight: 600;
 }
 
+/* ==========================================================================
+   Dual View Mode: 3D Cinematic Deck vs Classic Continuous Scroll
+   ========================================================================== */
+
+/* Toggle Button in Header */
+.view-mode-toggle-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.42rem 0.85rem;
+    border-radius: 999px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    transition: var(--transition-fast);
+}
+
+.view-mode-toggle-btn:hover {
+    border-color: var(--accent-color);
+    color: var(--accent-color);
+    box-shadow: 0 0 12px var(--accent-subtle);
+}
+
+.view-mode-toggle-btn .mode-icon {
+    display: inline-flex;
+    align-items: center;
+    color: var(--accent-color);
+}
+
+.view-mode-toggle-btn .scroll-icon {
+    display: none;
+}
+
+html[data-view-mode="scroll"] .view-mode-toggle-btn .deck-icon {
+    display: none;
+}
+
+html[data-view-mode="scroll"] .view-mode-toggle-btn .scroll-icon {
+    display: inline-flex;
+}
+
+/* Mobile Header Mode Toggle Button */
+.mobile-mode-btn {
+    width: 38px;
+    height: 38px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 50%;
+    color: var(--accent-color);
+    cursor: pointer;
+    transition: var(--transition-fast);
+}
+
+.mobile-mode-btn:hover {
+    border-color: var(--accent-color);
+    transform: scale(1.05);
+}
+
+/* Drawer Mode Box */
+.drawer-mode-box {
+    padding: 1.1rem 1.4rem;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    background: var(--bg-card-subtle);
+}
+
+.drawer-mode-options {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+}
+
+.drawer-mode-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    padding: 0.55rem 0.75rem;
+    border-radius: 8px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    font-size: 0.78rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition-fast);
+}
+
+.drawer-mode-btn svg {
+    color: var(--accent-color);
+}
+
+.drawer-mode-btn.active {
+    border-color: var(--accent-color);
+    background: var(--accent-subtle);
+    font-weight: 600;
+}
+
+/* ==========================================================================
+   Mode 1: 3D Cinematic Deck Mode Active Styles
+   ========================================================================== */
+html[data-view-mode="deck"],
+html[data-view-mode="deck"] body {
+    height: 100vh;
+    overflow: hidden;
+}
+
+html[data-view-mode="deck"] .deck-main-container {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    perspective: 1200px;
+    overflow: hidden;
+}
+
+html[data-view-mode="deck"] .deck-slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    box-sizing: border-box;
+    padding-top: 85px;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(100%) scale(0.96) translateZ(-60px);
+    filter: blur(8px);
+    transition: transform 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+                opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+                filter 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: transform, opacity, filter;
+    z-index: 1;
+}
+
+html[data-view-mode="deck"] .deck-slide.active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateY(0) scale(1) translateZ(0);
+    filter: blur(0);
+    z-index: 10;
+}
+
+html[data-view-mode="deck"] .deck-slide.prev {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(-24%) scale(0.92) translateZ(-100px);
+    filter: blur(8px);
+    z-index: 4;
+}
+
+html[data-view-mode="deck"] .deck-slide.next {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(100%) scale(0.96) translateZ(-60px);
+    filter: blur(8px);
+    z-index: 4;
+}
+
+/* Slide 4 Closing Stage in Deck Mode */
+html[data-view-mode="deck"] .deck-closing-slide {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* ==========================================================================
+   Mode 2: Classic Scroll Mode Styles
+   ========================================================================== */
+html[data-view-mode="scroll"],
+html[data-view-mode="scroll"] body {
+    height: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+html[data-view-mode="scroll"] .deck-main-container {
+    position: relative;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+}
+
+html[data-view-mode="scroll"] .deck-slide {
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    width: 100% !important;
+    height: auto !important;
+    overflow: visible !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    transform: none !important;
+    filter: none !important;
+    padding-top: 0 !important;
+}
+
+html[data-view-mode="scroll"] .side-deck-dock {
+    display: none !important;
+}
+
+/* ==========================================================================
+   Side Deck Dock (Floating 3D Navigation Controls)
+   ========================================================================== */
+.side-deck-dock {
+    position: fixed;
+    right: 2.2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.85rem;
+    pointer-events: auto;
+    animation: sideDockFadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes sideDockFadeIn {
+    from { opacity: 0; transform: translateY(-50%) translateX(20px); }
+    to { opacity: 1; transform: translateY(-50%) translateX(0); }
+}
+
+.deck-dock-track {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 999px;
+    padding: 0.65rem 0.45rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    box-shadow: var(--card-shadow);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+}
+
+.deck-nav-arrow {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 1px solid transparent;
+    background: transparent;
+    color: var(--text-muted);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition-fast);
+}
+
+.deck-nav-arrow:hover {
+    color: var(--accent-color);
+    background: var(--accent-subtle);
+    border-color: var(--border-color);
+}
+
+.deck-dots-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+}
+
+.deck-dot-btn {
+    position: relative;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: transparent;
+    border: 1px solid transparent;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition-fast);
+}
+
+.deck-dot-btn:hover {
+    color: var(--text-color);
+    background: var(--accent-subtle);
+}
+
+.deck-dot-btn.active {
+    background: var(--accent-color);
+    color: var(--bg-color);
+    border-color: var(--accent-color);
+    box-shadow: 0 0 14px var(--accent-color);
+}
+
+.deck-dot-tooltip {
+    position: absolute;
+    right: calc(100% + 14px);
+    top: 50%;
+    transform: translateY(-50%) translateX(8px);
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    padding: 0.35rem 0.75rem;
+    border-radius: 8px;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: var(--transition-fast);
+    box-shadow: var(--card-shadow);
+}
+
+.deck-dot-btn:hover .deck-dot-tooltip {
+    opacity: 1;
+    transform: translateY(-50%) translateX(0);
+}
+
+.deck-slide-indicator {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    letter-spacing: 0.06em;
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    padding: 0.25rem 0.6rem;
+    border-radius: 999px;
+    box-shadow: var(--card-shadow);
+}
+
+.deck-current-num {
+    color: var(--accent-color);
+    font-weight: 700;
+}
+
+@media (max-width: 992px) {
+    .side-deck-dock {
+        right: 1rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .side-deck-dock {
+        right: 1rem;
+        bottom: 80px;
+        top: auto;
+        transform: none;
+    }
+    .deck-slide-indicator {
+        display: none;
+    }
+    .deck-dot-tooltip {
+        display: none;
+    }
+}
+
 
 
 

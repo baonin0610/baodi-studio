@@ -15,7 +15,8 @@ document.addEventListener('DOMContentLoaded', () => {
     initScrollReveal();
     initLivePreviewModal();
     initUserGuideModal();
-    initHeroCardTilt();
+    initUniversal3DTilt();
+    initClickRipple();
     initMobileBottomNav();
     initMobileSwipeToast();
     initMobileTouchSwiper();
@@ -167,21 +168,34 @@ function initTemplateLinkCopier() {
 }
 
 /**
- * 6. Scroll Reveal Observer & Dynamic Classes setup
- * Programmatically tracks elements and fades them up beautifully when scrolled into view.
+ * 6. Scroll Reveal Observer & Dynamic Staggered Classes
+ * Programmatically tracks elements and cascades them up smoothly with 3D elevation and blur clearing.
  */
 function initScrollReveal() {
-    const targets = document.querySelectorAll(
-        '.section-header, .delegation-stage, .delegation-filmstrip-wrapper, .fb-carousel-container, .templates-hub-banner, .showcase-card, .founder-credentials-grid'
+    // Stagger child elements in major structural grids and groups
+    const staggerContainers = document.querySelectorAll(
+        '.founder-credentials-grid, .fb-uni-tabs, .showcase-grid, .delegation-filmstrip-track, .founder-hero-actions'
     );
-    
-    // Add scroll reveal classes dynamically
-    targets.forEach(el => {
-        el.classList.add('reveal-on-scroll');
+    staggerContainers.forEach(container => {
+        Array.from(container.children).forEach((child, index) => {
+            child.classList.add('reveal-on-scroll');
+            child.style.setProperty('--stagger-index', index);
+        });
     });
 
+    // General structural elements that glide into view
+    const generalTargets = document.querySelectorAll(
+        '.section-header, .delegation-stage, .delegation-filmstrip-wrapper, .fb-carousel-container, .templates-hub-banner, .showcase-card, .founder-visual-card, .gallery-meta-panel, .fb-profile-banner, .site-footer'
+    );
+    generalTargets.forEach(el => {
+        if (!el.classList.contains('reveal-on-scroll')) {
+            el.classList.add('reveal-on-scroll');
+        }
+    });
+
+    const allRevealElements = document.querySelectorAll('.reveal-on-scroll');
     if (!('IntersectionObserver' in window)) {
-        targets.forEach(el => el.classList.add('revealed'));
+        allRevealElements.forEach(el => el.classList.add('revealed'));
         return;
     }
 
@@ -197,7 +211,7 @@ function initScrollReveal() {
         rootMargin: '0px 0px -40px 0px'
     });
 
-    targets.forEach(el => observer.observe(el));
+    allRevealElements.forEach(el => observer.observe(el));
 }
 
 /**
@@ -367,42 +381,53 @@ function initUserGuideModal() {
 }
 
 /**
- * 9. Interactive 3D Card Tilt with Glare Sweep
- * Follows cursor position to rotate card in 3D space and sweep reflective radial highlights.
+ * 9. Universal 3D Card Tilt with Real-Time Light Glare
+ * Provides tactile physics-based 3D rotation, dynamic spotlight positioning, and smooth spring resets
+ * across major cards (founder card, credentials, showcase, facebook dispatches, and gallery stage).
  */
-function initHeroCardTilt() {
-    const founderCard = document.querySelector('.founder-portrait-card') || document.querySelector('.founder-visual-card');
-    if (founderCard && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
-        let isHovering = false;
-        let rect;
+function initUniversal3DTilt() {
+    if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
 
-        founderCard.addEventListener('mouseenter', () => {
-            isHovering = true;
-            rect = founderCard.getBoundingClientRect();
-            founderCard.style.transition = 'transform 0.15s ease-out';
+    const tiltTargets = document.querySelectorAll(
+        '.founder-portrait-card, .cred-item, .showcase-card, .fb-card, .delegation-stage, .filmstrip-thumb'
+    );
+
+    tiltTargets.forEach(card => {
+        let isHovered = false;
+        let rect = null;
+
+        card.addEventListener('mouseenter', () => {
+            isHovered = true;
+            rect = card.getBoundingClientRect();
+            card.style.transition = 'transform 0.12s ease-out, box-shadow 0.25s ease';
         });
 
-        founderCard.addEventListener('mousemove', (e) => {
-            if (!isHovering) return;
-            if (!rect) rect = founderCard.getBoundingClientRect();
+        card.addEventListener('mousemove', (e) => {
+            if (!isHovered) return;
+            if (!rect) rect = card.getBoundingClientRect();
+
             const x = e.clientX - rect.left;
             const y = e.clientY - rect.top;
             const centerX = rect.width / 2;
             const centerY = rect.height / 2;
 
-            // Refined luxury tilt: max 4.5 degrees
-            const tiltX = ((centerY - y) / centerY) * 4.5;
-            const tiltY = ((x - centerX) / centerX) * 4.5;
+            // Subtle, premium tilt angle
+            const maxTilt = card.classList.contains('cred-item') ? 4.5 : 6.5;
+            const tiltX = ((centerY - y) / centerY) * maxTilt;
+            const tiltY = ((x - centerX) / centerX) * maxTilt;
 
-            founderCard.style.transform = `perspective(1000px) rotateX(${tiltX.toFixed(2)}deg) rotateY(${tiltY.toFixed(2)}deg) scale3d(1.02, 1.02, 1.02)`;
+            card.style.transform = `perspective(900px) rotateX(${tiltX.toFixed(2)}deg) rotateY(${tiltY.toFixed(2)}deg) scale3d(1.02, 1.02, 1.02)`;
+            card.style.setProperty('--mouse-x', `${x}px`);
+            card.style.setProperty('--mouse-y', `${y}px`);
         });
 
-        founderCard.addEventListener('mouseleave', () => {
-            isHovering = false;
-            founderCard.style.transition = 'transform 0.7s cubic-bezier(0.16, 1, 0.3, 1)';
-            founderCard.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+        card.addEventListener('mouseleave', () => {
+            isHovered = false;
+            rect = null;
+            card.style.transition = 'transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s ease';
+            card.style.transform = 'perspective(900px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
         });
-    }
+    });
 
     const card = document.getElementById('hero-tilt-card');
     const glare = card ? card.querySelector('.hero-card-glare') : null;
@@ -413,19 +438,14 @@ function initHeroCardTilt() {
         const rect = card.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
-        
         const centerX = rect.width / 2;
         const centerY = rect.height / 2;
         
-        // Tilt angles (max 10 degrees)
-        const rotateX = ((centerY - y) / centerY) * 10;
-        const rotateY = ((x - centerX) / centerX) * 10;
+        const rotateX = ((centerY - y) / centerY) * 8;
+        const rotateY = ((x - centerX) / centerX) * 8;
         
-        // Set transform matrix
         card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-        card.style.boxShadow = `${-rotateY * 1.2}px ${rotateX * 1.2}px 30px rgba(0,0,0,0.06)`;
 
-        // Highlight glare position
         if (glare) {
             glare.style.opacity = '1';
             const glareX = (x / rect.width) * 100;
@@ -436,12 +456,6 @@ function initHeroCardTilt() {
 
     card.addEventListener('mouseleave', () => {
         card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg)';
-        // Maintain shadow depending on dark-mode class
-        if (card.classList.contains('dark-mode')) {
-            card.style.boxShadow = '0 15px 40px rgba(0,0,0,0.5)';
-        } else {
-            card.style.boxShadow = '0 10px 30px rgba(0,0,0,0.03)';
-        }
         if (glare) glare.style.opacity = '0';
     });
 
@@ -1709,16 +1723,16 @@ function initNeuralCanvas() {
     }
 
     function initParticles() {
-        const count = width < 768 ? 22 : 46;
+        const count = width < 768 ? 36 : 72;
         particles = [];
         for (let i = 0; i < count; i++) {
             particles.push({
                 x: Math.random() * width,
                 y: Math.random() * height,
-                vx: (Math.random() - 0.5) * 0.4,
-                vy: (Math.random() - 0.5) * 0.4,
-                radius: Math.random() * 1.5 + 1.2,
-                baseAlpha: Math.random() * 0.4 + 0.3
+                vx: (Math.random() - 0.5) * 0.45,
+                vy: (Math.random() - 0.5) * 0.45,
+                radius: Math.random() * 1.6 + 1.2,
+                baseAlpha: Math.random() * 0.45 + 0.35
             });
         }
     }
@@ -1746,13 +1760,17 @@ function initNeuralCanvas() {
 
         ctx.clearRect(0, 0, width, height);
         const rgb = getAccentRgb();
-        const maxDist = width < 768 ? 95 : 125;
-        const mouseDist = 150;
+        const maxDist = width < 768 ? 100 : 135;
+        const mouseDist = 160;
 
         for (let i = 0; i < particles.length; i++) {
             const p = particles[i];
             p.x += p.vx;
             p.y += p.vy;
+
+            // Soft friction decay to maintain organic ambient drift
+            if (Math.abs(p.vx) > 0.5) p.vx *= 0.96;
+            if (Math.abs(p.vy) > 0.5) p.vy *= 0.96;
 
             // Bounce off boundaries
             if (p.x < 0 || p.x > width) p.vx = -p.vx;
@@ -1768,13 +1786,13 @@ function initNeuralCanvas() {
                     ctx.beginPath();
                     ctx.moveTo(p.x, p.y);
                     ctx.lineTo(mouse.x, mouse.y);
-                    ctx.strokeStyle = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${factor * 0.35})`;
-                    ctx.lineWidth = 0.9;
+                    ctx.strokeStyle = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${factor * 0.4})`;
+                    ctx.lineWidth = 1.1;
                     ctx.stroke();
 
                     // Soft deflection away from mouse
-                    p.x += (dxM / distM) * factor * 0.6;
-                    p.y += (dyM / distM) * factor * 0.6;
+                    p.x += (dxM / distM) * factor * 0.75;
+                    p.y += (dyM / distM) * factor * 0.75;
                 }
             }
 
@@ -1782,8 +1800,8 @@ function initNeuralCanvas() {
             ctx.beginPath();
             ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
             ctx.fillStyle = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${p.baseAlpha})`;
-            ctx.shadowBlur = 4;
-            ctx.shadowColor = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.5)`;
+            ctx.shadowBlur = 6;
+            ctx.shadowColor = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.65)`;
             ctx.fill();
             ctx.shadowBlur = 0;
 
@@ -1794,12 +1812,12 @@ function initNeuralCanvas() {
                 const dy = p.y - p2.y;
                 const dist = Math.sqrt(dx * dx + dy * dy);
                 if (dist < maxDist) {
-                    const alpha = (1 - dist / maxDist) * 0.22;
+                    const alpha = (1 - dist / maxDist) * 0.28;
                     ctx.beginPath();
                     ctx.moveTo(p.x, p.y);
                     ctx.lineTo(p2.x, p2.y);
                     ctx.strokeStyle = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${alpha})`;
-                    ctx.lineWidth = 0.65;
+                    ctx.lineWidth = 0.75;
                     ctx.stroke();
                 }
             }
@@ -1807,6 +1825,22 @@ function initNeuralCanvas() {
 
         animationFrameId = requestAnimationFrame(animate);
     }
+
+    // Kinetic pointerdown burst: Clicking pushes nearby particles outwards
+    window.addEventListener('pointerdown', (e) => {
+        const clickX = e.clientX;
+        const clickY = e.clientY;
+        particles.forEach(p => {
+            const dx = p.x - clickX;
+            const dy = p.y - clickY;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < 260 && dist > 0) {
+                const force = (1 - dist / 260) * 5;
+                p.vx += (dx / dist) * force;
+                p.vy += (dy / dist) * force;
+            }
+        });
+    }, { passive: true });
 
     window.addEventListener('resize', resize, { passive: true });
     window.addEventListener('mousemove', (e) => {
@@ -1875,6 +1909,7 @@ function initAnimatedCounters() {
                 requestAnimationFrame(step);
             } else {
                 el.textContent = target.toLocaleString();
+                el.classList.add('counter-finished');
             }
         }
         requestAnimationFrame(step);
@@ -1920,6 +1955,24 @@ function initMagneticButtons() {
             btn.style.transition = 'transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)';
         });
     });
+}
+
+/**
+ * 22. Interactive Click Energy Shockwave
+ * Emits an expanding glowing cybernetic shockwave at pointer click coordinates.
+ */
+function initClickRipple() {
+    document.addEventListener('pointerdown', (e) => {
+        const wave = document.createElement('div');
+        wave.className = 'click-energy-wave';
+        wave.style.left = `${e.clientX}px`;
+        wave.style.top = `${e.clientY}px`;
+        document.body.appendChild(wave);
+
+        wave.addEventListener('animationend', () => {
+            wave.remove();
+        });
+    }, { passive: true });
 }
 
 

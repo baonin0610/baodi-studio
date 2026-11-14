@@ -25,6 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initDelegationGalleryCarousel();
     initFacebookPostsCarousel();
     initCardSpotlights();
+    initThemePalette();
 });
 
 /**
@@ -361,7 +362,7 @@ function initUserGuideModal() {
  * Follows cursor position to rotate card in 3D space and sweep reflective radial highlights.
  */
 function initHeroCardTilt() {
-    const founderCard = document.querySelector('.founder-visual-card');
+    const founderCard = document.querySelector('.founder-portrait-card') || document.querySelector('.founder-visual-card');
     if (founderCard && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
         let isHovering = false;
         let rect;
@@ -1553,4 +1554,105 @@ function initCardSpotlights() {
             }
         });
     });
+}
+
+/**
+ * 16. Studio Color Palette Switcher
+ * Manages four luxury themes: Obsidian Gold, Warm Sand, Slate Navy, Emerald Atelier.
+ * Supports desktop dropdown, mobile header quick-cycler, and drawer theme buttons.
+ */
+function initThemePalette() {
+    const THEMES = ['obsidian', 'warm-editorial', 'cyber-slate', 'atelier-emerald'];
+    const themeButtons = document.querySelectorAll('[data-theme-val]');
+    const triggerBtn = document.getElementById('palette-trigger-btn');
+    const dropdown = document.getElementById('palette-dropdown');
+    const mobileBtn = document.getElementById('mobile-palette-btn');
+
+    function applyTheme(theme) {
+        if (!THEMES.includes(theme)) {
+            theme = 'obsidian';
+        }
+        document.documentElement.setAttribute('data-theme', theme);
+        try {
+            localStorage.setItem('baodi-theme', theme);
+        } catch (e) {
+            console.warn('Could not persist theme to localStorage', e);
+        }
+
+        // Update active class on all buttons across header & mobile drawer
+        themeButtons.forEach(btn => {
+            const val = btn.getAttribute('data-theme-val');
+            btn.classList.toggle('active', val === theme);
+        });
+
+        // Update accessibility
+        if (triggerBtn) {
+            triggerBtn.setAttribute('aria-label', `Studio Theme: ${theme}`);
+        }
+    }
+
+    // Initialize from storage or default
+    let savedTheme = 'obsidian';
+    try {
+        savedTheme = localStorage.getItem('baodi-theme') || 'obsidian';
+    } catch (e) {
+        savedTheme = 'obsidian';
+    }
+    applyTheme(savedTheme);
+
+    // Attach click listeners to all theme option buttons (desktop + drawer)
+    themeButtons.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const val = btn.getAttribute('data-theme-val');
+            applyTheme(val);
+            if (dropdown) {
+                dropdown.classList.remove('show');
+                if (triggerBtn) triggerBtn.setAttribute('aria-expanded', 'false');
+            }
+        });
+    });
+
+    // Desktop Dropdown Toggle
+    if (triggerBtn && dropdown) {
+        triggerBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            const isOpen = dropdown.classList.toggle('show');
+            triggerBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('#theme-palette-wrapper')) {
+                dropdown.classList.remove('show');
+                triggerBtn.setAttribute('aria-expanded', 'false');
+            }
+        });
+
+        // Close on ESC
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && dropdown.classList.contains('show')) {
+                dropdown.classList.remove('show');
+                triggerBtn.setAttribute('aria-expanded', 'false');
+                triggerBtn.focus();
+            }
+        });
+    }
+
+    // Mobile Header Quick Toggle (cycles through the 4 themes sequentially)
+    if (mobileBtn) {
+        mobileBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const current = document.documentElement.getAttribute('data-theme') || 'obsidian';
+            const currentIndex = THEMES.indexOf(current);
+            const nextIndex = (currentIndex + 1) % THEMES.length;
+            applyTheme(THEMES[nextIndex]);
+
+            // Gentle tactile vibration feedback on supporting devices
+            if (navigator.vibrate) {
+                navigator.vibrate(30);
+            }
+        });
+    }
 }

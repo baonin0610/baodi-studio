@@ -1930,8 +1930,9 @@ function initMagneticButtons() {
 
 /**
  * 22. Dual View Mode: 3D Cinematic Deck Presentation & Classic Scroll
- * Manages fullpage 3D stage sliding transitions, side dock navigation, keyboard & gesture controls,
- * and effortless toggle between 3D Deck and Continuous Scroll modes.
+ * Provides unhindered, fluid section browsing with CSS Scroll-Snap, 3D focal depth,
+ * real-time IntersectionObserver tracking, floating side dock HUD, and quick mode toggle.
+ * Guarantees zero clipped content and natural reading on all devices.
  */
 function initDeckPresentation() {
     const slides = Array.from(document.querySelectorAll('.deck-slide'));
@@ -1950,8 +1951,6 @@ function initDeckPresentation() {
     const floatingDownBtn = document.getElementById('floating-scroll-down-btn');
 
     let currentSlideIndex = 0;
-    let isTransitioning = false;
-    let transitionCooldownTimer = null;
 
     function applyViewMode(mode) {
         if (mode !== 'deck' && mode !== 'scroll') mode = 'deck';
@@ -1970,35 +1969,40 @@ function initDeckPresentation() {
         if (drawerDeckBtn) drawerDeckBtn.classList.toggle('active', mode === 'deck');
         if (drawerScrollBtn) drawerScrollBtn.classList.toggle('active', mode === 'scroll');
 
-        if (mode === 'deck') {
-            goToSlide(currentSlideIndex, true);
-        } else {
-            // Restore natural position in classic scroll mode
-            const activeSection = slides[currentSlideIndex];
-            if (activeSection) {
-                setTimeout(() => {
-                    activeSection.scrollIntoView({ behavior: 'smooth' });
-                }, 50);
-            }
+        // Scroll to the active slide smoothly
+        if (slides[currentSlideIndex]) {
+            setTimeout(() => {
+                scrollToSlide(currentSlideIndex);
+            }, 60);
         }
     }
 
-    function goToSlide(index, immediate = false) {
+    function scrollToSlide(index) {
         if (index < 0) index = 0;
         if (index >= slides.length) index = slides.length - 1;
 
         currentSlideIndex = index;
+        const target = slides[index];
+        if (!target) return;
 
+        const headerOffset = 75;
+        const elementPosition = target.getBoundingClientRect().top + window.pageYOffset;
+        const offsetPosition = Math.max(0, elementPosition - headerOffset);
+
+        window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth'
+        });
+
+        updateStageUI(index);
+    }
+
+    function updateStageUI(index) {
+        currentSlideIndex = index;
+
+        // Update focal classes on slides
         slides.forEach((slide, idx) => {
-            slide.classList.remove('active', 'prev', 'next');
-            if (idx === index) {
-                slide.classList.add('active');
-                slide.scrollTop = 0; // Reset internal scroll to top of slide
-            } else if (idx < index) {
-                slide.classList.add('prev');
-            } else {
-                slide.classList.add('next');
-            }
+            slide.classList.toggle('active-focus', idx === index);
         });
 
         // Update Dock Numbers and Dots
@@ -2012,7 +2016,7 @@ function initDeckPresentation() {
 
         // Update Navbar Links Active State
         const navLinks = document.querySelectorAll('.nav-link, .mobile-nav-item');
-        const sectionMap = ['about-developer', 'delegation-gallery', 'facebook-feed', 'templates.html'];
+        const sectionMap = ['about-developer', 'delegation-gallery', 'facebook-feed', 'templates'];
         navLinks.forEach(link => {
             const href = link.getAttribute('href') || '';
             const target = link.getAttribute('data-target') || '';
@@ -2020,17 +2024,11 @@ function initDeckPresentation() {
             link.classList.toggle('active', isMatch);
         });
 
-        // Trigger Reveal Observer on New Slide Contents
-        const revealedItems = slides[index].querySelectorAll('.reveal-on-scroll');
-        revealedItems.forEach(el => el.classList.add('revealed'));
-    }
-
-    function triggerCooldown() {
-        isTransitioning = true;
-        clearTimeout(transitionCooldownTimer);
-        transitionCooldownTimer = setTimeout(() => {
-            isTransitioning = false;
-        }, 750);
+        // Trigger reveal animations on elements inside newly active section
+        if (slides[index]) {
+            const revealedItems = slides[index].querySelectorAll('.reveal-on-scroll');
+            revealedItems.forEach(el => el.classList.add('revealed'));
+        }
     }
 
     // Initialize View Mode from storage or default to deck
@@ -2042,80 +2040,24 @@ function initDeckPresentation() {
     }
     applyViewMode(savedMode);
 
-    // Mouse Wheel / Trackpad Gesture Handler
-    window.addEventListener('wheel', (e) => {
-        if (document.documentElement.getAttribute('data-view-mode') !== 'deck') return;
-        if (isTransitioning) return;
-
-        const currentSlide = slides[currentSlideIndex];
-        if (!currentSlide) return;
-
-        const isScrollable = currentSlide.scrollHeight > currentSlide.clientHeight + 10;
-        const isAtBottom = currentSlide.scrollTop + currentSlide.clientHeight >= currentSlide.scrollHeight - 25;
-        const isAtTop = currentSlide.scrollTop <= 15;
-
-        if (e.deltaY > 35) {
-            if (!isScrollable || isAtBottom) {
-                if (currentSlideIndex < slides.length - 1) {
-                    goToSlide(currentSlideIndex + 1);
-                    triggerCooldown();
+    // Track active section naturally via IntersectionObserver without scroll locking
+    if ('IntersectionObserver' in window) {
+        const stageObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const idx = parseInt(entry.target.getAttribute('data-slide'), 10);
+                    if (!isNaN(idx)) {
+                        updateStageUI(idx);
+                    }
                 }
-            }
-        } else if (e.deltaY < -35) {
-            if (!isScrollable || isAtTop) {
-                if (currentSlideIndex > 0) {
-                    goToSlide(currentSlideIndex - 1);
-                    triggerCooldown();
-                }
-            }
-        }
-    }, { passive: true });
+            });
+        }, {
+            threshold: 0.28,
+            rootMargin: '-75px 0px -25% 0px'
+        });
 
-    // Touch Swipe Gestures for Mobile
-    let touchStartY = 0;
-    let touchStartX = 0;
-
-    window.addEventListener('touchstart', (e) => {
-        if (e.touches && e.touches[0]) {
-            touchStartY = e.touches[0].clientY;
-            touchStartX = e.touches[0].clientX;
-        }
-    }, { passive: true });
-
-    window.addEventListener('touchend', (e) => {
-        if (document.documentElement.getAttribute('data-view-mode') !== 'deck') return;
-        if (isTransitioning) return;
-        if (!e.changedTouches || !e.changedTouches[0]) return;
-
-        const deltaY = e.changedTouches[0].clientY - touchStartY;
-        const deltaX = e.changedTouches[0].clientX - touchStartX;
-
-        // Ignore if mostly horizontal swipe
-        if (Math.abs(deltaX) > Math.abs(deltaY)) return;
-
-        const currentSlide = slides[currentSlideIndex];
-        if (!currentSlide) return;
-
-        const isScrollable = currentSlide.scrollHeight > currentSlide.clientHeight + 10;
-        const isAtBottom = currentSlide.scrollTop + currentSlide.clientHeight >= currentSlide.scrollHeight - 25;
-        const isAtTop = currentSlide.scrollTop <= 15;
-
-        if (deltaY < -50) { // Swipe Up (Advance)
-            if (!isScrollable || isAtBottom) {
-                if (currentSlideIndex < slides.length - 1) {
-                    goToSlide(currentSlideIndex + 1);
-                    triggerCooldown();
-                }
-            }
-        } else if (deltaY > 50) { // Swipe Down (Previous)
-            if (!isScrollable || isAtTop) {
-                if (currentSlideIndex > 0) {
-                    goToSlide(currentSlideIndex - 1);
-                    triggerCooldown();
-                }
-            }
-        }
-    }, { passive: true });
+        slides.forEach(slide => stageObserver.observe(slide));
+    }
 
     // Keyboard Arrow Keys Navigation
     window.addEventListener('keydown', (e) => {
@@ -2123,14 +2065,12 @@ function initDeckPresentation() {
         if (['ArrowDown', 'PageDown'].includes(e.key)) {
             if (currentSlideIndex < slides.length - 1) {
                 e.preventDefault();
-                goToSlide(currentSlideIndex + 1);
-                triggerCooldown();
+                scrollToSlide(currentSlideIndex + 1);
             }
         } else if (['ArrowUp', 'PageUp'].includes(e.key)) {
             if (currentSlideIndex > 0) {
                 e.preventDefault();
-                goToSlide(currentSlideIndex - 1);
-                triggerCooldown();
+                scrollToSlide(currentSlideIndex - 1);
             }
         }
     });
@@ -2141,8 +2081,7 @@ function initDeckPresentation() {
             e.preventDefault();
             const targetIdx = parseInt(btn.getAttribute('data-slide-index'), 10);
             if (!isNaN(targetIdx)) {
-                goToSlide(targetIdx);
-                triggerCooldown();
+                scrollToSlide(targetIdx);
             }
         });
     });
@@ -2152,8 +2091,7 @@ function initDeckPresentation() {
         prevArrow.addEventListener('click', (e) => {
             e.preventDefault();
             if (currentSlideIndex > 0) {
-                goToSlide(currentSlideIndex - 1);
-                triggerCooldown();
+                scrollToSlide(currentSlideIndex - 1);
             }
         });
     }
@@ -2162,11 +2100,9 @@ function initDeckPresentation() {
         nextArrow.addEventListener('click', (e) => {
             e.preventDefault();
             if (currentSlideIndex < slides.length - 1) {
-                goToSlide(currentSlideIndex + 1);
-                triggerCooldown();
+                scrollToSlide(currentSlideIndex + 1);
             } else {
-                goToSlide(0); // Loop to start
-                triggerCooldown();
+                scrollToSlide(0); // Loop to top
             }
         });
     }
@@ -2174,19 +2110,16 @@ function initDeckPresentation() {
     // Floating Bottom Scroll Indicator Click
     if (floatingDownBtn) {
         floatingDownBtn.addEventListener('click', (e) => {
-            if (document.documentElement.getAttribute('data-view-mode') === 'deck') {
-                e.preventDefault();
-                if (currentSlideIndex < slides.length - 1) {
-                    goToSlide(currentSlideIndex + 1);
-                } else {
-                    goToSlide(0);
-                }
-                triggerCooldown();
+            e.preventDefault();
+            if (currentSlideIndex < slides.length - 1) {
+                scrollToSlide(currentSlideIndex + 1);
+            } else {
+                scrollToSlide(0);
             }
         });
     }
 
-    // Intercept in-page Anchor Links in Deck Mode
+    // Intercept in-page Anchor Links for smooth animated scrolling
     const anchorMap = {
         '#hero-section': 0,
         '#about-developer': 0,
@@ -2200,19 +2133,16 @@ function initDeckPresentation() {
         link.addEventListener('click', (e) => {
             const href = link.getAttribute('href');
             if (anchorMap.hasOwnProperty(href)) {
-                if (document.documentElement.getAttribute('data-view-mode') === 'deck') {
-                    e.preventDefault();
-                    goToSlide(anchorMap[href]);
-                    triggerCooldown();
+                e.preventDefault();
+                scrollToSlide(anchorMap[href]);
 
-                    // Close mobile drawer if open
-                    const drawer = document.getElementById('mobile-nav-drawer');
-                    const overlay = document.getElementById('mobile-drawer-overlay');
-                    if (drawer && drawer.classList.contains('open')) {
-                        drawer.classList.remove('open');
-                        if (overlay) overlay.classList.remove('active');
-                        document.body.classList.remove('drawer-open');
-                    }
+                // Close mobile drawer if open
+                const drawer = document.getElementById('mobile-nav-drawer');
+                const overlay = document.getElementById('mobile-drawer-overlay');
+                if (drawer && drawer.classList.contains('open')) {
+                    drawer.classList.remove('open');
+                    if (overlay) overlay.classList.remove('active');
+                    document.body.classList.remove('drawer-open');
                 }
             }
         });

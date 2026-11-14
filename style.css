@@ -5930,70 +5930,54 @@ html[data-view-mode="scroll"] .view-mode-toggle-btn .scroll-icon {
 }
 
 /* ==========================================================================
-   Mode 1: 3D Cinematic Deck Mode Active Styles
+   Mode 1: 3D Cinematic Deck Mode Active Styles (Fluid Section Stages)
    ========================================================================== */
-html[data-view-mode="deck"],
+html[data-view-mode="deck"] {
+    scroll-behavior: smooth;
+    scroll-snap-type: y proximity;
+}
+
 html[data-view-mode="deck"] body {
-    height: 100vh;
-    overflow: hidden;
+    height: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 html[data-view-mode="deck"] .deck-main-container {
     position: relative;
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
     perspective: 1200px;
-    overflow: hidden;
 }
 
 html[data-view-mode="deck"] .deck-slide {
-    position: absolute;
-    top: 0;
-    left: 0;
+    position: relative;
     width: 100%;
-    height: 100vh;
-    overflow-y: auto;
-    overflow-x: hidden;
-    -webkit-overflow-scrolling: touch;
+    min-height: 100vh;
+    scroll-snap-align: start;
+    scroll-snap-stop: normal;
     box-sizing: border-box;
-    padding-top: 85px;
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-    transform: translateY(100%) scale(0.96) translateZ(-60px);
-    filter: blur(8px);
-    transition: transform 0.85s cubic-bezier(0.16, 1, 0.3, 1),
-                opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1),
-                filter 0.85s cubic-bezier(0.16, 1, 0.3, 1);
-    will-change: transform, opacity, filter;
-    z-index: 1;
-}
-
-html[data-view-mode="deck"] .deck-slide.active {
+    padding-top: 90px;
+    padding-bottom: 5.5rem;
     opacity: 1;
     visibility: visible;
     pointer-events: auto;
-    transform: translateY(0) scale(1) translateZ(0);
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+                opacity 0.5s ease,
+                filter 0.5s ease;
+    will-change: transform, opacity;
+}
+
+/* Active section in view has prominent focal depth */
+html[data-view-mode="deck"] .deck-slide.active-focus {
+    opacity: 1;
     filter: blur(0);
-    z-index: 10;
+    transform: scale(1);
 }
 
-html[data-view-mode="deck"] .deck-slide.prev {
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-    transform: translateY(-24%) scale(0.92) translateZ(-100px);
-    filter: blur(8px);
-    z-index: 4;
-}
-
-html[data-view-mode="deck"] .deck-slide.next {
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-    transform: translateY(100%) scale(0.96) translateZ(-60px);
-    filter: blur(8px);
-    z-index: 4;
+/* Inactive sections gently rest with subtle perspective depth */
+html[data-view-mode="deck"] .deck-slide:not(.active-focus) {
+    opacity: 0.92;
+    transform: scale(0.99);
 }
 
 /* Slide 4 Closing Stage in Deck Mode */
@@ -6001,6 +5985,28 @@ html[data-view-mode="deck"] .deck-closing-slide {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    min-height: 100vh;
+    padding-bottom: 2rem;
+}
+
+/* Mobile Forgiving Layout (Prevent Any Content Truncation) */
+@media (max-width: 768px) {
+    html[data-view-mode="deck"] {
+        scroll-snap-type: none; /* 100% natural, unhindered touch scrolling on mobile */
+    }
+
+    html[data-view-mode="deck"] .deck-slide {
+        min-height: auto;
+        padding-top: 80px;
+        padding-bottom: 4rem;
+        transform: none !important;
+        opacity: 1 !important;
+        filter: none !important;
+    }
+
+    html[data-view-mode="deck"] .deck-closing-slide {
+        min-height: auto;
+    }
 }
 
 /* ==========================================================================
@@ -6011,6 +6017,7 @@ html[data-view-mode="scroll"] body {
     height: auto;
     overflow-y: auto;
     overflow-x: hidden;
+    scroll-snap-type: none;
 }
 
 html[data-view-mode="scroll"] .deck-main-container {
@@ -6025,6 +6032,7 @@ html[data-view-mode="scroll"] .deck-slide {
     top: auto !important;
     left: auto !important;
     width: 100% !important;
+    min-height: auto !important;
     height: auto !important;
     overflow: visible !important;
     opacity: 1 !important;
@@ -6033,6 +6041,7 @@ html[data-view-mode="scroll"] .deck-slide {
     transform: none !important;
     filter: none !important;
     padding-top: 0 !important;
+    scroll-snap-align: none !important;
 }
 
 html[data-view-mode="scroll"] .side-deck-dock {
